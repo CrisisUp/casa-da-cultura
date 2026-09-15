@@ -4,7 +4,7 @@ import DashboardContent from "@/components/dashboard/DashboardContent";
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  const [totalArtistas, ativos, inativos, porGenero, recentes] = await Promise.all([
+  const [totalArtistas, ativos, inativos, porGenero, recentes, destaque] = await Promise.all([
     prisma.artista.count(),
     prisma.artista.count({ where: { status: "ATIVO" } }),
     prisma.artista.count({ where: { status: "INATIVO" } }),
@@ -14,7 +14,7 @@ export default async function DashboardPage() {
       orderBy: { _count: { generoArtistico: "desc" } },
     }),
     prisma.artista.findMany({
-      take: 5,
+      take: 8,
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
@@ -22,6 +22,17 @@ export default async function DashboardPage() {
         generoArtistico: true,
         status: true,
         foto: true,
+      },
+    }),
+    prisma.artista.findFirst({
+      where: { status: "ATIVO", foto: { not: null } },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        nome: true,
+        generoArtistico: true,
+        foto: true,
+        experienciaArtistica: true,
       },
     }),
   ]);
@@ -33,6 +44,7 @@ export default async function DashboardPage() {
       inativos={inativos}
       porGenero={porGenero}
       recentes={recentes}
+      destaque={destaque}
     />
   );
 }
