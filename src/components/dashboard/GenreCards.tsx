@@ -56,7 +56,7 @@ interface GenreCardsProps {
 export default function GenreCards({ counts }: GenreCardsProps) {
   return (
     <div>
-      <h3 className="mb-4 text-lg font-semibold text-foreground font-[family-name:var(--font-display)]">
+      <h3 className="mb-4 text-lg font-semibold text-foreground font-[family-name:var(--font-playfair)]">
         Gêneros Artísticos
       </h3>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
@@ -87,7 +87,7 @@ export default function GenreCards({ counts }: GenreCardsProps) {
                 <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm transition-all duration-500 group-hover:bg-white/30 group-hover:rotate-6">
                   <Icon className="h-7 w-7" />
                 </div>
-                <span className="text-sm font-bold font-[family-name:var(--font-display)]">
+                <span className="text-sm font-bold font-[family-name:var(--font-playfair)]">
                   {genero.name}
                 </span>
                 <span className="text-xs text-white/80 mt-0.5">

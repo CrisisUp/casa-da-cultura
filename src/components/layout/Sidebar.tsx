@@ -70,7 +70,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <Palette className="h-6 w-6 text-white" />
               </div>
               <div>
-                <span className="text-lg font-bold text-white block font-[family-name:var(--font-display)]">
+                <span className="text-lg font-bold text-white block font-[family-name:var(--font-playfair)]">
                   Casa da Cultura
                 </span>
                 <span className="text-xs text-areia/80">

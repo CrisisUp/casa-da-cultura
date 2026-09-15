@@ -21,7 +21,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
         >
           <Menu className="h-6 w-6" />
         </button>
-        <h1 className="text-lg font-semibold text-foreground font-[family-name:var(--font-display)]">
+        <h1 className="text-lg font-semibold text-foreground font-[family-name:var(--font-playfair)]">
           Sistema de Cadastro
         </h1>
       </div>

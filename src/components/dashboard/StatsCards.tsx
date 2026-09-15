@@ -24,7 +24,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
               <p className="text-sm font-medium text-madeira/70 group-hover:text-madeira transition-colors">
                 {stat.title}
               </p>
-              <p className="mt-2 text-4xl font-bold text-foreground transition-all duration-500 group-hover:scale-105 group-hover:text-terracota font-[family-name:var(--font-display)]">
+              <p className="mt-2 text-4xl font-bold text-foreground transition-all duration-500 group-hover:scale-105 group-hover:text-terracota font-[family-name:var(--font-playfair)]">
                 {stat.value}
               </p>
             </div>

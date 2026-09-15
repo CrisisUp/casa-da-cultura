@@ -30,7 +30,7 @@ export default function WelcomeBanner() {
               Casa da Cultura
             </span>
           </div>
-          <h2 className="text-3xl font-bold mb-2 font-[family-name:var(--font-display)]">
+          <h2 className="text-3xl font-bold mb-2 font-[family-name:var(--font-playfair)]">
             {greeting}, {name}!
           </h2>
           <p className="text-areia/80 max-w-md">

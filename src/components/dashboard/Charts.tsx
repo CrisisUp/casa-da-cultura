@@ -23,7 +23,7 @@ export default function Charts({ data }: ChartsProps) {
 
   return (
     <div className="rounded-2xl bg-white p-6 shadow-sm border border-areia">
-      <h3 className="mb-6 text-lg font-semibold text-foreground font-[family-name:var(--font-display)]">
+      <h3 className="mb-6 text-lg font-semibold text-foreground font-[family-name:var(--font-playfair)]">
         Artistas por Gênero
       </h3>
 
@@ -39,7 +39,7 @@ export default function Charts({ data }: ChartsProps) {
                 <span className="text-sm font-medium text-madeira">
                   {item.name}
                 </span>
-                <span className="text-sm font-bold text-foreground font-[family-name:var(--font-display)]">
+                <span className="text-sm font-bold text-foreground font-[family-name:var(--font-playfair)]">
                   {item.value}
                 </span>
               </div>

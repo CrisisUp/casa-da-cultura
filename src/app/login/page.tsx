@@ -56,7 +56,7 @@ export default function LoginPage() {
               <Palette className="h-12 w-12 text-white" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold text-white mb-4 font-[family-name:var(--font-display)]">
+          <h1 className="text-4xl font-bold text-white mb-4 font-[family-name:var(--font-playfair)]">
             Casa da Cultura
           </h1>
           <p className="text-xl text-areia/90 max-w-md">
@@ -84,7 +84,7 @@ export default function LoginPage() {
               <Palette className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-foreground font-[family-name:var(--font-display)]">
+              <h2 className="text-xl font-bold text-foreground font-[family-name:var(--font-playfair)]">
                 Casa da Cultura
               </h2>
               <p className="text-xs text-madeira/70">Sistema de Cadastro</p>
@@ -93,7 +93,7 @@ export default function LoginPage() {
 
           <div className="rounded-3xl bg-white p-8 shadow-xl border border-areia">
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-foreground font-[family-name:var(--font-display)]">
+              <h2 className="text-2xl font-bold text-foreground font-[family-name:var(--font-playfair)]">
                 Bem-vindo!
               </h2>
               <p className="mt-2 text-madeira/70">
