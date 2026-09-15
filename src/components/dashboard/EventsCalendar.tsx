@@ -19,7 +19,7 @@ export default function EventsCalendar() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/eventos?proximos=true")
+    fetch("/api/eventos")
       .then((res) => res.json())
       .then((data) => {
         setEventos(data);

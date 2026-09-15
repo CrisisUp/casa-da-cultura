@@ -147,12 +147,13 @@ async function main() {
     }
   }
 
-  // Criar eventos de exemplo
+  // Criar eventos de exemplo (datas relativas a hoje)
+  const hoje = new Date();
   const eventos = [
     {
       titulo: "Festival de Música",
       descricao: "Apresentações musicais de artistas locais",
-      data: new Date("2024-12-15"),
+      data: new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 5),
       hora: "19:00",
       local: "Auditório Principal",
       tipo: "Música",
@@ -162,7 +163,7 @@ async function main() {
     {
       titulo: "Mostra de Artes Visuais",
       descricao: "Exposição de pinturas e esculturas",
-      data: new Date("2024-12-20"),
+      data: new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 12),
       hora: "10:00",
       local: "Galeria de Arte",
       tipo: "Artes Visuais",
@@ -172,7 +173,7 @@ async function main() {
     {
       titulo: "Peça Teatral",
       descricao: "Apresentação da peça 'A Herança dos Artistas'",
-      data: new Date("2024-12-22"),
+      data: new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 18),
       hora: "20:00",
       local: "Teatro Municipal",
       tipo: "Teatro",
@@ -182,7 +183,7 @@ async function main() {
     {
       titulo: "Oficina de Dança",
       descricao: "Aula aberta de dança contemporânea",
-      data: new Date("2024-12-28"),
+      data: new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 25),
       hora: "14:00",
       local: "Estúdio de Dança",
       tipo: "Dança",
