@@ -17,24 +17,29 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       {stats.map((stat) => (
         <div
           key={stat.title}
-          className="group relative overflow-hidden rounded-xl bg-white p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+          className="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm border border-gray-100 transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 hover:border-primary/20"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-              <p className="mt-1 text-4xl font-bold text-gray-900">
+              <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700 transition-colors">
+                {stat.title}
+              </p>
+              <p className="mt-2 text-4xl font-bold text-gray-900 transition-all duration-500 group-hover:scale-105 group-hover:text-primary">
                 {stat.value}
               </p>
             </div>
             <div
-              className={`flex h-16 w-16 items-center justify-center rounded-2xl ${stat.color} shadow-lg group-hover:scale-110 transition-transform`}
+              className={`flex h-16 w-16 items-center justify-center rounded-2xl ${stat.color} shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-xl`}
             >
               <stat.icon className="h-8 w-8 text-white" />
             </div>
           </div>
-          {/* Decoração */}
+          {/* Decoração animada */}
           <div
-            className={`absolute -bottom-4 -right-4 h-20 w-20 rounded-full ${stat.color} opacity-10`}
+            className={`absolute -bottom-6 -right-6 h-24 w-24 rounded-full ${stat.color} opacity-10 transition-all duration-700 group-hover:scale-150 group-hover:opacity-20`}
+          />
+          <div
+            className={`absolute -top-4 -left-4 h-16 w-16 rounded-full ${stat.color} opacity-5 transition-all duration-700 group-hover:scale-125 group-hover:opacity-10`}
           />
         </div>
       ))}

@@ -68,22 +68,27 @@ export default function GenreCards({ counts }: GenreCardsProps) {
             <Link
               key={genero.name}
               href={`/dashboard/artistas?genero=${encodeURIComponent(genero.name)}`}
-              className="group relative overflow-hidden rounded-xl h-32 transition-all duration-300 hover:scale-105 hover:shadow-xl"
+              className="group relative overflow-hidden rounded-2xl h-36 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1"
+              aria-label={`Ver artistas de ${genero.name}`}
             >
-              {/* Background image */}
+              {/* Background image with zoom effect */}
               <div
-                className="absolute inset-0 bg-cover bg-center"
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                 style={{ backgroundImage: `url(${genero.bgImage})` }}
               />
               {/* Gradient overlay */}
               <div
-                className={`absolute inset-0 bg-gradient-to-t ${genero.color} opacity-75 group-hover:opacity-90 transition-opacity`}
+                className={`absolute inset-0 bg-gradient-to-t ${genero.color} opacity-80 group-hover:opacity-90 transition-all duration-500`}
               />
+              {/* Blur overlay on hover */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-500 backdrop-blur-0 group-hover:backdrop-blur-[2px]" />
               {/* Content */}
-              <div className="relative flex h-full flex-col items-center justify-center text-white z-10">
-                <Icon className="mb-2 h-8 w-8" />
-                <span className="text-sm font-semibold">{genero.name}</span>
-                <span className="text-xs opacity-80">
+              <div className="relative flex h-full flex-col items-center justify-center text-white z-10 transition-transform duration-500 group-hover:scale-110">
+                <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm transition-all duration-500 group-hover:bg-white/30 group-hover:rotate-6">
+                  <Icon className="h-7 w-7" />
+                </div>
+                <span className="text-sm font-bold">{genero.name}</span>
+                <span className="text-xs text-white/80 mt-0.5">
                   {count} artista{count !== 1 && "s"}
                 </span>
               </div>
