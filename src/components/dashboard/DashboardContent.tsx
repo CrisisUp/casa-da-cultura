@@ -123,15 +123,8 @@ export default function DashboardContent({
 
               <Testimonials />
 
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                <div className="lg:col-span-2">
-                  <EventsCalendar />
-                </div>
-                <Charts data={chartData} />
-              </div>
-
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <Charts data={chartData} />
+                <EventsCalendar />
 
                 {/* Cadastros recentes compacto */}
                 <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
