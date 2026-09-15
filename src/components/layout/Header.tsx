@@ -13,10 +13,10 @@ export default function Header({ onMenuClick }: HeaderProps) {
   return (
     <header className="flex h-16 items-center justify-between border-b border-areia bg-white px-6">
       <div className="flex items-center gap-3">
-        {/* Hamburger - mobile */}
+        {/* Hamburger - sempre visível */}
         <button
           onClick={onMenuClick}
-          className="lg:hidden rounded-lg p-2 text-madeira hover:bg-areia transition-colors"
+          className="rounded-lg p-2 text-madeira hover:bg-areia transition-colors"
           aria-label="Abrir menu"
         >
           <Menu className="h-6 w-6" />
