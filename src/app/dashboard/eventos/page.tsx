@@ -111,10 +111,10 @@ export default function EventosPage() {
                 {/* Data */}
                 <div className={`flex flex-col items-center justify-center rounded-xl ${evento.cor || "bg-terracota"} text-white px-3 py-2 min-w-[70px]`}>
                   <span className="text-xl font-bold font-[family-name:var(--font-playfair)]">
-                    {new Date(evento.data + "T00:00:00").getDate()}
+                    {new Date(evento.data).getDate()}
                   </span>
                   <span className="text-xs uppercase opacity-90">
-                    {new Date(evento.data + "T00:00:00").toLocaleDateString("pt-BR", { month: "short" })}
+                    {new Date(evento.data).toLocaleDateString("pt-BR", { month: "short" })}
                   </span>
                 </div>
 

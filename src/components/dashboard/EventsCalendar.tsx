@@ -29,7 +29,7 @@ export default function EventsCalendar() {
   }, []);
 
   function formatarData(data: string) {
-    const date = new Date(data + "T00:00:00");
+    const date = new Date(data);
     return date.toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "short",
@@ -37,12 +37,12 @@ export default function EventsCalendar() {
   }
 
   function formatarDia(data: string) {
-    const date = new Date(data + "T00:00:00");
+    const date = new Date(data);
     return date.toLocaleDateString("pt-BR", { day: "2-digit" });
   }
 
   function formatarMes(data: string) {
-    const date = new Date(data + "T00:00:00");
+    const date = new Date(data);
     return date.toLocaleDateString("pt-BR", { month: "short" });
   }
 
