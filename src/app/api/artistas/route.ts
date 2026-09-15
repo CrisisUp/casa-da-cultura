@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   const limit = parseInt(searchParams.get("limit") || "10");
   const skip = (page - 1) * limit;
 
-  const where: any = {};
+  const where: Record<string, unknown> = {};
 
   if (search) {
     where.OR = [
@@ -74,8 +74,8 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(artista, { status: 201 });
-  } catch (error: any) {
-    if (error.code === "P2002") {
+  } catch (error: unknown) {
+    if (error instanceof Error && (error as { code?: string }).code === "P2002") {
       return NextResponse.json(
         { error: "CPF já cadastrado" },
         { status: 400 }

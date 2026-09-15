@@ -114,7 +114,7 @@ export default function RelatoriosPage() {
                 Relatório de Artistas
               </h3>
               <p className="text-sm text-gray-500">
-                {artistas.length} registro{artistas.length !== 1 && "s"}
+                {artistas.length} registro{artistas.length !== 1 ? "s" : ""}
                 {genero && ` • Gênero: ${genero}`}
                 {status && ` • Status: ${status}`}
               </p>

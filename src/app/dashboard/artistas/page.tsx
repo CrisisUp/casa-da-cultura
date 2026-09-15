@@ -76,7 +76,7 @@ export default function ArtistasPage() {
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Artistas</h2>
           <p className="text-gray-500">
-            {pagination.total} artista{pagination.total !== 1 && "s"} cadastrado{pagination.total !== 1 && "s"}
+            {pagination.total} artista{pagination.total !== 1 ? "s" : ""} cadastrado{pagination.total !== 1 ? "s" : ""}
           </p>
         </div>
         <Link href="/dashboard/artistas/novo">

@@ -62,7 +62,7 @@ export default function DepoimentosPage() {
             Depoimentos
           </h2>
           <p className="text-madeira/70">
-            {depoimentos.length} depoimento{depoimentos.length !== 1 && "s"} cadastrado{depoimentos.length !== 1 && "s"}
+            {depoimentos.length} depoimento{depoimentos.length !== 1 ? "s" : ""} cadastrado{depoimentos.length !== 1 ? "s" : ""}
           </p>
         </div>
         <Link href="/dashboard/depoimentos/novo">

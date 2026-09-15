@@ -51,8 +51,8 @@ export async function PUT(
     });
 
     return NextResponse.json(artista);
-  } catch (error: any) {
-    if (error.code === "P2002") {
+  } catch (error: unknown) {
+    if (error instanceof Error && (error as { code?: string }).code === "P2002") {
       return NextResponse.json(
         { error: "CPF já cadastrado" },
         { status: 400 }

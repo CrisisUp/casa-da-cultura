@@ -91,7 +91,7 @@ export default function GenreCards({ counts }: GenreCardsProps) {
                   {genero.name}
                 </span>
                 <span className="text-xs text-white/80 mt-0.5">
-                  {count} artista{count !== 1 && "s"}
+                  {count} artista{count !== 1 ? "s" : ""}
                 </span>
               </div>
             </Link>

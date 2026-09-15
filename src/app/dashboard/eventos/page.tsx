@@ -72,7 +72,7 @@ export default function EventosPage() {
             Eventos
           </h2>
           <p className="text-madeira/70">
-            {eventos.length} evento{eventos.length !== 1 && "s"} cadastrado{eventos.length !== 1 && "s"}
+            {eventos.length} evento{eventos.length !== 1 ? "s" : ""} cadastrado{eventos.length !== 1 ? "s" : ""}
           </p>
         </div>
         <Link href="/dashboard/eventos/novo">

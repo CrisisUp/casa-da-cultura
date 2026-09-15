@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   const all = searchParams.get("all") === "true";
   const proximos = searchParams.get("proximos") === "true";
 
-  const where: any = {};
+  const where: Record<string, unknown> = {};
 
   if (!all) {
     where.ativo = true;
