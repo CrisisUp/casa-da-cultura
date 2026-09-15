@@ -14,37 +14,37 @@ const generos = [
   {
     name: "Música",
     icon: Music,
-    color: "from-blue-600 to-blue-800",
+    color: "from-terracota to-terracota-dark",
     bgImage: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&q=80",
   },
   {
     name: "Dança",
     icon: Footprints,
-    color: "from-purple-600 to-purple-800",
+    color: "from-oliva to-oliva-dark",
     bgImage: "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=400&q=80",
   },
   {
     name: "Teatro",
     icon: Drama,
-    color: "from-red-600 to-red-800",
+    color: "from-barro to-madeira",
     bgImage: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=400&q=80",
   },
   {
     name: "Artes Visuais",
     icon: Paintbrush,
-    color: "from-amber-500 to-amber-700",
+    color: "from-ambar to-ambar-dark",
     bgImage: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80",
   },
   {
     name: "Literatura",
     icon: BookOpen,
-    color: "from-emerald-600 to-emerald-800",
+    color: "from-oliva-light to-oliva",
     bgImage: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&q=80",
   },
   {
     name: "Artesanato",
     icon: Scissors,
-    color: "from-rose-500 to-rose-700",
+    color: "from-terracota-light to-terracota",
     bgImage: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=400&q=80",
   },
 ];
@@ -56,7 +56,7 @@ interface GenreCardsProps {
 export default function GenreCards({ counts }: GenreCardsProps) {
   return (
     <div>
-      <h3 className="mb-4 text-lg font-semibold text-gray-900">
+      <h3 className="mb-4 text-lg font-semibold text-foreground font-[family-name:var(--font-display)]">
         Gêneros Artísticos
       </h3>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
@@ -68,7 +68,7 @@ export default function GenreCards({ counts }: GenreCardsProps) {
             <Link
               key={genero.name}
               href={`/dashboard/artistas?genero=${encodeURIComponent(genero.name)}`}
-              className="group relative overflow-hidden rounded-2xl h-36 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1"
+              className="group relative overflow-hidden rounded-2xl h-36 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-terracota/20 hover:-translate-y-1"
               aria-label={`Ver artistas de ${genero.name}`}
             >
               {/* Background image with zoom effect */}
@@ -87,7 +87,9 @@ export default function GenreCards({ counts }: GenreCardsProps) {
                 <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm transition-all duration-500 group-hover:bg-white/30 group-hover:rotate-6">
                   <Icon className="h-7 w-7" />
                 </div>
-                <span className="text-sm font-bold">{genero.name}</span>
+                <span className="text-sm font-bold font-[family-name:var(--font-display)]">
+                  {genero.name}
+                </span>
                 <span className="text-xs text-white/80 mt-0.5">
                   {count} artista{count !== 1 && "s"}
                 </span>

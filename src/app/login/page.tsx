@@ -41,12 +41,13 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Lado esquerdo - Ilustração */}
-      <div className="hidden w-1/2 lg:flex lg:flex-col lg:items-center lg:justify-center bg-gradient-to-br from-primary-dark via-primary to-secondary relative overflow-hidden">
-        {/* Decorações */}
+      {/* Lado esquerdo - Ilustração cultural */}
+      <div className="hidden w-1/2 lg:flex lg:flex-col lg:items-center lg:justify-center gradient-cultural relative overflow-hidden">
+        {/* Padrão decorativo */}
+        <div className="absolute inset-0 cultural-pattern opacity-20" />
         <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-white/10" />
         <div className="absolute -right-10 -bottom-10 h-48 w-48 rounded-full bg-white/5" />
-        <div className="absolute left-1/4 top-1/4 h-32 w-32 rounded-full bg-accent/20" />
+        <div className="absolute left-1/4 top-1/4 h-32 w-32 rounded-full bg-ambar/20" />
         <div className="absolute right-1/4 bottom-1/3 h-24 w-24 rounded-full bg-white/10" />
 
         <div className="relative z-10 text-center px-8">
@@ -55,10 +56,10 @@ export default function LoginPage() {
               <Palette className="h-12 w-12 text-white" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold text-white mb-4">
+          <h1 className="text-4xl font-bold text-white mb-4 font-[family-name:var(--font-display)]">
             Casa da Cultura
           </h1>
-          <p className="text-xl text-blue-200 max-w-md">
+          <p className="text-xl text-areia/90 max-w-md">
             Sistema de Cadastro de Artistas
           </p>
           <div className="mt-8 flex justify-center gap-4">
@@ -75,30 +76,34 @@ export default function LoginPage() {
       </div>
 
       {/* Lado direito - Formulário */}
-      <div className="flex w-full items-center justify-center bg-gray-50 px-6 py-12 lg:w-1/2">
+      <div className="flex w-full items-center justify-center bg-creme px-6 py-12 lg:w-1/2">
         <div className="w-full max-w-md">
           {/* Logo mobile */}
           <div className="mb-8 flex items-center gap-3 lg:hidden">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary shadow-lg">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-terracota shadow-lg">
               <Palette className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Casa da Cultura</h2>
-              <p className="text-xs text-gray-500">Sistema de Cadastro</p>
+              <h2 className="text-xl font-bold text-foreground font-[family-name:var(--font-display)]">
+                Casa da Cultura
+              </h2>
+              <p className="text-xs text-madeira/70">Sistema de Cadastro</p>
             </div>
           </div>
 
-          <div className="rounded-3xl bg-white p-8 shadow-xl border border-gray-100">
+          <div className="rounded-3xl bg-white p-8 shadow-xl border border-areia">
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900">Bem-vindo!</h2>
-              <p className="mt-2 text-gray-500">
+              <h2 className="text-2xl font-bold text-foreground font-[family-name:var(--font-display)]">
+                Bem-vindo!
+              </h2>
+              <p className="mt-2 text-madeira/70">
                 Faça login para acessar o sistema
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {error && (
-                <div className="rounded-xl bg-red-50 p-4 text-sm text-red-600 border border-red-100">
+                <div className="rounded-xl bg-red-50 p-4 text-sm text-danger border border-red-100">
                   {error}
                 </div>
               )}
@@ -126,7 +131,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-9 text-madeira/50 hover:text-madeira"
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -145,10 +150,10 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            <div className="mt-6 text-center text-sm text-gray-500">
+            <div className="mt-6 text-center text-sm text-madeira/60">
               <p>
                 Esqueceu a senha?{" "}
-                <a href="#" className="text-primary hover:text-primary-dark font-medium">
+                <a href="#" className="text-terracota hover:text-terracota-dark font-medium">
                   Fale com o administrador
                 </a>
               </p>
@@ -156,9 +161,9 @@ export default function LoginPage() {
           </div>
 
           {/* Credenciais de teste */}
-          <div className="mt-6 rounded-xl bg-blue-50 p-4 border border-blue-100">
-            <p className="text-xs font-medium text-blue-800 mb-2">Credenciais de teste:</p>
-            <div className="space-y-1 text-xs text-blue-600">
+          <div className="mt-6 rounded-xl bg-areia/50 p-4 border border-areia">
+            <p className="text-xs font-medium text-madeira mb-2">Credenciais de teste:</p>
+            <div className="space-y-1 text-xs text-madeira/80">
               <p><strong>Admin:</strong> admin@casa.gov.br / admin123</p>
               <p><strong>Operador:</strong> operador@casa.gov.br / operador123</p>
             </div>

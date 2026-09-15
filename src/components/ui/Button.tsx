@@ -14,20 +14,20 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={classNames(
-          "inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
+          "inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",
           {
-            "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500":
+            "bg-terracota text-white hover:bg-terracota-dark focus:ring-terracota shadow-sm hover:shadow-md":
               variant === "primary",
-            "bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500":
+            "bg-areia text-madeira hover:bg-areia/80 focus:ring-madeira border border-areia":
               variant === "secondary",
-            "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500":
+            "bg-danger text-white hover:bg-red-700 focus:ring-danger shadow-sm":
               variant === "danger",
-            "bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500":
+            "bg-transparent text-madeira hover:bg-areia focus:ring-madeira":
               variant === "ghost",
           },
           {
             "px-3 py-1.5 text-sm": size === "sm",
-            "px-4 py-2 text-sm": size === "md",
+            "px-4 py-2.5 text-sm": size === "md",
             "px-6 py-3 text-base": size === "lg",
           },
           className

@@ -17,14 +17,14 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       {stats.map((stat) => (
         <div
           key={stat.title}
-          className="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm border border-gray-100 transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 hover:border-primary/20"
+          className="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm border border-areia transition-all duration-500 hover:shadow-xl hover:shadow-terracota/10 hover:-translate-y-1 hover:border-terracota/30"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700 transition-colors">
+              <p className="text-sm font-medium text-madeira/70 group-hover:text-madeira transition-colors">
                 {stat.title}
               </p>
-              <p className="mt-2 text-4xl font-bold text-gray-900 transition-all duration-500 group-hover:scale-105 group-hover:text-primary">
+              <p className="mt-2 text-4xl font-bold text-foreground transition-all duration-500 group-hover:scale-105 group-hover:text-terracota font-[family-name:var(--font-display)]">
                 {stat.value}
               </p>
             </div>

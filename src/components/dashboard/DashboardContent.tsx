@@ -55,25 +55,25 @@ export default function DashboardContent({
       title: "Total de Artistas",
       value: totalArtistas,
       icon: Users,
-      color: "bg-primary",
+      color: "bg-terracota",
     },
     {
       title: "Ativos",
       value: ativos,
       icon: UserCheck,
-      color: "bg-success",
+      color: "bg-oliva",
     },
     {
       title: "Inativos",
       value: inativos,
       icon: UserX,
-      color: "bg-danger",
+      color: "bg-barro",
     },
     {
       title: "Gêneros Cadastrados",
       value: porGenero.length,
       icon: TrendingUp,
-      color: "bg-secondary",
+      color: "bg-ambar",
     },
   ];
 

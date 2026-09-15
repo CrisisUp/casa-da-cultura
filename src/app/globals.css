@@ -1,18 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  /* Casa da Cultura - Tema personalizado */
-  --color-primary: #1e40af;
-  --color-primary-light: #3b82f6;
-  --color-primary-dark: #1e3a8a;
-  --color-secondary: #7c3aed;
-  --color-accent: #f59e0b;
-  --color-success: #059669;
-  --color-danger: #dc2626;
-  --color-warning: #d97706;
+  /* Casa da Cultura - Paleta Cultural */
+  --color-terracota: #c2571a;
+  --color-terracota-light: #e07b3a;
+  --color-terracota-dark: #9a4415;
+  --color-ambar: #d4a017;
+  --color-ambar-light: #f0c040;
+  --color-ambar-dark: #b8890f;
+  --color-oliva: #5c7a3a;
+  --color-oliva-light: #7a9e52;
+  --color-oliva-dark: #4a6230;
+  --color-creme: #faf6f0;
+  --color-madeira: #8b5e3c;
+  --color-barro: #a0522d;
+  --color-areia: #f5e6d3;
 
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --color-primary: var(--color-terracota);
+  --color-primary-light: var(--color-terracota-light);
+  --color-primary-dark: var(--color-terracota-dark);
+  --color-secondary: var(--color-oliva);
+  --color-accent: var(--color-ambar);
+  --color-success: #5a8a4a;
+  --color-danger: #c0392b;
+  --color-warning: var(--color-ambar);
+
+  --background: var(--color-creme);
+  --foreground: #2d1810;
 }
 
 @theme inline {
@@ -26,14 +40,24 @@
   --color-success: var(--color-success);
   --color-danger: var(--color-danger);
   --color-warning: var(--color-warning);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-terracota: var(--color-terracota);
+  --color-terracota-light: var(--color-terracota-light);
+  --color-terracota-dark: var(--color-terracota-dark);
+  --color-ambar: var(--color-ambar);
+  --color-ambar-light: var(--color-ambar-light);
+  --color-ambar-dark: var(--color-ambar-dark);
+  --color-oliva: var(--color-oliva);
+  --color-oliva-light: var(--color-oliva-light);
+  --color-oliva-dark: var(--color-oliva-dark);
+  --color-creme: var(--color-creme);
+  --color-madeira: var(--color-madeira);
+  --color-barro: var(--color-barro);
+  --color-areia: var(--color-areia);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Scrollbar personalizada */
@@ -41,46 +65,40 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: var(--color-areia);
 }
 ::-webkit-scrollbar-thumb {
-  background: #94a3b8;
+  background: var(--color-terracota-light);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
-}
-
-/* Toast personalizado */
-.toast-custom {
-  font-family: var(--font-sans) !important;
+  background: var(--color-terracota);
 }
 
 /* Animações customizadas */
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 @keyframes glow {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(30, 64, 175, 0.5);
+  0%, 100% { box-shadow: 0 0 5px rgba(194, 87, 26, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(194, 87, 26, 0.8); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  50% {
-    box-shadow: 0 0 20px rgba(30, 64, 175, 0.8);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -98,7 +116,11 @@ body {
   animation: glow 2s ease-in-out infinite;
 }
 
-/* Transições suaves para todos os elementos interativos */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Transições suaves */
 a, button, [role="button"] {
   transition: all 0.2s ease-in-out;
 }
@@ -110,5 +132,20 @@ a, button, [role="button"] {
 
 .card-hover:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 25px -5px rgba(139, 94, 60, 0.15), 0 8px 10px -6px rgba(139, 94, 60, 0.1);
+}
+
+/* Padrão cultural de fundo */
+.cultural-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c2571a' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Gradiente cultural */
+.gradient-cultural {
+  background: linear-gradient(135deg, var(--color-terracota) 0%, var(--color-barro) 50%, var(--color-madeira) 100%);
+}
+
+/* Texto com sombra cultural */
+.text-cultural-shadow {
+  text-shadow: 2px 2px 4px rgba(45, 24, 16, 0.2);
 }
