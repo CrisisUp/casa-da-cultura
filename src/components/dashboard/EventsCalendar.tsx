@@ -71,13 +71,19 @@ export default function EventsCalendar() {
   }
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm border border-areia">
-      <div className="flex items-center gap-2 mb-6">
-        <Calendar className="h-5 w-5 text-terracota" />
-        <h3 className="text-lg font-semibold text-foreground font-[family-name:var(--font-playfair)]">
-          Próximos Eventos
-        </h3>
-      </div>
+    <div className="relative rounded-2xl overflow-hidden shadow-sm border border-areia">
+      {/* Imagem de fundo sutil */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-5"
+        style={{ backgroundImage: "url(/images.jpeg)" }}
+      />
+      <div className="relative bg-white/95 p-6">
+        <div className="flex items-center gap-2 mb-6">
+          <Calendar className="h-5 w-5 text-terracota" />
+          <h3 className="text-lg font-semibold text-foreground font-[family-name:var(--font-playfair)]">
+            Próximos Eventos
+          </h3>
+        </div>
 
       {eventos.length === 0 ? (
         <div className="text-center py-8">
@@ -141,6 +147,7 @@ export default function EventsCalendar() {
           </button>
         </div>
       )}
+      </div>
     </div>
   );
 }

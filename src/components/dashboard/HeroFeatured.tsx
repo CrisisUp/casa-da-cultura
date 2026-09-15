@@ -24,15 +24,11 @@ export default function HeroFeatured({ artista }: HeroFeaturedProps) {
       className="group relative block h-72 overflow-hidden rounded-3xl md:h-80"
     >
       {/* Imagem de fundo */}
-      {artista.foto ? (
-        <img
-          src={artista.foto}
-          alt={artista.nome}
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-      ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-terracota via-barro to-madeira" />
-      )}
+      <img
+        src={artista.foto || "/artista.png"}
+        alt={artista.nome}
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+      />
 
       {/* Overlay escuro gradiente */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />

@@ -53,8 +53,16 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Navegação */}
-      <nav className="flex-1 space-y-1 px-3 py-4 bg-creme">
+      {/* Navegação com textura */}
+      <nav
+        className="flex-1 space-y-1 px-3 py-4 bg-creme relative"
+        style={{
+          backgroundImage: "url(/mapa.jpeg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="absolute inset-0 bg-creme/95" />
         {navigation.map((item) => {
           const isActive =
             pathname === item.href || pathname.startsWith(item.href + "/");
