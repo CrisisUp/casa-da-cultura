@@ -22,7 +22,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-full w-64 flex-col">
+    <div className="flex h-full w-64 flex-col" role="navigation" aria-label="Menu principal">
       {/* Header com gradiente */}
       <div className="relative overflow-hidden bg-gradient-to-b from-primary-dark to-primary px-6 py-6">
         <div className="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-white/10" />
@@ -55,6 +55,7 @@ export default function Sidebar() {
                   ? "bg-primary text-white shadow-md shadow-primary/30"
                   : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               )}
+              aria-current={isActive ? "page" : undefined}
             >
               <item.icon className="h-5 w-5" />
               {item.name}
@@ -68,6 +69,7 @@ export default function Sidebar() {
         <button
           onClick={() => signOut({ redirect: true, callbackUrl: "/login" })}
           className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors"
+          aria-label="Sair do sistema"
         >
           <LogOut className="h-5 w-5" />
           Sair do sistema
