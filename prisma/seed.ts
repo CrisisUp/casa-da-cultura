@@ -147,12 +147,66 @@ async function main() {
     }
   }
 
+  // Criar eventos de exemplo
+  const eventos = [
+    {
+      titulo: "Festival de Música",
+      descricao: "Apresentações musicais de artistas locais",
+      data: new Date("2024-12-15"),
+      hora: "19:00",
+      local: "Auditório Principal",
+      tipo: "Música",
+      cor: "bg-terracota",
+      ativo: true,
+    },
+    {
+      titulo: "Mostra de Artes Visuais",
+      descricao: "Exposição de pinturas e esculturas",
+      data: new Date("2024-12-20"),
+      hora: "10:00",
+      local: "Galeria de Arte",
+      tipo: "Artes Visuais",
+      cor: "bg-ambar",
+      ativo: true,
+    },
+    {
+      titulo: "Peça Teatral",
+      descricao: "Apresentação da peça 'A Herança dos Artistas'",
+      data: new Date("2024-12-22"),
+      hora: "20:00",
+      local: "Teatro Municipal",
+      tipo: "Teatro",
+      cor: "bg-barro",
+      ativo: true,
+    },
+    {
+      titulo: "Oficina de Dança",
+      descricao: "Aula aberta de dança contemporânea",
+      data: new Date("2024-12-28"),
+      hora: "14:00",
+      local: "Estúdio de Dança",
+      tipo: "Dança",
+      cor: "bg-oliva",
+      ativo: true,
+    },
+  ];
+
+  for (const evento of eventos) {
+    const exists = await prisma.evento.findFirst({
+      where: { titulo: evento.titulo },
+    });
+    if (!exists) {
+      await prisma.evento.create({ data: evento });
+    }
+  }
+
   console.log("Seed concluído!");
   console.log("Usuários criados:");
   console.log("  Admin: admin@casa.gov.br / admin123");
   console.log("  Operador: operador@casa.gov.br / operador123");
   console.log(`${artistas.length} artistas de exemplo criados`);
   console.log(`${depoimentos.length} depoimentos de exemplo criados`);
+  console.log(`${eventos.length} eventos de exemplo criados`);
 }
 
 main()

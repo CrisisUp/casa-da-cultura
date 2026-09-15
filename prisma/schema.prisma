@@ -47,6 +47,7 @@ model Artista {
   status               StatusArtista @default(ATIVO)
   createdAt            DateTime      @default(now())
   updatedAt            DateTime      @updatedAt
+  eventos              Evento[]
 
   @@index([nome])
   @@index([generoArtistico])
@@ -68,4 +69,24 @@ model Depoimento {
   @@index([ativo])
   @@index([ordem])
   @@map("depoimentos")
+}
+
+model Evento {
+  id          String   @id @default(cuid())
+  titulo      String
+  descricao   String?
+  data        DateTime
+  hora        String
+  local       String
+  tipo        String
+  cor         String?
+  artistaId   String?
+  artista     Artista? @relation(fields: [artistaId], references: [id])
+  ativo       Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([data])
+  @@index([ativo])
+  @@map("eventos")
 }
