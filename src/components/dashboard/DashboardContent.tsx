@@ -15,6 +15,9 @@ import StatsCards from "@/components/dashboard/StatsCards";
 import Charts from "@/components/dashboard/Charts";
 import GenreCards from "@/components/dashboard/GenreCards";
 import WelcomeBanner from "@/components/dashboard/WelcomeBanner";
+import PhotoGallery from "@/components/dashboard/PhotoGallery";
+import Testimonials from "@/components/dashboard/Testimonials";
+import EventsCalendar from "@/components/dashboard/EventsCalendar";
 import AnimatedCard from "@/components/ui/AnimatedCard";
 import Badge from "@/components/ui/Badge";
 import AlertBanner from "@/components/ui/AlertBanner";
@@ -115,6 +118,17 @@ export default function DashboardContent({
           {activeTab === "visao-geral" && (
             <div className="space-y-6">
               <GenreCards counts={genreCounts} />
+
+              <PhotoGallery artistas={recentes} />
+
+              <Testimonials />
+
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                <div className="lg:col-span-2">
+                  <EventsCalendar />
+                </div>
+                <Charts data={chartData} />
+              </div>
 
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <Charts data={chartData} />
