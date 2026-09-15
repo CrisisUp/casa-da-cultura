@@ -10,12 +10,12 @@ interface ChartsProps {
 }
 
 const COLORS = [
-  "bg-blue-500",
-  "bg-green-500",
-  "bg-purple-500",
-  "bg-yellow-500",
-  "bg-red-500",
-  "bg-indigo-500",
+  "from-blue-500 to-blue-600",
+  "from-purple-500 to-purple-600",
+  "from-amber-500 to-amber-600",
+  "from-emerald-500 to-emerald-600",
+  "from-red-500 to-red-600",
+  "from-rose-500 to-rose-600",
 ];
 
 export default function Charts({ data }: ChartsProps) {
@@ -23,7 +23,7 @@ export default function Charts({ data }: ChartsProps) {
 
   return (
     <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-100">
-      <h3 className="mb-4 text-lg font-semibold text-gray-900">
+      <h3 className="mb-6 text-lg font-semibold text-gray-900">
         Artistas por Gênero
       </h3>
 
@@ -32,25 +32,25 @@ export default function Charts({ data }: ChartsProps) {
           Nenhum artista cadastrado ainda
         </p>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {data.map((item, index) => (
-            <div key={item.name} className="flex items-center gap-3">
-              <span className="w-32 text-sm text-gray-600 truncate">
-                {item.name}
-              </span>
-              <div className="flex-1">
-                <div className="h-6 rounded-lg bg-gray-100 overflow-hidden">
-                  <div
-                    className={`h-full rounded-lg ${COLORS[index % COLORS.length]} transition-all duration-500`}
-                    style={{
-                      width: `${(item.value / maxValue) * 100}%`,
-                    }}
-                  />
-                </div>
+            <div key={item.name} className="group">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-sm font-medium text-gray-700">
+                  {item.name}
+                </span>
+                <span className="text-sm font-bold text-gray-900">
+                  {item.value}
+                </span>
               </div>
-              <span className="w-8 text-sm font-medium text-gray-900 text-right">
-                {item.value}
-              </span>
+              <div className="h-3 rounded-full bg-gray-100 overflow-hidden">
+                <div
+                  className={`h-full rounded-full bg-gradient-to-r ${COLORS[index % COLORS.length]} transition-all duration-700 ease-out group-hover:brightness-110`}
+                  style={{
+                    width: `${(item.value / maxValue) * 100}%`,
+                  }}
+                />
+              </div>
             </div>
           ))}
         </div>
