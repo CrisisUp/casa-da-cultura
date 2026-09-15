@@ -43,7 +43,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Overlay - sempre aparece quando aberto */}
       <div
         className={classNames(
-          "fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300",
+          "fixed inset-0 z-40 bg-black/50 transition-opacity duration-300",
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
         onClick={onClose}
