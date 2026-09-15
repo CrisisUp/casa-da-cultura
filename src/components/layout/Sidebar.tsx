@@ -10,6 +10,9 @@ import {
   MessageSquareQuote,
   Palette,
   LogOut,
+  X,
+  Settings,
+  HelpCircle,
 } from "lucide-react";
 import { classNames } from "@/lib/utils";
 import { signOut } from "next-auth/react";
@@ -22,38 +25,54 @@ const navigation = [
   { name: "Relatórios", href: "/dashboard/relatorios", icon: FileText },
 ];
 
-export default function Sidebar() {
+const secondaryNav = [
+  { name: "Configurações", href: "#", icon: Settings },
+  { name: "Ajuda", href: "#", icon: HelpCircle },
+];
+
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
 
-  return (
-    <div
-      className="flex h-full w-64 flex-col"
-      role="navigation"
-      aria-label="Menu principal"
-    >
+  const navContent = (
+    <>
       {/* Header com gradiente cultural */}
       <div className="relative overflow-hidden gradient-cultural px-6 py-6">
-        {/* Padrão decorativo */}
-        <div className="absolute inset-0 cultural-pattern opacity-30" />
+        <div className="absolute inset-0 cultural-pattern opacity-20" />
         <div className="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-white/10" />
-        <div className="absolute -bottom-4 -left-4 h-12 w-12 rounded-full bg-white/5" />
 
-        <div className="relative z-10 flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
-            <Palette className="h-6 w-6 text-white" />
+        <div className="relative z-10 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+              <Palette className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <span className="text-lg font-bold text-white block font-[family-name:var(--font-display)]">
+                Casa da Cultura
+              </span>
+              <span className="text-xs text-areia/80">
+                Cadastro de Artistas
+              </span>
+            </div>
           </div>
-          <div>
-            <span className="text-lg font-bold text-white block font-[family-name:var(--font-display)]">
-              Casa da Cultura
-            </span>
-            <span className="text-xs text-areia/80">
-              Cadastro de Artistas
-            </span>
-          </div>
+          {/* Botão fechar - mobile */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="lg:hidden rounded-lg p-2 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+              aria-label="Fechar menu"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Navegação */}
+      {/* Navegação principal */}
       <nav className="flex-1 space-y-1 px-3 py-4 bg-creme">
         {navigation.map((item) => {
           const isActive =
@@ -62,6 +81,7 @@ export default function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
+              onClick={onClose}
               className={classNames(
                 "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200",
                 isActive
@@ -77,6 +97,24 @@ export default function Sidebar() {
         })}
       </nav>
 
+      {/* Separador */}
+      <div className="mx-4 border-t border-areia" />
+
+      {/* Navegação secundária */}
+      <nav className="space-y-1 px-3 py-3 bg-creme">
+        {secondaryNav.map((item) => (
+          <Link
+            key={item.name}
+            href={item.href}
+            onClick={onClose}
+            className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm text-madeira/70 hover:bg-areia hover:text-madeira transition-colors"
+          >
+            <item.icon className="h-4 w-4" />
+            {item.name}
+          </Link>
+        ))}
+      </nav>
+
       {/* Footer */}
       <div className="border-t border-areia bg-creme p-4">
         <button
@@ -88,6 +126,41 @@ export default function Sidebar() {
           Sair do sistema
         </button>
       </div>
-    </div>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop - sidebar fixo */}
+      <aside className="hidden lg:flex h-full w-64 flex-col" role="navigation" aria-label="Menu principal">
+        {navContent}
+      </aside>
+
+      {/* Mobile - drawer overlay */}
+      {isOpen !== undefined && (
+        <>
+          {/* Overlay */}
+          <div
+            className={classNames(
+              "fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
+              isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+            )}
+            onClick={onClose}
+            aria-hidden="true"
+          />
+          {/* Drawer */}
+          <aside
+            className={classNames(
+              "fixed inset-y-0 left-0 z-50 w-64 flex flex-col shadow-2xl transition-transform duration-300 ease-out lg:hidden",
+              isOpen ? "translate-x-0" : "-translate-x-full"
+            )}
+            role="navigation"
+            aria-label="Menu principal"
+          >
+            {navContent}
+          </aside>
+        </>
+      )}
+    </>
   );
 }
