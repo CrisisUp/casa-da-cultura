@@ -53,3 +53,19 @@ model Artista {
   @@index([status])
   @@map("artistas")
 }
+
+model Depoimento {
+  id        String   @id @default(cuid())
+  nome      String
+  genero    String
+  texto     String
+  avatar    String?
+  ativo     Boolean  @default(true)
+  ordem     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ativo])
+  @@index([ordem])
+  @@map("depoimentos")
+}

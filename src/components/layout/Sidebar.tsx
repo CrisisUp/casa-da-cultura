@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Users,
   FileText,
+  MessageSquareQuote,
   Palette,
   LogOut,
 } from "lucide-react";
@@ -15,6 +16,7 @@ import { signOut } from "next-auth/react";
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Artistas", href: "/dashboard/artistas", icon: Users },
+  { name: "Depoimentos", href: "/dashboard/depoimentos", icon: MessageSquareQuote },
   { name: "Relatórios", href: "/dashboard/relatorios", icon: FileText },
 ];
 

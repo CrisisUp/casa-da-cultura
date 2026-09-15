@@ -110,11 +110,49 @@ async function main() {
     });
   }
 
+  // Criar depoimentos de exemplo
+  const depoimentos = [
+    {
+      nome: "Maria Silva",
+      genero: "Música",
+      texto: "A Casa da Cultura transformou minha carreira. Hoje sou cantora profissional graças às oportunidades que recebi aqui.",
+      avatar: "MS",
+      ativo: true,
+      ordem: 1,
+    },
+    {
+      nome: "João Santos",
+      genero: "Dança",
+      texto: "O cadastro no sistema me conectou com outros artistas e abriu portas para participar de eventos culturais.",
+      avatar: "JS",
+      ativo: true,
+      ordem: 2,
+    },
+    {
+      nome: "Ana Oliveira",
+      genero: "Artes Visuais",
+      texto: "Ter minha arte reconhecida e poder compartilhar com a comunidade é uma experiência incrível.",
+      avatar: "AO",
+      ativo: true,
+      ordem: 3,
+    },
+  ];
+
+  for (const depoimento of depoimentos) {
+    const exists = await prisma.depoimento.findFirst({
+      where: { nome: depoimento.nome },
+    });
+    if (!exists) {
+      await prisma.depoimento.create({ data: depoimento });
+    }
+  }
+
   console.log("Seed concluído!");
   console.log("Usuários criados:");
   console.log("  Admin: admin@casa.gov.br / admin123");
   console.log("  Operador: operador@casa.gov.br / operador123");
   console.log(`${artistas.length} artistas de exemplo criados`);
+  console.log(`${depoimentos.length} depoimentos de exemplo criados`);
 }
 
 main()
