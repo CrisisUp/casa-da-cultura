@@ -4,51 +4,55 @@ import { artistaSchema } from "@/lib/validations";
 import { handleApiError } from "@/lib/api-response";
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const search = searchParams.get("search") || "";
-  const genero = searchParams.get("genero") || "";
-  const status = searchParams.get("status") || "";
-  const page = parseInt(searchParams.get("page") || "1");
-  const limit = parseInt(searchParams.get("limit") || "10");
-  const skip = (page - 1) * limit;
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const search = searchParams.get("search") || "";
+    const genero = searchParams.get("genero") || "";
+    const status = searchParams.get("status") || "";
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const skip = (page - 1) * limit;
 
-  const where: Record<string, unknown> = {};
+    const where: Record<string, unknown> = {};
 
-  if (search) {
-    where.OR = [
-      { nome: { contains: search, mode: "insensitive" } },
-      { cpf: { contains: search } },
-      { email: { contains: search, mode: "insensitive" } },
-    ];
+    if (search) {
+      where.OR = [
+        { nome: { contains: search, mode: "insensitive" } },
+        { cpf: { contains: search } },
+        { email: { contains: search, mode: "insensitive" } },
+      ];
+    }
+
+    if (genero) {
+      where.generoArtistico = genero;
+    }
+
+    if (status) {
+      where.status = status;
+    }
+
+    const [artistas, total] = await Promise.all([
+      prisma.artista.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.artista.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      artistas,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
+  } catch (error) {
+    return handleApiError(error, "buscar artistas");
   }
-
-  if (genero) {
-    where.generoArtistico = genero;
-  }
-
-  if (status) {
-    where.status = status;
-  }
-
-  const [artistas, total] = await Promise.all([
-    prisma.artista.findMany({
-      where,
-      skip,
-      take: limit,
-      orderBy: { createdAt: "desc" },
-    }),
-    prisma.artista.count({ where }),
-  ]);
-
-  return NextResponse.json({
-    artistas,
-    pagination: {
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
-    },
-  });
 }
 
 export async function POST(request: NextRequest) {

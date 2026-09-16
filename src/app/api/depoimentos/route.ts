@@ -4,33 +4,37 @@ import { depoimentoSchema } from "@/lib/validations";
 import { handleApiError } from "@/lib/api-response";
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const all = searchParams.get("all") === "true";
-  const page = parseInt(searchParams.get("page") || "1");
-  const limit = parseInt(searchParams.get("limit") || "10");
-  const skip = (page - 1) * limit;
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const all = searchParams.get("all") === "true";
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+    const skip = (page - 1) * limit;
 
-  const where = all ? {} : { ativo: true };
+    const where = all ? {} : { ativo: true };
 
-  const [depoimentos, total] = await Promise.all([
-    prisma.depoimento.findMany({
-      where,
-      orderBy: { ordem: "asc" },
-      skip,
-      take: limit,
-    }),
-    prisma.depoimento.count({ where }),
-  ]);
+    const [depoimentos, total] = await Promise.all([
+      prisma.depoimento.findMany({
+        where,
+        orderBy: { ordem: "asc" },
+        skip,
+        take: limit,
+      }),
+      prisma.depoimento.count({ where }),
+    ]);
 
-  return NextResponse.json({
-    depoimentos,
-    pagination: {
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
-    },
-  });
+    return NextResponse.json({
+      depoimentos,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
+  } catch (error) {
+    return handleApiError(error, "buscar depoimentos");
+  }
 }
 
 export async function POST(request: NextRequest) {
