@@ -7,7 +7,7 @@ interface ArtistaPDF {
   cpf: string;
   generoArtistico: string;
   telefone: string;
-  email: string | null;
+  email?: string | null;
   status: string;
   createdAt: Date;
 }

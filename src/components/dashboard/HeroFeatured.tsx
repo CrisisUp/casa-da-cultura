@@ -2,17 +2,10 @@
 
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
-
-interface Artista {
-  id: string;
-  nome: string;
-  generoArtistico: string;
-  foto: string | null;
-  experienciaArtistica: string | null;
-}
+import { Artista } from "@/types/models";
 
 interface HeroFeaturedProps {
-  artista: Artista | null;
+  artista: Pick<Artista, "id" | "nome" | "generoArtistico" | "foto" | "experienciaArtistica"> | null;
 }
 
 export default function HeroFeatured({ artista }: HeroFeaturedProps) {

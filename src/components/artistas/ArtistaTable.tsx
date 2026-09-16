@@ -4,20 +4,10 @@ import Link from "next/link";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 import { formatCPF, formatDate } from "@/lib/utils";
-
-interface Artista {
-  id: string;
-  nome: string;
-  cpf: string;
-  telefone: string;
-  email?: string | null;
-  generoArtistico: string;
-  status: "ATIVO" | "INATIVO";
-  createdAt: Date;
-}
+import { Artista } from "@/types/models";
 
 interface ArtistaTableProps {
-  artistas: Artista[];
+  artistas: Pick<Artista, "id" | "nome" | "cpf" | "telefone" | "email" | "generoArtistico" | "status" | "createdAt">[];
   onDelete: (id: string) => void;
 }
 

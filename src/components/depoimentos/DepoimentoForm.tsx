@@ -8,16 +8,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { depoimentoSchema } from "@/lib/validations";
-
-const GENEROS = [
-  { value: "", label: "Selecione..." },
-  { value: "Música", label: "Música" },
-  { value: "Dança", label: "Dança" },
-  { value: "Teatro", label: "Teatro" },
-  { value: "Artes Visuais", label: "Artes Visuais" },
-  { value: "Literatura", label: "Literatura" },
-  { value: "Artesanato", label: "Artesanato" },
-];
+import { generos } from "@/lib/constants";
 
 interface DepoimentoData {
   id?: string;
@@ -109,7 +100,7 @@ export default function DepoimentoForm({ depoimento, isEdit }: DepoimentoFormPro
           <Select
             name="genero"
             label="Gênero Artístico *"
-            options={GENEROS}
+            options={generos("Selecione...")}
             defaultValue={depoimento?.genero ?? ""}
             required
           />

@@ -8,27 +8,8 @@ import Select from "@/components/ui/Select";
 import Badge from "@/components/ui/Badge";
 import { formatCPF, formatDate } from "@/lib/utils";
 import { gerarPDF } from "@/lib/pdf";
-
-const GENEROS = [
-  { value: "", label: "Todos os gêneros" },
-  { value: "Música", label: "Música" },
-  { value: "Dança", label: "Dança" },
-  { value: "Teatro", label: "Teatro" },
-  { value: "Artes Visuais", label: "Artes Visuais" },
-  { value: "Literatura", label: "Literatura" },
-  { value: "Artesanato", label: "Artesanato" },
-];
-
-interface Artista {
-  id: string;
-  nome: string;
-  cpf: string;
-  generoArtistico: string;
-  telefone: string;
-  email: string | null;
-  status: "ATIVO" | "INATIVO";
-  createdAt: string;
-}
+import { generos } from "@/lib/constants";
+import { Artista } from "@/types/models";
 
 export default function RelatoriosPage() {
   const [genero, setGenero] = useState("");
@@ -46,7 +27,13 @@ export default function RelatoriosPage() {
     const params = new URLSearchParams({ limit: "1000", genero, status });
     const res = await fetch(`/api/artistas?${params}`);
     const data = await res.json();
-    setArtistas(data.artistas);
+    // API returns dates as strings; parse them for the Artista type
+    setArtistas(
+      data.artistas.map((a: Record<string, unknown>) => ({
+        ...a,
+        createdAt: new Date(a.createdAt as string),
+      }))
+    );
     setLoading(false);
   }
 
@@ -59,7 +46,6 @@ export default function RelatoriosPage() {
 
       const dados = artistas.map((a) => ({
         ...a,
-        createdAt: new Date(a.createdAt),
       }));
 
       gerarPDF(dados, titulo);
@@ -90,7 +76,7 @@ export default function RelatoriosPage() {
 
       <div className="flex gap-4">
         <Select
-          options={GENEROS}
+          options={generos("Todos os gêneros")}
           value={genero}
           onChange={(e) => setGenero(e.target.value)}
         />
@@ -172,7 +158,7 @@ export default function RelatoriosPage() {
                       </Badge>
                     </td>
                     <td className="px-6 py-3 text-sm text-gray-500">
-                      {formatDate(new Date(artista.createdAt))}
+                      {formatDate(artista.createdAt)}
                     </td>
                   </tr>
                 ))}

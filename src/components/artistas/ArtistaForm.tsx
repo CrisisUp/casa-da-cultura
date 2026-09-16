@@ -9,16 +9,7 @@ import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { formatCPF, formatPhone } from "@/lib/utils";
 import { artistaSchema } from "@/lib/validations";
-
-const GENEROS = [
-  { value: "", label: "Selecione..." },
-  { value: "Música", label: "Música" },
-  { value: "Dança", label: "Dança" },
-  { value: "Teatro", label: "Teatro" },
-  { value: "Artes Visuais", label: "Artes Visuais" },
-  { value: "Literatura", label: "Literatura" },
-  { value: "Artesanato", label: "Artesanato" },
-];
+import { generos } from "@/lib/constants";
 
 const ESCOLARIDADES = [
   { value: "", label: "Selecione..." },
@@ -243,7 +234,7 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
             <Select
               name="generoArtistico"
               label="Gênero Artístico *"
-              options={GENEROS}
+              options={generos("Selecione...")}
               defaultValue={artista?.generoArtistico || ""}
               error={errors.generoArtistico}
               required

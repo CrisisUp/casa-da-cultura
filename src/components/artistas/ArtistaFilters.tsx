@@ -2,16 +2,7 @@
 
 import { Search } from "lucide-react";
 import Select from "@/components/ui/Select";
-
-const GENEROS = [
-  { value: "", label: "Todos os gêneros" },
-  { value: "Música", label: "Música" },
-  { value: "Dança", label: "Dança" },
-  { value: "Teatro", label: "Teatro" },
-  { value: "Artes Visuais", label: "Artes Visuais" },
-  { value: "Literatura", label: "Literatura" },
-  { value: "Artesanato", label: "Artesanato" },
-];
+import { generos } from "@/lib/constants";
 
 const STATUS = [
   { value: "", label: "Todos os status" },
@@ -49,7 +40,7 @@ export default function ArtistaFilters({
         />
       </div>
       <Select
-        options={GENEROS}
+        options={generos("Todos os gêneros")}
         value={genero}
         onChange={(e) => onGeneroChange(e.target.value)}
       />

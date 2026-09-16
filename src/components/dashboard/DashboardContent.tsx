@@ -25,30 +25,15 @@ import AnimatedCard from "@/components/ui/AnimatedCard";
 import Badge from "@/components/ui/Badge";
 import AlertBanner from "@/components/ui/AlertBanner";
 import Tabs from "@/components/ui/Tabs";
-
-interface Artista {
-  id: string;
-  nome: string;
-  generoArtistico: string;
-  status: "ATIVO" | "INATIVO";
-  foto: string | null;
-}
-
-interface Destaque {
-  id: string;
-  nome: string;
-  generoArtistico: string;
-  foto: string | null;
-  experienciaArtistica: string | null;
-}
+import { Artista } from "@/types/models";
 
 interface DashboardContentProps {
   totalArtistas: number;
   ativos: number;
   inativos: number;
   porGenero: Array<{ generoArtistico: string; _count: number }>;
-  recentes: Artista[];
-  destaque: Destaque | null;
+  recentes: Pick<Artista, "id" | "nome" | "generoArtistico" | "status" | "foto">[];
+  destaque: Pick<Artista, "id" | "nome" | "generoArtistico" | "foto" | "experienciaArtistica"> | null;
 }
 
 const tabs = [

@@ -2,16 +2,10 @@
 
 import Link from "next/link";
 import { Camera, Plus } from "lucide-react";
-
-interface Artista {
-  id: string;
-  nome: string;
-  generoArtistico: string;
-  foto: string | null;
-}
+import { Artista } from "@/types/models";
 
 interface PhotoGalleryProps {
-  artistas: Artista[];
+  artistas: Pick<Artista, "id" | "nome" | "generoArtistico" | "foto">[];
 }
 
 export default function PhotoGallery({ artistas }: PhotoGalleryProps) {
