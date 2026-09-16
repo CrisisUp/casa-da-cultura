@@ -20,7 +20,9 @@ export const metadata: Metadata = {
   title: "Casa da Cultura - Cadastro de Artistas",
   description: "Sistema de cadastro de artistas da Casa da Cultura",
   icons: {
-    icon: "/cultura.png",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/cultura.png",
   },
 };
 
