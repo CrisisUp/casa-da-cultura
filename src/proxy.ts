@@ -4,22 +4,33 @@ import type { NextRequest } from "next/server";
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip auth check for public paths
-  if (
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/api/auth") ||
-    pathname.startsWith("/api/") ||
-    pathname.startsWith("/_next/") ||
-    pathname.startsWith("/uploads/")
-  ) {
+  // Public paths - no auth needed
+  const publicPaths = [
+    "/login",
+    "/api/auth",
+    "/_next/",
+    "/uploads/",
+    "/favicon.ico",
+  ];
+
+  const isPublic = publicPaths.some((path) => pathname.startsWith(path));
+
+  if (isPublic) {
     return NextResponse.next();
   }
 
-  // Check for session cookie
-  const sessionCookie = request.cookies.get("authjs.session-token") ||
+  // Check for valid session
+  const sessionCookie =
+    request.cookies.get("authjs.session-token") ||
     request.cookies.get("__Secure-authjs.session-token");
 
   if (!sessionCookie) {
+    // API routes return 401
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Dashboard/other routes redirect to login
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

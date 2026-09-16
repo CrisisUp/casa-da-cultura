@@ -48,7 +48,7 @@ export function gerarPDF(artistas: ArtistaPDF[], titulo: string) {
     head: [["#", "Nome", "CPF", "Gênero", "Telefone", "Email", "Status", "Cadastro"]],
     body: data,
     styles: { fontSize: 8, cellPadding: 3 },
-    headStyles: { fillColor: [30, 64, 175] }, // primary
+    headStyles: { fillColor: [30, 64, 175] },
     alternateRowStyles: { fillColor: [241, 245, 249] },
     columnStyles: {
       0: { cellWidth: 10 },
@@ -63,9 +63,8 @@ export function gerarPDF(artistas: ArtistaPDF[], titulo: string) {
     margin: { left: 14, right: 14 },
   });
 
-  // Rodapé
-  const internal = doc.internal as any;
-  const pageCount = internal.getNumberOfPages ? internal.getNumberOfPages() : 1;
+  // Rodapé — ponytail: use jsPDF public API, upgrade to use doc.getNumberOfPages() if available
+  const pageCount = (doc.internal?.pages?.length ?? 1) - 1 || 1;
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
     doc.setFontSize(8);

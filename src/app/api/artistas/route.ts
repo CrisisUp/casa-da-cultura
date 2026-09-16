@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { artistaSchema } from "@/lib/validations";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -52,35 +53,45 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    const validated = artistaSchema.parse(body);
 
     const artista = await prisma.artista.create({
       data: {
-        nome: body.nome,
-        cpf: body.cpf.replace(/\D/g, ""),
-        rg: body.rg,
-        telefone: body.telefone.replace(/\D/g, ""),
-        email: body.email,
-        endereco: body.endereco,
-        dataNascimento: body.dataNascimento
-          ? new Date(body.dataNascimento)
+        nome: validated.nome,
+        cpf: validated.cpf.replace(/\D/g, ""),
+        rg: validated.rg || undefined,
+        telefone: validated.telefone.replace(/\D/g, ""),
+        email: validated.email || undefined,
+        endereco: validated.endereco || undefined,
+        dataNascimento: validated.dataNascimento
+          ? new Date(validated.dataNascimento)
           : null,
-        escolaridade: body.escolaridade,
-        experienciaArtistica: body.experienciaArtistica,
-        redesSociais: body.redesSociais,
-        observacoes: body.observacoes,
-        generoArtistico: body.generoArtistico,
-        foto: body.foto,
+        escolaridade: validated.escolaridade || undefined,
+        experienciaArtistica: validated.experienciaArtistica || undefined,
+        redesSociais: validated.redesSociais || undefined,
+        observacoes: validated.observacoes || undefined,
+        generoArtistico: validated.generoArtistico,
+        foto: validated.foto || undefined,
       },
     });
 
     return NextResponse.json(artista, { status: 201 });
   } catch (error: unknown) {
-    if (error instanceof Error && (error as { code?: string }).code === "P2002") {
-      return NextResponse.json(
-        { error: "CPF já cadastrado" },
-        { status: 400 }
-      );
+    if (error instanceof Error) {
+      if ((error as any).code === "P2002") {
+        return NextResponse.json(
+          { error: "CPF já cadastrado" },
+          { status: 400 }
+        );
+      }
+      if (error.name === "ZodError") {
+        return NextResponse.json(
+          { error: "Dados inválidos", details: (error as any).errors },
+          { status: 400 }
+        );
+      }
     }
+    console.error("Erro ao criar artista:", error);
     return NextResponse.json(
       { error: "Erro ao criar artista" },
       { status: 500 }

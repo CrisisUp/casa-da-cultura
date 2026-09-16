@@ -7,6 +7,8 @@ import toast from "react-hot-toast";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
+import { eventoSchema } from "@/lib/validations";
+import { Artista } from "@/types/models";
 
 const TIPOS = [
   { value: "", label: "Selecione..." },
@@ -26,11 +28,6 @@ const CORES = [
   { value: "bg-ambar", label: "Âmbar" },
   { value: "bg-madeira", label: "Madeira" },
 ];
-
-interface Artista {
-  id: string;
-  nome: string;
-}
 
 interface EventoData {
   id?: string;
@@ -54,16 +51,25 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [artistas, setArtistas] = useState<Artista[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetch("/api/artistas?limit=1000")
-      .then((res) => res.json())
-      .then((data) => setArtistas(data.artistas || []));
+      .then((res) => {
+        if (!res.ok) throw new Error("Erro ao carregar artistas");
+        return res.json();
+      })
+      .then((data) => setArtistas(data.artistas || []))
+      .catch((err) => {
+        console.error("Erro ao carregar artistas:", err);
+        toast.error("Erro ao carregar artistas");
+      });
   }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
+    setErrors({});
 
     const form = new FormData(e.currentTarget);
 
@@ -79,19 +85,35 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
       ativo: form.get("ativo") === "on",
     };
 
+    // Validar com Zod
+    const result = eventoSchema.safeParse(data);
+
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as string;
+        fieldErrors[field] = issue.message;
+      });
+      setErrors(fieldErrors);
+      toast.error("Corrija os erros no formulário");
+      setLoading(false);
+      return;
+    }
+
     const url = isEdit ? `/api/eventos/${evento?.id}` : "/api/eventos";
     const method = isEdit ? "PUT" : "POST";
 
     const res = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(result.data),
     });
 
     setLoading(false);
 
     if (!res.ok) {
-      toast.error("Erro ao salvar evento");
+      const errorData = await res.json();
+      toast.error(errorData.details?.join(", ") || errorData.error || "Erro ao salvar evento");
       return;
     }
 

@@ -33,4 +33,31 @@ export const artistaSchema = z.object({
   foto: z.string().optional().or(z.literal("")),
 });
 
+export const depoimentoSchema = z.object({
+  nome: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
+  genero: z.string().min(1, "Selecione um gênero"),
+  texto: z.string().min(10, "Texto deve ter pelo menos 10 caracteres"),
+  avatar: z.string().optional().or(z.literal("")),
+  ativo: z.boolean().default(true),
+  ordem: z.number().int().nonnegative().default(0),
+});
+
+export const depoimentoUpdateSchema = depoimentoSchema.partial();
+
+export const eventoSchema = z.object({
+  titulo: z.string().min(3, "Título deve ter pelo menos 3 caracteres"),
+  descricao: z.string().optional().or(z.literal("")),
+  data: z.string().regex(/^\d{4}-\d{2}-\d{2}(T.*)?$/, "Data inválida"),
+  hora: z.string().regex(/^\d{2}:\d{2}$/, "Hora inválida (HH:mm)"),
+  local: z.string().min(3, "Local deve ter pelo menos 3 caracteres"),
+  tipo: z.string().min(1, "Selecione um tipo"),
+  cor: z.string().optional().or(z.literal("")),
+  artistaId: z.string().uuid().optional().or(z.literal("")).nullable(),
+  ativo: z.boolean().default(true),
+});
+
+export const eventoUpdateSchema = eventoSchema.partial();
+
 export type ArtistaFormData = z.infer<typeof artistaSchema>;
+export type DepoimentoFormData = z.infer<typeof depoimentoSchema>;
+export type EventoFormData = z.infer<typeof eventoSchema>;

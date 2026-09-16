@@ -1,23 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { depoimentoSchema } from "@/lib/validations";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const depoimento = await prisma.depoimento.findUnique({
-    where: { id },
-  });
+  try {
+    const { id } = await params;
+    const depoimento = await prisma.depoimento.findUnique({
+      where: { id },
+    });
 
-  if (!depoimento) {
+    if (!depoimento) {
+      return NextResponse.json(
+        { error: "Depoimento não encontrado" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(depoimento);
+  } catch (error) {
+    console.error("Erro ao buscar depoimento:", error);
     return NextResponse.json(
-      { error: "Depoimento não encontrado" },
-      { status: 404 }
+      { error: "Erro ao buscar depoimento" },
+      { status: 500 }
     );
   }
-
-  return NextResponse.json(depoimento);
 }
 
 export async function PUT(
@@ -27,21 +36,22 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
+    const validated = depoimentoSchema.parse(body);
 
     const depoimento = await prisma.depoimento.update({
       where: { id },
-      data: {
-        nome: body.nome,
-        genero: body.genero,
-        texto: body.texto,
-        avatar: body.avatar,
-        ativo: body.ativo,
-        ordem: body.ordem,
-      },
+      data: validated,
     });
 
     return NextResponse.json(depoimento);
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.name === "ZodError") {
+      return NextResponse.json(
+        { error: "Dados inválidos", details: (error as any).errors },
+        { status: 400 }
+      );
+    }
+    console.error("Erro ao atualizar depoimento:", error);
     return NextResponse.json(
       { error: "Erro ao atualizar depoimento" },
       { status: 500 }
@@ -53,7 +63,26 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  await prisma.depoimento.delete({ where: { id } });
-  return NextResponse.json({ message: "Depoimento removido" });
+  try {
+    const { id } = await params;
+
+    const depoimento = await prisma.depoimento.findUnique({ where: { id } });
+    if (!depoimento) {
+      return NextResponse.json(
+        { error: "Depoimento não encontrado" },
+        { status: 404 }
+      );
+    }
+
+    await prisma.depoimento.delete({ where: { id } });
+    console.log(`[AUDIT] Depoimento deletado: ${id}`);
+
+    return NextResponse.json({ message: "Depoimento removido" });
+  } catch (error) {
+    console.error("Erro ao deletar depoimento:", error);
+    return NextResponse.json(
+      { error: "Erro ao remover depoimento" },
+      { status: 500 }
+    );
+  }
 }

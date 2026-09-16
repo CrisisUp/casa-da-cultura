@@ -10,10 +10,10 @@ interface Artista {
   nome: string;
   cpf: string;
   telefone: string;
-  email: string | null;
+  email?: string | null;
   generoArtistico: string;
   status: "ATIVO" | "INATIVO";
-  createdAt: string;
+  createdAt: Date;
 }
 
 interface ArtistaTableProps {

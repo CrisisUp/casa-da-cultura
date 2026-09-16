@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Star, Quote } from "lucide-react";
+import { Star, Quote, AlertCircle, RefreshCw } from "lucide-react";
 
 interface Depoimento {
   id: string;
@@ -14,15 +14,24 @@ interface Depoimento {
 export default function Testimonials() {
   const [depoimentos, setDepoimentos] = useState<Depoimento[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/depoimentos")
-      .then((res) => res.json())
-      .then((data) => {
-        setDepoimentos(data);
-        setLoading(false);
+      .then((res) => {
+        if (!res.ok) throw new Error("Erro ao carregar depoimentos");
+        return res.json();
       })
-      .catch(() => setLoading(false));
+      .then((data) => {
+        setDepoimentos(data.depoimentos || data || []);
+        setLoading(false);
+        setError(null);
+      })
+      .catch((err) => {
+        console.error("Erro ao carregar depoimentos:", err);
+        setError("Erro ao carregar depoimentos");
+        setLoading(false);
+      });
   }, []);
 
   if (loading) {
@@ -56,6 +65,25 @@ export default function Testimonials() {
             </div>
           ))}
         </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="rounded-2xl bg-red-50 p-6 border border-red-200">
+        <div className="flex items-center gap-2 mb-4">
+          <AlertCircle className="h-5 w-5 text-red-600" />
+          <h3 className="text-lg font-semibold text-red-700">Erro ao carregar depoimentos</h3>
+        </div>
+        <p className="text-red-600 mb-4">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="flex items-center gap-2 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors"
+        >
+          <RefreshCw className="h-4 w-4" />
+          Tentar Novamente
+        </button>
       </div>
     );
   }

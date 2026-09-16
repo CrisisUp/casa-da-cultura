@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
+import { depoimentoSchema } from "@/lib/validations";
 
 const GENEROS = [
   { value: "", label: "Selecione..." },
@@ -36,10 +37,12 @@ interface DepoimentoFormProps {
 export default function DepoimentoForm({ depoimento, isEdit }: DepoimentoFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
+    setErrors({});
 
     const form = new FormData(e.currentTarget);
 
@@ -52,19 +55,35 @@ export default function DepoimentoForm({ depoimento, isEdit }: DepoimentoFormPro
       ordem: parseInt(form.get("ordem") as string) || 0,
     };
 
+    // Validar com Zod
+    const result = depoimentoSchema.safeParse(data);
+
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as string;
+        fieldErrors[field] = issue.message;
+      });
+      setErrors(fieldErrors);
+      toast.error("Corrija os erros no formulário");
+      setLoading(false);
+      return;
+    }
+
     const url = isEdit ? `/api/depoimentos/${depoimento?.id}` : "/api/depoimentos";
     const method = isEdit ? "PUT" : "POST";
 
     const res = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(result.data),
     });
 
     setLoading(false);
 
     if (!res.ok) {
-      toast.error("Erro ao salvar depoimento");
+      const errorData = await res.json();
+      toast.error(errorData.details?.join(", ") || errorData.error || "Erro ao salvar depoimento");
       return;
     }
 

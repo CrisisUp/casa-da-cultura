@@ -182,7 +182,7 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
           <Input
             name="cpf"
             label="CPF *"
-            defaultValue={toStr(artista?.cpf)}
+            defaultValue={artista?.cpf ? formatCPF(artista.cpf) : ""}
             onChange={(e) => {
               e.target.value = formatCPF(e.target.value);
             }}
@@ -211,7 +211,7 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
           <Input
             name="telefone"
             label="Telefone *"
-            defaultValue={toStr(artista?.telefone)}
+            defaultValue={artista?.telefone ? formatPhone(artista.telefone) : ""}
             onChange={(e) => {
               e.target.value = formatPhone(e.target.value);
             }}

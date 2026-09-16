@@ -3,23 +3,14 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import toast from "react-hot-toast";
 import Button from "@/components/ui/Button";
 import Pagination from "@/components/ui/Pagination";
 import ArtistaTable from "@/components/artistas/ArtistaTable";
 import ArtistaFilters from "@/components/artistas/ArtistaFilters";
+import { Artista } from "@/types/models";
 
-interface Artista {
-  id: string;
-  nome: string;
-  cpf: string;
-  telefone: string;
-  email: string | null;
-  generoArtistico: string;
-  status: "ATIVO" | "INATIVO";
-  createdAt: string;
-}
-
-interface Pagination {
+interface PaginationData {
   page: number;
   limit: number;
   total: number;
@@ -28,7 +19,7 @@ interface Pagination {
 
 export default function ArtistasPage() {
   const [artistas, setArtistas] = useState<Artista[]>([]);
-  const [pagination, setPagination] = useState<Pagination>({
+  const [pagination, setPagination] = useState<PaginationData>({
     page: 1,
     limit: 10,
     total: 0,
@@ -66,7 +57,15 @@ export default function ArtistasPage() {
   }, [search, genero, status]);
 
   async function handleDelete(id: string) {
-    await fetch(`/api/artistas/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/artistas/${id}`, { method: "DELETE" });
+
+    if (!res.ok) {
+      const error = await res.json();
+      toast.error(error.error || "Erro ao deletar artista");
+      return;
+    }
+
+    toast.success("Artista deletado com sucesso!");
     fetchArtistas();
   }
 

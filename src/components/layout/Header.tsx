@@ -34,7 +34,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
           <div className="text-sm">
             <p className="font-medium text-foreground">{session?.user?.name}</p>
             <p className="text-madeira/60 capitalize">
-              {(session?.user as any)?.role?.toLowerCase()}
+              {session?.user?.role?.toLowerCase()}
             </p>
           </div>
         </div>

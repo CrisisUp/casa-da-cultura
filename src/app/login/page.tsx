@@ -160,14 +160,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Credenciais de teste */}
-          <div className="mt-6 rounded-xl bg-areia/50 p-4 border border-areia">
-            <p className="text-xs font-medium text-madeira mb-2">Credenciais de teste:</p>
-            <div className="space-y-1 text-xs text-madeira/80">
-              <p><strong>Admin:</strong> admin@casa.gov.br / admin123</p>
-              <p><strong>Operador:</strong> operador@casa.gov.br / operador123</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>

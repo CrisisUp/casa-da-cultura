@@ -30,7 +30,8 @@ export default function EventosPage() {
   async function fetchEventos() {
     const res = await fetch("/api/eventos?all=true");
     const data = await res.json();
-    setEventos(data);
+    // Handle new pagination response format
+    setEventos(data.eventos || data || []);
     setLoading(false);
   }
 

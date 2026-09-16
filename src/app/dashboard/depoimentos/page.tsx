@@ -28,7 +28,8 @@ export default function DepoimentosPage() {
   async function fetchDepoimentos() {
     const res = await fetch("/api/depoimentos?all=true");
     const data = await res.json();
-    setDepoimentos(data);
+    // Handle new pagination response format
+    setDepoimentos(data.depoimentos || data || []);
     setLoading(false);
   }
 
