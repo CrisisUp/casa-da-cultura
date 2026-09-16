@@ -5,6 +5,7 @@ import { Eye, Pencil, Trash2 } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 import { formatCPF, formatDate } from "@/lib/utils";
 import { Artista } from "@/types/models";
+import { statusBadgeVariant } from "@/lib/constants";
 
 interface ArtistaTableProps {
   artistas: Pick<Artista, "id" | "nome" | "cpf" | "telefone" | "email" | "generoArtistico" | "status" | "createdAt">[];
@@ -72,7 +73,7 @@ export default function ArtistaTable({ artistas, onDelete }: ArtistaTableProps) 
                   {artista.telefone}
                 </td>
                 <td className="px-4 py-3">
-                  <Badge variant={artista.status === "ATIVO" ? "success" : "danger"}>
+                  <Badge variant={statusBadgeVariant(artista.status)}>
                     {artista.status}
                   </Badge>
                 </td>

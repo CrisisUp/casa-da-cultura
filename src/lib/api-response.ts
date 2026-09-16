@@ -4,6 +4,8 @@
  */
 
 import { NextResponse } from "next/server";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { ZodError } from "zod";
 
 export interface ApiResponse<T> {
   data?: T;
@@ -35,7 +37,7 @@ export function errorResponse(
   details?: unknown
 ): ApiResponse<never> {
   const response: ApiResponse<never> = { error };
-  if (details) response.details = details as any;
+  if (details) response.details = details;
   return response;
 }
 
@@ -44,19 +46,17 @@ export function errorResponse(
  * Usage: catch (error) { return handleApiError(error, "criar artista") }
  */
 export function handleApiError(error: unknown, action: string): NextResponse {
-  if (error instanceof Error) {
-    if ((error as any).code === "P2002") {
-      return NextResponse.json(
-        { error: "Registro já cadastrado" },
-        { status: 400 }
-      );
-    }
-    if (error.name === "ZodError") {
-      return NextResponse.json(
-        { error: "Dados inválidos", details: (error as any).errors },
-        { status: 400 }
-      );
-    }
+  if (error instanceof PrismaClientKnownRequestError && error.code === "P2002") {
+    return NextResponse.json(
+      { error: "Registro já cadastrado" },
+      { status: 400 }
+    );
+  }
+  if (error instanceof ZodError) {
+    return NextResponse.json(
+      { error: "Dados inválidos", details: error.issues },
+      { status: 400 }
+    );
   }
   console.error(`Erro ao ${action}:`, error);
   return NextResponse.json(

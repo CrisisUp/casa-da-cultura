@@ -8,7 +8,7 @@ import Select from "@/components/ui/Select";
 import Badge from "@/components/ui/Badge";
 import { formatCPF, formatDate } from "@/lib/utils";
 import { gerarPDF } from "@/lib/pdf";
-import { generos } from "@/lib/constants";
+import { generos, statusOptions, statusBadgeVariant } from "@/lib/constants";
 import { Artista } from "@/types/models";
 
 export default function RelatoriosPage() {
@@ -81,11 +81,7 @@ export default function RelatoriosPage() {
           onChange={(e) => setGenero(e.target.value)}
         />
         <Select
-          options={[
-            { value: "", label: "Todos os status" },
-            { value: "ATIVO", label: "Ativo" },
-            { value: "INATIVO", label: "Inativo" },
-          ]}
+          options={statusOptions()}
           value={status}
           onChange={(e) => setStatus(e.target.value)}
         />
@@ -152,7 +148,7 @@ export default function RelatoriosPage() {
                     </td>
                     <td className="px-6 py-3">
                       <Badge
-                        variant={artista.status === "ATIVO" ? "success" : "danger"}
+                        variant={statusBadgeVariant(artista.status)}
                       >
                         {artista.status}
                       </Badge>

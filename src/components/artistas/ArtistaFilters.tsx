@@ -2,13 +2,7 @@
 
 import { Search } from "lucide-react";
 import Select from "@/components/ui/Select";
-import { generos } from "@/lib/constants";
-
-const STATUS = [
-  { value: "", label: "Todos os status" },
-  { value: "ATIVO", label: "Ativo" },
-  { value: "INATIVO", label: "Inativo" },
-];
+import { generos, statusOptions } from "@/lib/constants";
 
 interface ArtistaFiltersProps {
   search: string;
@@ -45,7 +39,7 @@ export default function ArtistaFilters({
         onChange={(e) => onGeneroChange(e.target.value)}
       />
       <Select
-        options={STATUS}
+        options={statusOptions()}
         value={status}
         onChange={(e) => onStatusChange(e.target.value)}
       />

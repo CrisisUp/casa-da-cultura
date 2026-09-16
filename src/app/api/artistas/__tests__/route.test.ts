@@ -4,6 +4,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { GET, POST } from '../route';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 jest.mock('@/lib/prisma', () => ({
   prisma: {
@@ -25,6 +26,14 @@ function makePostRequest(url: string, body: object) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   }) as any;
+}
+
+function makePrismaUniqueError(): PrismaClientKnownRequestError {
+  const error = new PrismaClientKnownRequestError('Unique constraint failed', {
+    code: 'P2002',
+    clientVersion: '6.0.0',
+  });
+  return error;
 }
 
 describe('GET /api/artistas', () => {
@@ -126,9 +135,7 @@ describe('POST /api/artistas', () => {
   });
 
   it('retorna 400 para CPF duplicado', async () => {
-    const err = new Error('Unique') as any;
-    err.code = 'P2002';
-    (prisma.artista.create as jest.Mock).mockRejectedValue(err);
+    (prisma.artista.create as jest.Mock).mockRejectedValue(makePrismaUniqueError());
 
     const res = await POST(makePostRequest('http://localhost:3000/api/artistas', valid));
     const data = await res.json();

@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { STATUS_VALUES } from "@/lib/constants";
+
+const [STATUS_ATIVO, STATUS_INATIVO] = STATUS_VALUES;
 
 export async function GET() {
   const [total, ativos, inativos, porGenero, recentes] = await Promise.all([
     prisma.artista.count(),
-    prisma.artista.count({ where: { status: "ATIVO" } }),
-    prisma.artista.count({ where: { status: "INATIVO" } }),
+    prisma.artista.count({ where: { status: STATUS_ATIVO } }),
+    prisma.artista.count({ where: { status: STATUS_INATIVO } }),
     prisma.artista.groupBy({
       by: ["generoArtistico"],
       _count: true,

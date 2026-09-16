@@ -4,6 +4,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { GET, PUT, DELETE } from '../route';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 jest.mock('@/lib/prisma', () => ({
   prisma: {
@@ -32,6 +33,14 @@ function makeDeleteRequest(url: string) {
 }
 
 const mockParams = (id: string) => ({ params: Promise.resolve({ id }) });
+
+function makePrismaUniqueError(): PrismaClientKnownRequestError {
+  const error = new PrismaClientKnownRequestError('Unique constraint failed', {
+    code: 'P2002',
+    clientVersion: '6.0.0',
+  });
+  return error;
+}
 
 describe('GET /api/artistas/[id]', () => {
   beforeEach(() => jest.clearAllMocks());
@@ -80,9 +89,7 @@ describe('PUT /api/artistas/[id]', () => {
   });
 
   it('retorna 400 para CPF duplicado', async () => {
-    const err = new Error('Unique') as any;
-    err.code = 'P2002';
-    (prisma.artista.update as jest.Mock).mockRejectedValue(err);
+    (prisma.artista.update as jest.Mock).mockRejectedValue(makePrismaUniqueError());
 
     const res = await PUT(makePutRequest('http://localhost:3000/api/artistas/123', valid), mockParams('123'));
     expect(res.status).toBe(400);

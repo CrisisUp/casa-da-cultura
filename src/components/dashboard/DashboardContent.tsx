@@ -26,6 +26,7 @@ import Badge from "@/components/ui/Badge";
 import AlertBanner from "@/components/ui/AlertBanner";
 import Tabs from "@/components/ui/Tabs";
 import { Artista } from "@/types/models";
+import { statusBadgeVariant } from "@/lib/constants";
 
 interface DashboardContentProps {
   totalArtistas: number;
@@ -209,7 +210,7 @@ export default function DashboardContent({
                             </p>
                           </div>
                           <Badge
-                            variant={artista.status === "ATIVO" ? "success" : "danger"}
+                            variant={statusBadgeVariant(artista.status)}
                           >
                             {artista.status}
                           </Badge>
@@ -285,7 +286,7 @@ export default function DashboardContent({
                           </p>
                         </div>
                         <Badge
-                          variant={artista.status === "ATIVO" ? "success" : "danger"}
+                          variant={statusBadgeVariant(artista.status)}
                         >
                           {artista.status}
                         </Badge>

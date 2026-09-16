@@ -1,13 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import DashboardContent from "@/components/dashboard/DashboardContent";
+import { STATUS_VALUES } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
+
+const [STATUS_ATIVO, STATUS_INATIVO] = STATUS_VALUES;
 
 export default async function DashboardPage() {
   const [totalArtistas, ativos, inativos, porGenero, recentes, destaque] = await Promise.all([
     prisma.artista.count(),
-    prisma.artista.count({ where: { status: "ATIVO" } }),
-    prisma.artista.count({ where: { status: "INATIVO" } }),
+    prisma.artista.count({ where: { status: STATUS_ATIVO } }),
+    prisma.artista.count({ where: { status: STATUS_INATIVO } }),
     prisma.artista.groupBy({
       by: ["generoArtistico"],
       _count: true,
@@ -25,7 +28,7 @@ export default async function DashboardPage() {
       },
     }),
     prisma.artista.findFirst({
-      where: { status: "ATIVO", foto: { not: null } },
+      where: { status: STATUS_ATIVO, foto: { not: null } },
       orderBy: { createdAt: "desc" },
       select: {
         id: true,

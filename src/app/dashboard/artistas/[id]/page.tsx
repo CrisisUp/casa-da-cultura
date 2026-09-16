@@ -5,6 +5,7 @@ import { formatCPF, formatDate } from "@/lib/utils";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { Pencil, ArrowLeft, Phone, Mail, MapPin } from "lucide-react";
+import { statusBadgeVariant } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -63,7 +64,7 @@ export default async function ArtistaDetailPage({
           </div>
           <div className="flex-1 space-y-4">
             <div>
-              <Badge variant={artista.status === "ATIVO" ? "success" : "danger"}>
+              <Badge variant={statusBadgeVariant(artista.status)}>
                 {artista.status}
               </Badge>
             </div>
