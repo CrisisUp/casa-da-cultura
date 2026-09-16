@@ -52,6 +52,8 @@ model Artista {
   @@index([nome])
   @@index([generoArtistico])
   @@index([status])
+  @@index([status, generoArtistico])
+  @@index([status, foto])
   @@map("artistas")
 }
 

@@ -139,29 +139,29 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Foto */}
       <div className="flex items-center gap-6">
-        <div className="h-24 w-24 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
+        <div className="h-24 w-24 rounded-full bg-areia overflow-hidden flex items-center justify-center">
           {foto ? (
             <img src={foto} alt="Foto" className="h-full w-full object-cover" />
           ) : (
-            <span className="text-gray-400 text-sm">Sem foto</span>
+            <span className="text-madeira/40 text-sm">Sem foto</span>
           )}
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-madeira mb-1">
             Foto do Artista
           </label>
           <input
             type="file"
             accept="image/*"
             onChange={handlePhotoUpload}
-            className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            className="text-sm text-madeira/60 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-terracota/10 file:text-terracota hover:file:bg-terracota/20"
           />
         </div>
       </div>
 
       {/* Dados Pessoais */}
-      <div className="rounded-xl bg-gray-50 p-4 space-y-4">
-        <h3 className="font-medium text-gray-900">Dados Pessoais</h3>
+      <div className="rounded-xl bg-areia/50 p-4 space-y-4">
+        <h3 className="font-medium text-foreground">Dados Pessoais</h3>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Input
             name="nome"
@@ -196,8 +196,8 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
       </div>
 
       {/* Contato */}
-      <div className="rounded-xl bg-gray-50 p-4 space-y-4">
-        <h3 className="font-medium text-gray-900">Contato</h3>
+      <div className="rounded-xl bg-areia/50 p-4 space-y-4">
+        <h3 className="font-medium text-foreground">Contato</h3>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Input
             name="telefone"
@@ -227,8 +227,8 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
       </div>
 
       {/* Dados Artísticos */}
-      <div className="rounded-xl bg-gray-50 p-4 space-y-4">
-        <h3 className="font-medium text-gray-900">Dados Artísticos</h3>
+      <div className="rounded-xl bg-areia/50 p-4 space-y-4">
+        <h3 className="font-medium text-foreground">Dados Artísticos</h3>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="space-y-1">
             <Select
@@ -240,7 +240,7 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
               required
             />
             {errors.generoArtistico && (
-              <p className="text-sm text-red-600">{errors.generoArtistico}</p>
+              <p className="text-sm text-danger">{errors.generoArtistico}</p>
             )}
           </div>
           <Select
@@ -250,14 +250,14 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
             defaultValue={artista?.escolaridade || ""}
           />
           <div className="md:col-span-2 space-y-1">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-madeira">
               Experiência Artística
             </label>
             <textarea
               name="experienciaArtistica"
               defaultValue={toStr(artista?.experienciaArtistica)}
               placeholder="Descreva a experiência artística..."
-              className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="block w-full rounded-lg border border-areia px-3 py-2 text-foreground placeholder-madeira/40 shadow-sm focus:border-terracota focus:outline-none focus:ring-1 focus:ring-terracota"
               rows={3}
             />
           </div>
@@ -269,14 +269,14 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
             className="md:col-span-2"
           />
           <div className="md:col-span-2 space-y-1">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-madeira">
               Observações
             </label>
             <textarea
               name="observacoes"
               defaultValue={toStr(artista?.observacoes)}
               placeholder="Observações adicionais..."
-              className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="block w-full rounded-lg border border-areia px-3 py-2 text-foreground placeholder-madeira/40 shadow-sm focus:border-terracota focus:outline-none focus:ring-1 focus:ring-terracota"
               rows={2}
             />
           </div>

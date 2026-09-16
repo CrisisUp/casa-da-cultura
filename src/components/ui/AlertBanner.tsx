@@ -30,15 +30,15 @@ export default function AlertBanner({
   const Icon = icons[variant];
 
   const styles = {
-    info: "bg-blue-50 border-blue-200 text-blue-800",
-    warning: "bg-amber-50 border-amber-200 text-amber-800",
-    success: "bg-green-50 border-green-200 text-green-800",
+    info: "bg-terracota/10 border-terracota/20 text-terracota-dark",
+    warning: "bg-ambar/10 border-ambar/20 text-ambar-dark",
+    success: "bg-oliva/10 border-oliva/20 text-oliva-dark",
   };
 
   const iconStyles = {
-    info: "text-blue-500",
-    warning: "text-amber-500",
-    success: "text-green-500",
+    info: "text-terracota",
+    warning: "text-ambar",
+    success: "text-oliva",
   };
 
   return (

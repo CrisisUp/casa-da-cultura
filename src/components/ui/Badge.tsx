@@ -16,7 +16,7 @@ export default function Badge({ variant = "info", children, pulse }: BadgeProps)
             variant === "success",
           "bg-ambar/10 text-ambar-dark border border-ambar/20 shadow-sm shadow-ambar/10":
             variant === "warning",
-          "bg-red-50 text-danger border border-red-200 shadow-sm shadow-red-200/50":
+          "bg-danger/10 text-danger border border-danger/20 shadow-sm shadow-danger/10":
             variant === "danger",
           "bg-terracota/10 text-terracota-dark border border-terracota/20 shadow-sm shadow-terracota/10":
             variant === "info",

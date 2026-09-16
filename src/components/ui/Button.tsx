@@ -20,7 +20,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               variant === "primary",
             "bg-areia text-madeira hover:bg-areia/80 focus:ring-madeira border border-areia":
               variant === "secondary",
-            "bg-danger text-white hover:bg-red-700 focus:ring-danger shadow-sm":
+            "bg-danger text-white hover:bg-danger-dark focus:ring-danger shadow-sm":
               variant === "danger",
             "bg-transparent text-madeira hover:bg-areia focus:ring-madeira":
               variant === "ghost",

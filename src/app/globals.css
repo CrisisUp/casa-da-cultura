@@ -23,6 +23,7 @@
   --color-accent: var(--color-ambar);
   --color-success: #5a8a4a;
   --color-danger: #c0392b;
+  --color-danger-dark: #a0291b;
   --color-warning: var(--color-ambar);
 
   --background: var(--color-creme);
@@ -39,6 +40,7 @@
   --color-accent: var(--color-accent);
   --color-success: var(--color-success);
   --color-danger: var(--color-danger);
+  --color-danger-dark: var(--color-danger-dark);
   --color-warning: var(--color-warning);
   --color-terracota: var(--color-terracota);
   --color-terracota-light: var(--color-terracota-light);

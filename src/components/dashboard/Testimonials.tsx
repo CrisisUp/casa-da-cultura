@@ -71,15 +71,15 @@ export default function Testimonials() {
 
   if (error) {
     return (
-      <div className="rounded-2xl bg-red-50 p-6 border border-red-200">
+      <div className="rounded-2xl bg-danger/10 p-6 border border-danger/20">
         <div className="flex items-center gap-2 mb-4">
-          <AlertCircle className="h-5 w-5 text-red-600" />
-          <h3 className="text-lg font-semibold text-red-700">Erro ao carregar depoimentos</h3>
+          <AlertCircle className="h-5 w-5 text-danger" />
+          <h3 className="text-lg font-semibold text-danger">Erro ao carregar depoimentos</h3>
         </div>
-        <p className="text-red-600 mb-4">{error}</p>
+        <p className="text-danger mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="flex items-center gap-2 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-danger/20 hover:bg-danger/30 text-danger rounded-lg transition-colors"
         >
           <RefreshCw className="h-4 w-4" />
           Tentar Novamente

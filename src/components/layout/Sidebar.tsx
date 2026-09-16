@@ -135,7 +135,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className="border-t border-areia bg-creme p-4">
           <button
             onClick={() => signOut({ redirect: true, callbackUrl: "/login" })}
-            className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-madeira hover:bg-red-50 hover:text-danger transition-colors"
+            className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-madeira hover:bg-danger/10 hover:text-danger transition-colors"
             aria-label="Sair do sistema"
           >
             <LogOut className="h-5 w-5" />
