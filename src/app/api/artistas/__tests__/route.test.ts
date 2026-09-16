@@ -134,7 +134,7 @@ describe('POST /api/artistas', () => {
     const data = await res.json();
 
     expect(res.status).toBe(400);
-    expect(data.error).toBe('CPF já cadastrado');
+    expect(data.error).toBe('Registro já cadastrado');
   });
 
   it('retorna 500 em erro interno', async () => {

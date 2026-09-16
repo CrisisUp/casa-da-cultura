@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { depoimentoSchema } from "@/lib/validations";
+import { handleApiError } from "@/lib/api-response";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -42,17 +43,7 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(depoimento, { status: 201 });
-  } catch (error: unknown) {
-    if (error instanceof Error && error.name === "ZodError") {
-      return NextResponse.json(
-        { error: "Dados inválidos", details: (error as any).errors },
-        { status: 400 }
-      );
-    }
-    console.error("Erro ao criar depoimento:", error);
-    return NextResponse.json(
-      { error: "Erro ao criar depoimento" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleApiError(error, "criar depoimento");
   }
 }

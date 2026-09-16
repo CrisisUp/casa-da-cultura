@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { artistaSchema } from "@/lib/validations";
+import { handleApiError } from "@/lib/api-response";
 
 export async function GET(
   request: NextRequest,
@@ -60,26 +61,8 @@ export async function PUT(
     });
 
     return NextResponse.json(artista);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      if ((error as any).code === "P2002") {
-        return NextResponse.json(
-          { error: "CPF já cadastrado" },
-          { status: 400 }
-        );
-      }
-      if (error.name === "ZodError") {
-        return NextResponse.json(
-          { error: "Dados inválidos", details: (error as any).errors },
-          { status: 400 }
-        );
-      }
-    }
-    console.error("Erro ao atualizar artista:", error);
-    return NextResponse.json(
-      { error: "Erro ao atualizar artista" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleApiError(error, "atualizar artista");
   }
 }
 

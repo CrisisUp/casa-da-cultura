@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { eventoSchema } from "@/lib/validations";
+import { handleApiError } from "@/lib/api-response";
 
 export async function GET(
   request: NextRequest,
@@ -48,18 +49,8 @@ export async function PUT(
     });
 
     return NextResponse.json(evento);
-  } catch (error: unknown) {
-    if (error instanceof Error && error.name === "ZodError") {
-      return NextResponse.json(
-        { error: "Dados inválidos", details: (error as any).errors },
-        { status: 400 }
-      );
-    }
-    console.error("Erro ao atualizar evento:", error);
-    return NextResponse.json(
-      { error: "Erro ao atualizar evento" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleApiError(error, "atualizar evento");
   }
 }
 
