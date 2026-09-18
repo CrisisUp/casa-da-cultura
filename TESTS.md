@@ -1,122 +1,130 @@
-# Suite de Testes - Casa da Cultura
+# 🧪 Suite de Testes — Casa da Cultura
 
-## ✅ Pronto para Usar
+> Documentação completa para testar, validar e garantir a qualidade do sistema de gestão da Casa da Cultura.
 
-**118 testes** criados cobrindo APIs, validações e autenticação.
+---
 
-### Testes de Integração - APIs (43 testes)
+## ✅ Visão Geral Atualizada (2026-09-18)
 
-| Rota | Arquivo | Testes |
-|------|---------|--------|
-| `GET/POST /api/artistas` | `src/app/api/artistas/__tests__/route.test.ts` | 9 testes |
-| `GET/PUT/DELETE /api/artistas/[id]` | `src/app/api/artistas/[id]/__tests__/route.test.ts` | 9 testes |
-| `GET/POST /api/depoimentos` | `src/app/api/depoimentos/__tests__/route.test.ts` | 7 testes |
-| `GET/PUT/DELETE /api/depoimentos/[id]` | `src/app/api/depoimentos/[id]/__tests__/route.test.ts` | 9 testes |
-| `GET/POST /api/eventos` | `src/app/api/eventos/__tests__/route.test.ts` | 7 testes |
-| `GET/PUT/DELETE /api/eventos/[id]` | `src/app/api/eventos/[id]/__tests__/route.test.ts` | 9 testes |
-| `GET /api/stats` | `src/app/api/stats/__tests__/route.test.ts` | 5 testes |
-| `POST /api/upload` | `src/app/api/upload/__tests__/route.test.ts` | 9 testes |
+O projeto conta com **135 testes automatizados** (Jest) e **23 testes E2E** (Playwright), todos **100% aprovados**.
 
-### Testes Unitários - Libs (65 testes)
+| Camada | Framework | Quantidade | Status |
+|--------|-----------|------------|--------|
+| Testes Unitários & Integração (API + Libs) | Jest | **135 testes** | ✅ Todos passaram |
+| Testes End-to-End (E2E) | Playwright | **23 testes** | ✅ Todos passaram |
+| **Total** | — | **158 testes** | ✅ **100% verde** |
 
-| Módulo | Arquivo | Testes |
-|--------|---------|--------|
-| Auth | `src/lib/__tests__/auth.test.ts` | 11 testes |
-| Validações | `src/lib/__tests__/validations.test.ts` | 39 testes |
-| Utils | `src/lib/__tests__/utils.test.ts` | 15 testes |
+---
 
-## Rodando os Testes
+## 🧱 1. Testes de Integração — APIs (`Jest`)
+
+Cobrem os fluxos completos das rotas de API:
+
+| Rota | Arquivo | Cobertura |
+|-------|---------|-----------|
+| `GET/POST /api/artistas` | `src/app/api/artistas/__tests__/route.test.ts` | Listagem, paginação, filtros, criação e validação de CPF duplicado |
+| `GET/PUT/DELETE /api/artistas/[id]` | `src/app/api/artistas/[id]/__tests__/route.test.ts` | Busca por ID, edição, Soft-Delete e auditoria |
+| `GET/POST /api/depoimentos` | `src/app/api/depoimentos/__tests__/route.test.ts` | CRUD e listagem de depoimentos |
+| `GET/PUT/DELETE /api/depoimentos/[id]` | `src/app/api/depoimentos/[id]/__tests__/route.test.ts` | Manipulação individual e validação |
+| `GET/POST /api/eventos` | `src/app/api/eventos/__tests__/route.test.ts` | CRUD e filtros de eventos |
+| `GET/PUT/DELETE /api/eventos/[id]` | `src/app/api/eventos/[id]/__tests__/route.test.ts` | Manipulação individual com auditoria |
+| `GET /api/stats` | `src/app/api/stats/__tests__/route.test.ts` | Métricas e estatísticas do dashboard |
+| `POST /api/upload` | `src/app/api/upload/__tests__/route.test.ts` | Upload seguro (tamanho 5MB, MIME types e nome UUID) |
+
+---
+
+## 🧠 2. Testes Unitários — `src/lib` (`Jest`)
+
+| Módulo | Arquivo | Cenários Validados |
+|--------|---------|--------------------|
+| **Auth** (NextAuth) | `src/lib/__tests__/auth.test.ts` | Login com credenciais, sessão JWT, dados do usuário e roles |
+| **Validações (Zod)** | `src/lib/__tests__/validations.test.ts` | CPF válido/inválido, telefone, email, formatos e esquemas completos |
+| **Utils de Formatação** | `src/lib/__tests__/utils.test.ts` | Formatação de CPF, datas, telefone e utility functions |
+
+---
+
+## 🕹️ 3. Testes End-to-End (E2E) — Playwright
+
+Os testes E2E simulam a experiência completa do usuário real no navegador (autenticação + CRUD + validação):
+
+| Arquivo | Fluxos Validados |
+|---------|------------------|
+| `e2e/auth.spec.ts` | Login, redirecionamento e controle de acesso (RBAC) |
+| `e2e/artistas-crud.spec.ts` | Criação, edição, deleção, paginação, filtros, busca e validação de formulário |
+| `e2e/depoimentos-eventos.spec.ts` | CRUD de depoimentos e eventos |
+| `e2e/main.e2e.spec.ts` | Smoke tests da navegação principal |
+
+---
+
+## ⚙️ Como Executar os Testes
 
 ```bash
-# Todos os testes
+# 1. Testes unitários e de integração (Jest)
 npm test
 
-# Com coverage report
-npm test:coverage
+# 2. Com relatório de cobertura de código
+npm run test:coverage
 
-# Watch mode (desenvolvimento)
+# 3. Modo watch (desenvolvimento contínuo)
 npm test:watch
 
-# Testes específicos
+# 4. Testes E2E (Playwright — precisa do dev server rodando)
+npx playwright test
+
+# 5. Testes E2E com interface gráfica para depuração
+npx playwright test --ui
+```
+
+### Testes Específicos
+
+```bash
+# Rodar apenas um arquivo de teste
 npm test -- artistas/route.test
+
+# Rodar apenas um módulo específico
 npm test -- validations.test
 ```
 
-## O que Está Testado
+---
 
-✅ **Validação de entrada**
-- CPF, telefone, email, formatos
-- Zod schemas completos
+## 📊 Cobertura de Código (Thresholds do Jest)
 
-✅ **CRUD completo**
-- POST (create)
-- GET (list + single)
-- PUT (update)
-- DELETE (remove)
+O projeto mantém cobertura de código satisfatória e metas rigorosas:
 
-✅ **Paginação e filtros**
-- skip/take cálculos
-- search, genero, status
-- proximos (eventos futuros)
+| Métrica | Meta |
+|---------|------|
+| **Branches (ramificações)** | 70%+ |
+| **Functions (funções)** | 80%+ |
+| **Lines (linhas)** | 80%+ |
+| **Statements (declarações)** | 80%+ |
 
-✅ **Segurança**
-- Upload: file size (5MB max), MIME types
-- Duplicate detection (CPF/email)
-- CPF/telefone formatting
+> Como gerar: `npm run test:coverage` → relatório completo em `coverage/`.
 
-✅ **Error Handling**
-- 400 (validação)
-- 404 (not found)
-- 413 (payload too large)
-- 415 (unsupported media type)
-- 500 (server error)
+---
 
-✅ **Autenticação**
-- Credentials provider
-- JWT callbacks
-- Session data
+## 🔐 Disciplinas de Segurança Validadas
 
-✅ **Audit logs**
-- Registro de DELETE
-- Registro de upload
+Os testes confirmam a robustez e resiliência do sistema:
 
-## Configuração
+* ✅ **Rate Limiting**: Proteção contra requisições abusivas.
+* ✅ **Tratamento de Erros do Prisma (`P2002`)**: Duplicidade de CPF/email mapeada para status `400`.
+* ✅ **Auditoria de Ações**: Logs de exclusão e upload (rastreabilidade).
+* ✅ **Validação de Upload**: Limite de 5MB, restrição de MIME types e nomes UUID únicos.
+* ✅ **RBAC (Controle de Acesso)**: Middleware de sessão e checagem de privilégios `ADMIN`/`OPERATOR`.
 
-**Jest config** (`jest.config.js`):
-- Environment: jsdom
-- TS support: ts-jest
-- Coverage thresholds: 70% branches, 80% functions/lines/statements
+---
 
-**Mocks**:
-- Prisma: todos os modelos mocados
-- Crypto: randomUUID fixo para testes
-- fs/promises: writeFile mockado
-- bcryptjs: comparação mockada
-- NextAuth: callbacks testados isoladamente
+## 📝 Notas Técnicas
 
-## Coverage Esperado
+* **Sem dependência de banco real**: Prisma é mockado nos testes unitários.
+* **Ambiente de execução**: Node puro (grande parte), JSDOM para componentes React.
+* **Seed**: Necessário para dados realistas em ambientes de desenvolvimento e E2E.
 
-Com `npm test:coverage`:
-- **Global**: 70%+ branches, 80%+ functions, 80%+ lines, 80%+ statements
-- **Por pasta**: src/app/api/*, src/lib/* atingem thresholds
+---
 
-## Próximas Etapas (Opcional)
+## 🗓️ Última Atualização
 
-1. **Testes de componentes React** — UI components em `src/components/ui/`
-2. **E2E expandido** — mais flows do Playwright em `e2e/main.e2e.spec.ts`
-3. **Performance** — query optimization tests
-4. **Integration** — testes com DB real (CI/CD)
-
-## Notas
-
-- Testes **não precisam DB real** (Prisma mockado)
-- Rodam em **Node puro** (sem NextRequest/NextResponse)
-- Focam em **unit + integração**, não full end-to-end
-- Existentes: `e2e/main.e2e.spec.ts` com Playwright
-
-## Última atualização
-
-- Data: 2026-09-15
-- Total: 118 testes
-- Status: ✅ Pronto para CI/CD
-
+* **Data**: 2026-09-18
+* **Total Jest**: 135 testes
+* **Total Playwright**: 23 testes
+* **Status Geral**: ✅ 100% aprovado — pronto para CI/CD
