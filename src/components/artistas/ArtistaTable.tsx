@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Badge from "@/components/ui/Badge";
+import SetFeaturedButton from "@/components/artistas/SetFeaturedButton";
 import { formatCPF, formatDate } from "@/lib/utils";
 import { Artista } from "@/types/models";
 import { statusBadgeVariant } from "@/lib/constants";
 
 interface ArtistaTableProps {
-  artistas: Pick<Artista, "id" | "nome" | "cpf" | "telefone" | "email" | "generoArtistico" | "status" | "createdAt">[];
+  artistas: Pick<Artista, "id" | "nome" | "cpf" | "telefone" | "email" | "generoArtistico" | "status" | "destaque" | "createdAt">[];
   onDelete: (id: string) => void;
 }
 
@@ -81,7 +82,8 @@ export default function ArtistaTable({ artistas, onDelete }: ArtistaTableProps) 
                   {formatDate(new Date(artista.createdAt))}
                 </td>
                 <td className="px-4 py-3">
-                  <div className="flex justify-end gap-1">
+                  <div className="flex justify-end gap-1 items-center">
+                    <SetFeaturedButton artistaId={artista.id} isDestaque={!!artista.destaque} />
                     <Link
                       href={`/dashboard/artistas/${artista.id}`}
                       className="rounded-lg p-2 text-madeira/40 hover:bg-areia hover:text-madeira"

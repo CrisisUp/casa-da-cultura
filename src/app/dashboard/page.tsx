@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 const [STATUS_ATIVO, STATUS_INATIVO] = STATUS_VALUES;
 
 export default async function DashboardPage() {
-  const [totalArtistas, ativos, inativos, porGenero, recentes, destaque] = await Promise.all([
+  const [totalArtistas, ativos, inativos, porGenero, recentes, destaqueManual, destaqueFallback] = await Promise.all([
     prisma.artista.count(),
     prisma.artista.count({ where: { status: STATUS_ATIVO } }),
     prisma.artista.count({ where: { status: STATUS_INATIVO } }),
@@ -25,6 +25,17 @@ export default async function DashboardPage() {
         generoArtistico: true,
         status: true,
         foto: true,
+        destaque: true,
+      },
+    }),
+    prisma.artista.findFirst({
+      where: { status: STATUS_ATIVO, destaque: true },
+      select: {
+        id: true,
+        nome: true,
+        generoArtistico: true,
+        foto: true,
+        experienciaArtistica: true,
       },
     }),
     prisma.artista.findFirst({
@@ -39,6 +50,8 @@ export default async function DashboardPage() {
       },
     }),
   ]);
+
+  const destaque = destaqueManual || destaqueFallback;
 
   return (
     <DashboardContent

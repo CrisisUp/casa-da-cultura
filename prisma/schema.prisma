@@ -45,6 +45,8 @@ model Artista {
   generoArtistico      String
   foto                 String?
   status               StatusArtista @default(ATIVO)
+  destaque             Boolean       @default(false)
+  deletedAt            DateTime?
   createdAt            DateTime      @default(now())
   updatedAt            DateTime      @updatedAt
   eventos              Evento[]
