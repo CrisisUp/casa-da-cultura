@@ -101,7 +101,7 @@ export default function ArtistasPage() {
         </div>
       ) : (
         <>
-          <ArtistaTable artistas={artistas} onDelete={handleDelete} />
+          <ArtistaTable artistas={artistas} onDelete={handleDelete} onUpdate={fetchArtistas} />
           <Pagination
             currentPage={pagination.page}
             totalPages={pagination.totalPages}

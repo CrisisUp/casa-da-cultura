@@ -11,7 +11,7 @@ import {
   Palette,
   LogOut,
   X,
-  Settings,
+  ShieldCheck,
   HelpCircle,
 } from "lucide-react";
 import { classNames } from "@/lib/utils";
@@ -23,10 +23,10 @@ const navigation = [
   { name: "Eventos", href: "/dashboard/eventos", icon: Calendar },
   { name: "Depoimentos", href: "/dashboard/depoimentos", icon: MessageSquareQuote },
   { name: "Relatórios", href: "/dashboard/relatorios", icon: FileText },
+  { name: "Usuários", href: "/dashboard/usuarios", icon: ShieldCheck },
 ];
 
 const secondaryNav = [
-  { name: "Configurações", href: "#", icon: Settings },
   { name: "Ajuda", href: "#", icon: HelpCircle },
 ];
 

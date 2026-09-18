@@ -1,17 +1,15 @@
 "use client";
 
 import { Star } from "lucide-react";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 interface SetFeaturedButtonProps {
   artistaId: string;
   isDestaque: boolean;
+  onUpdate: () => void;
 }
 
-export default function SetFeaturedButton({ artistaId, isDestaque }: SetFeaturedButtonProps) {
-  const router = useRouter();
-
+export default function SetFeaturedButton({ artistaId, isDestaque, onUpdate }: SetFeaturedButtonProps) {
   async function handleSetFeatured() {
     const res = await fetch(`/api/artistas/${artistaId}/destaque`, {
       method: "PATCH",
@@ -23,7 +21,7 @@ export default function SetFeaturedButton({ artistaId, isDestaque }: SetFeatured
     }
 
     toast.success("Artista definido como Destaque!");
-    router.refresh();
+    onUpdate();
   }
 
   return (
