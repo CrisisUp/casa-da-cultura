@@ -14,6 +14,7 @@ export interface Artista {
   generoArtistico: string;
   foto?: string | null;
   status: "ATIVO" | "INATIVO";
+  destaque: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

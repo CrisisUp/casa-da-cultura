@@ -10,7 +10,7 @@ export default function EventsCalendar() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/eventos")
+    fetch("/api/eventos?proximos=true&limit=5")
       .then((res) => {
         if (!res.ok) throw new Error("Erro ao carregar eventos");
         return res.json();
