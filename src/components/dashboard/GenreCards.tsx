@@ -68,7 +68,7 @@ export default function GenreCards({ counts }: GenreCardsProps) {
             <Link
               key={genero.name}
               href={`/dashboard/artistas?genero=${encodeURIComponent(genero.name)}`}
-              className="group relative overflow-hidden rounded-2xl h-36 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-terracota/20 hover:-translate-y-1"
+              className="group relative overflow-hidden organic-card h-36 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-terracota/20 hover:-translate-y-1"
               aria-label={`Ver artistas de ${genero.name}`}
             >
               {/* Background image with zoom effect */}
@@ -84,7 +84,7 @@ export default function GenreCards({ counts }: GenreCardsProps) {
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-500 backdrop-blur-0 group-hover:backdrop-blur-[2px]" />
               {/* Content */}
               <div className="relative flex h-full flex-col items-center justify-center text-white z-10 transition-transform duration-500 group-hover:scale-110">
-                <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm transition-all duration-500 group-hover:bg-white/30 group-hover:rotate-6">
+                <div className="mb-3 flex h-14 w-14 items-center justify-center organic-badge bg-white/20 backdrop-blur-sm transition-all duration-500 group-hover:bg-white/30 group-hover:rotate-6">
                   <Icon className="h-7 w-7" />
                 </div>
                 <span className="text-sm font-bold font-[family-name:var(--font-playfair)]">

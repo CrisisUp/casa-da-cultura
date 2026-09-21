@@ -13,7 +13,7 @@ export default function WelcomeBanner() {
   if (hour >= 18) greeting = "Boa noite";
 
   return (
-    <div className="relative overflow-hidden rounded-3xl text-white shadow-xl h-48">
+    <div className="relative overflow-hidden organic-card text-white shadow-xl h-48" style={{ borderRadius: "2rem 1rem 2.5rem 1rem" }}>
       {/* Imagem de fundo */}
       <div
         className="absolute inset-0 bg-cover bg-center"

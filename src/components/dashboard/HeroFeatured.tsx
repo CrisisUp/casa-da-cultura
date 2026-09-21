@@ -14,7 +14,8 @@ export default function HeroFeatured({ artista }: HeroFeaturedProps) {
   return (
     <Link
       href={`/dashboard/artistas/${artista.id}`}
-      className="group relative block h-72 overflow-hidden rounded-3xl md:h-80"
+      className="group relative block h-72 overflow-hidden organic-card md:h-80 shadow-lg border border-areia"
+      style={{ borderRadius: "2.5rem 1rem 2rem 1.25rem" }}
     >
       {/* Imagem de fundo */}
       <img

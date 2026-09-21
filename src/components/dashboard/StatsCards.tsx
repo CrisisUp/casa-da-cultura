@@ -17,7 +17,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       {stats.map((stat) => (
         <div
           key={stat.title}
-          className="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm border border-areia transition-all duration-500 hover:shadow-xl hover:shadow-terracota/10 hover:-translate-y-1 hover:border-terracota/30"
+          className="group relative overflow-hidden organic-card bg-white p-6 shadow-sm border border-areia transition-all duration-500 hover:shadow-xl hover:shadow-terracota/10 hover:-translate-y-1 hover:border-terracota/30"
         >
           <div className="flex items-center justify-between">
             <div>
@@ -29,7 +29,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
               </p>
             </div>
             <div
-              className={`flex h-16 w-16 items-center justify-center rounded-2xl ${stat.color} shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-xl`}
+              className={`flex h-16 w-16 items-center justify-center organic-badge ${stat.color} shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-xl`}
             >
               <stat.icon className="h-8 w-8 text-white" />
             </div>
