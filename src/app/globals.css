@@ -33,6 +33,14 @@
   --font-playfair: var(--font-lora);
 }
 
+.dark {
+  --background: #150e09;
+  --foreground: #f4ece1;
+  --color-areia: #2a1b12;
+  --color-creme: #150e09;
+  --color-madeira: #c49a6c;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
