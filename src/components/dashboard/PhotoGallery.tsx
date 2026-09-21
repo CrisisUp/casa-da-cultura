@@ -13,9 +13,9 @@ export default function PhotoGallery({ artistas }: PhotoGalleryProps) {
 
   if (artistasComFoto.length === 0) {
     return (
-      <div className="rounded-2xl bg-white p-6 shadow-sm border border-areia">
+      <div className="rounded-2xl bg-white dark:bg-[#150e09] p-6 shadow-sm border border-areia dark:border-areia/20 transition-colors">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground font-[family-name:var(--font-playfair)]">
+          <h3 className="text-lg font-semibold text-foreground dark:text-foreground font-[family-name:var(--font-playfair)]">
             Galeria de Artistas
           </h3>
           <Link
@@ -27,11 +27,11 @@ export default function PhotoGallery({ artistas }: PhotoGalleryProps) {
           </Link>
         </div>
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-areia mb-4">
-            <Camera className="h-8 w-8 text-madeira/40" />
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-areia dark:bg-areia/20 mb-4">
+            <Camera className="h-8 w-8 text-madeira/40 dark:text-areia/60" />
           </div>
-          <p className="text-madeira/60 mb-2">Nenhuma foto cadastrada ainda</p>
-          <p className="text-sm text-madeira/40">
+          <p className="text-madeira/60 dark:text-areia/70 mb-2">Nenhuma foto cadastrada ainda</p>
+          <p className="text-sm text-madeira/40 dark:text-areia/50">
             Cadastre artistas com fotos para ver a galeria
           </p>
         </div>
@@ -40,9 +40,9 @@ export default function PhotoGallery({ artistas }: PhotoGalleryProps) {
   }
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm border border-areia">
+    <div className="rounded-2xl bg-white dark:bg-[#150e09] p-6 shadow-sm border border-areia dark:border-areia/20 transition-colors">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-foreground font-[family-name:var(--font-playfair)]">
+        <h3 className="text-lg font-semibold text-foreground dark:text-foreground font-[family-name:var(--font-playfair)]">
           Galeria de Artistas
         </h3>
         <Link
@@ -84,7 +84,7 @@ export default function PhotoGallery({ artistas }: PhotoGalleryProps) {
         <div className="mt-4 text-center">
           <Link
             href="/dashboard/artistas"
-            className="inline-flex items-center gap-2 rounded-xl bg-areia/50 px-4 py-2 text-sm font-medium text-madeira hover:bg-areia transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl bg-areia/50 dark:bg-areia/20 px-4 py-2 text-sm font-medium text-madeira dark:text-areia hover:bg-areia transition-colors"
           >
             Ver mais {artistasComFoto.length - 8} fotos
           </Link>

@@ -9,6 +9,7 @@ import {
   Scissors,
   Footprints,
 } from "lucide-react";
+import ArtisticDivider from "@/components/ui/ArtisticDivider";
 
 const generos = [
   {
@@ -56,9 +57,12 @@ interface GenreCardsProps {
 export default function GenreCards({ counts }: GenreCardsProps) {
   return (
     <div>
-      <h3 className="mb-4 text-lg font-semibold text-foreground font-[family-name:var(--font-playfair)]">
-        Gêneros Artísticos
-      </h3>
+      <div className="mb-2">
+        <h3 className="text-xl font-bold text-foreground font-[family-name:var(--font-playfair)] tracking-wide">
+          Gêneros Artísticos
+        </h3>
+        <ArtisticDivider />
+      </div>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
         {generos.map((genero) => {
           const count = counts[genero.name] || 0;
@@ -68,7 +72,7 @@ export default function GenreCards({ counts }: GenreCardsProps) {
             <Link
               key={genero.name}
               href={`/dashboard/artistas?genero=${encodeURIComponent(genero.name)}`}
-              className="group relative overflow-hidden organic-card h-36 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-terracota/20 hover:-translate-y-1"
+              className="group relative overflow-hidden organic-card h-44 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-terracota/20 hover:-translate-y-1 p-3 text-center flex flex-col items-center justify-center border border-white/20"
               aria-label={`Ver artistas de ${genero.name}`}
             >
               {/* Background image with zoom effect */}
@@ -81,16 +85,16 @@ export default function GenreCards({ counts }: GenreCardsProps) {
                 className={`absolute inset-0 bg-gradient-to-t ${genero.color} opacity-80 group-hover:opacity-90 transition-all duration-500`}
               />
               {/* Blur overlay on hover */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-500 backdrop-blur-0 group-hover:backdrop-blur-[2px]" />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-all duration-500 backdrop-blur-0 group-hover:backdrop-blur-[2px]" />
               {/* Content */}
-              <div className="relative flex h-full flex-col items-center justify-center text-white z-10 transition-transform duration-500 group-hover:scale-110">
-                <div className="mb-3 flex h-14 w-14 items-center justify-center organic-badge bg-white/20 backdrop-blur-sm transition-all duration-500 group-hover:bg-white/30 group-hover:rotate-6">
-                  <Icon className="h-7 w-7" />
+              <div className="relative flex h-full flex-col items-center justify-center text-white z-10 transition-transform duration-500 group-hover:scale-105">
+                <div className="mb-2.5 flex h-14 w-14 items-center justify-center organic-badge bg-white/25 backdrop-blur-sm transition-all duration-500 group-hover:bg-white/40 group-hover:rotate-6 shadow-lg">
+                  <Icon className="h-7 w-7 text-white" />
                 </div>
-                <span className="text-sm font-bold font-[family-name:var(--font-playfair)]">
+                <span className="text-lg font-extrabold font-[family-name:var(--font-playfair)] tracking-wide drop-shadow-md">
                   {genero.name}
                 </span>
-                <span className="text-xs text-white/80 mt-0.5">
+                <span className="text-xs font-bold text-white mt-1 bg-black/30 px-3 py-1 rounded-full backdrop-blur-xs shadow-sm">
                   {count} artista{count !== 1 ? "s" : ""}
                 </span>
               </div>
