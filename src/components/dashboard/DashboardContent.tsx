@@ -119,7 +119,7 @@ export default function DashboardContent({
                 </p>
               </div>
             </button>
-            <div className="flex-1 rounded-3xl bg-gradient-to-br from-areia to-creme p-6 border border-areia">
+            <div className="flex-1 rounded-3xl bg-gradient-to-br from-areia to-creme dark:from-[#1a120b] dark:to-[#150e09] p-6 border border-areia dark:border-areia/25 transition-colors">
               <WelcomeBanner />
             </div>
           </div>
@@ -231,7 +231,7 @@ export default function DashboardContent({
           {activeTab === "recentes" && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-foreground font-[family-name:var(--font-playfair)]">
+                <h3 className="text-lg font-semibold text-foreground dark:text-white font-[family-name:var(--font-playfair)]">
                   Últimos Artistas Cadastrados
                 </h3>
                 <Link
@@ -244,9 +244,9 @@ export default function DashboardContent({
               </div>
 
               {recentes.length === 0 ? (
-                <div className="rounded-2xl bg-white p-12 text-center shadow-sm border border-areia">
-                  <Users className="h-12 w-12 text-madeira/30 mx-auto mb-4" />
-                  <p className="text-madeira/60">
+                <div className="rounded-2xl bg-white dark:bg-[#150e09] p-12 text-center shadow-sm border border-areia dark:border-areia/25">
+                  <Users className="h-12 w-12 text-madeira/30 dark:text-areia/40 mx-auto mb-4" />
+                  <p className="text-madeira/60 dark:text-areia/70">
                     Nenhum artista cadastrado ainda
                   </p>
                   <Link
@@ -263,10 +263,10 @@ export default function DashboardContent({
                     <Link
                       key={artista.id}
                       href={`/dashboard/artistas/${artista.id}`}
-                      className="group rounded-2xl bg-white p-4 shadow-sm border border-areia hover:shadow-md hover:border-terracota/20 transition-all duration-300"
+                      className="group rounded-2xl bg-white dark:bg-[#150e09] p-4 shadow-sm border border-areia dark:border-areia/25 hover:shadow-md hover:border-terracota/20 transition-all duration-300"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-terracota/10 text-terracota font-bold text-lg overflow-hidden group-hover:scale-105 transition-transform">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-terracota/10 dark:bg-terracota/20 text-terracota font-bold text-lg overflow-hidden group-hover:scale-105 transition-transform">
                           {artista.foto ? (
                             <img
                               src={artista.foto}
@@ -278,10 +278,10 @@ export default function DashboardContent({
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-foreground truncate group-hover:text-terracota transition-colors">
+                          <p className="font-semibold text-foreground dark:text-white truncate group-hover:text-terracota transition-colors">
                             {artista.nome}
                           </p>
-                          <p className="text-sm text-madeira/60">
+                          <p className="text-sm text-madeira/60 dark:text-areia/70">
                             {artista.generoArtistico}
                           </p>
                         </div>
