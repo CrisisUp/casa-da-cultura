@@ -65,7 +65,7 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
     await expect(page.locator(`text=${nomeOriginal}`).first()).toBeVisible({ timeout: 5000 });
 
     // Encontrar a linha específica do artista e clicar em editar
-    const row = page.locator('table tbody tr', { hasText: nomeOriginal }).first();
+    const row = page.locator('article, table tbody tr', { hasText: nomeOriginal }).first();
     await row.locator('a[href*="/editar"]').click();
     await page.waitForURL(/editar$/);
 
@@ -98,8 +98,8 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
     page.on('dialog', dialog => dialog.accept());
 
     // Encontrar a linha específica e clicar delete
-    const row = page.locator('table tbody tr', { hasText: nome }).first();
-    await row.locator('button').last().click();
+    const row = page.locator('article, table tbody tr', { hasText: nome }).first();
+    await row.locator('button[title*="Excluir"], button').last().click();
 
     // Aguardar recarregamento da lista
     await page.waitForLoadState('networkidle');
@@ -115,10 +115,10 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
       const nextButton = page.locator('button:has-text("Próxima")');
 
       if (await nextButton.isEnabled()) {
-        const firstPageText = await page.locator('table tbody tr').first().textContent();
+        const firstPageText = await page.locator('article, table tbody tr').first().textContent();
         await nextButton.click();
         await page.waitForLoadState('networkidle');
-        const secondPageText = await page.locator('table tbody tr').first().textContent();
+        const secondPageText = await page.locator('article, table tbody tr').first().textContent();
         expect(firstPageText).not.toBe(secondPageText);
       }
     }
@@ -131,7 +131,7 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
 
     // Filtragem é client-side — aguardar re-render com toPass
     await expect(async () => {
-      const tableVisible = await page.locator('table').isVisible().catch(() => false);
+      const tableVisible = await page.locator('article, table').first().isVisible().catch(() => false);
       const emptyVisible = await page.locator('text=Nenhum artista encontrado').isVisible().catch(() => false);
       expect(tableVisible || emptyVisible).toBeTruthy();
     }).toPass({ timeout: 5000 });
@@ -144,7 +144,7 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
 
       // Filtragem é client-side — aguardar re-render
       await expect(async () => {
-        const tableVisible = await page.locator('table').isVisible().catch(() => false);
+        const tableVisible = await page.locator('article, table').first().isVisible().catch(() => false);
         const emptyVisible = await page.locator('text=Nenhum artista encontrado').isVisible().catch(() => false);
         expect(tableVisible || emptyVisible).toBeTruthy();
       }).toPass({ timeout: 5000 });

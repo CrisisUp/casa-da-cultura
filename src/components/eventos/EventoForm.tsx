@@ -3,31 +3,13 @@
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
+import { EVENTO_CORES, EVENTO_TIPOS } from "@/lib/constants";
 import { eventoSchema } from "@/lib/validations";
 import { Artista } from "@/types/models";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
-const TIPOS = [
-  { value: "", label: "Selecione..." },
-  { value: "Música", label: "Música" },
-  { value: "Dança", label: "Dança" },
-  { value: "Teatro", label: "Teatro" },
-  { value: "Artes Visuais", label: "Artes Visuais" },
-  { value: "Literatura", label: "Literatura" },
-  { value: "Artesanato", label: "Artesanato" },
-  { value: "Outro", label: "Outro" },
-];
-
-const CORES = [
-  { value: "bg-terracota", label: "Terracota" },
-  { value: "bg-oliva", label: "Oliva" },
-  { value: "bg-barro", label: "Barro" },
-  { value: "bg-ambar", label: "Âmbar" },
-  { value: "bg-madeira", label: "Madeira" },
-];
 
 interface EventoData {
   id?: string;
@@ -192,7 +174,7 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
           <Select
             name="tipo"
             label="Tipo *"
-            options={TIPOS}
+            options={EVENTO_TIPOS}
             defaultValue={evento?.tipo ?? ""}
             required
             error={errors.tipo}
@@ -200,7 +182,7 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
           <Select
             name="cor"
             label="Cor"
-            options={CORES}
+            options={EVENTO_CORES}
             defaultValue={evento?.cor ?? "bg-terracota"}
           />
           <Select

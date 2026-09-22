@@ -9,18 +9,7 @@ import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { formatCPF, formatPhone } from "@/lib/utils";
 import { artistaSchema } from "@/lib/validations";
-import { generos } from "@/lib/constants";
-
-const ESCOLARIDADES = [
-  { value: "", label: "Selecione..." },
-  { value: "Fundamental Incompleto", label: "Fundamental Incompleto" },
-  { value: "Fundamental Completo", label: "Fundamental Completo" },
-  { value: "Médio Incompleto", label: "Médio Incompleto" },
-  { value: "Médio Completo", label: "Médio Completo" },
-  { value: "Superior Incompleto", label: "Superior Incompleto" },
-  { value: "Superior Completo", label: "Superior Completo" },
-  { value: "Pós-graduação", label: "Pós-graduação" },
-];
+import { ESCOLARIDADES, generos } from "@/lib/constants";
 
 interface ArtistaData {
   id?: string;
