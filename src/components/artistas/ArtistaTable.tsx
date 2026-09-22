@@ -44,7 +44,14 @@ export default function ArtistaTable({
       {artistas.map((artista) => (
         <article
           key={artista.id}
-          className="rounded-2xl bg-surface border border-border p-4 hover:shadow-md transition-all duration-300"
+          className="cultural-card group"
+          /* 
+            ^ Usa a classe .cultural-card do globals.css, que já aplica:
+            - bg-card adaptativo
+            - border adaptativa (com borda sutil no dark)
+            - sombras adaptativas (var(--card-shadow) e no hover var(--card-shadow-hover))
+            - transições suaves
+          */
         >
           <div className="flex items-center gap-4">
             {/* Avatar */}
@@ -77,7 +84,11 @@ export default function ArtistaTable({
             </div>
 
             {/* Ações à direita */}
-            <div className="flex items-center gap-1 shrink-0">
+            <div className="flex items-center gap-1.5 shrink-0">
+              {/* 
+                Botões de toggle de status e destaque
+                (mantidos como componentes separados, mas agora com mais respiro)
+              */}
               <ToggleStatusButton
                 artistaId={artista.id}
                 statusAtual={artista.status}
@@ -89,20 +100,32 @@ export default function ArtistaTable({
                 isDestaque={!!artista.destaque}
                 onUpdate={onUpdate}
               />
+
+              {/* 
+                Ícones de ação usando as classes .action-icon do globals.css
+                - .action-icon: estilo base (cor muted, hover com fundo subtle)
+                - .action-icon-danger: variante para ações destrutivas (hover vermelho)
+                - .action-icon-success: variante para ações positivas (hover verde)
+              */}
+
               <Link
                 href={`/dashboard/artistas/${artista.id}`}
                 title="Ver perfil"
-                className="rounded-lg p-2 text-muted hover:bg-areia dark:hover:bg-areia/20 hover:text-foreground transition-colors"
+                className="action-icon"
+                aria-label={`Ver perfil de ${artista.nome}`}
               >
                 <Eye className="h-4 w-4" />
               </Link>
+
               <Link
                 href={`/dashboard/artistas/${artista.id}/editar`}
                 title="Editar"
-                className="rounded-lg p-2 text-muted hover:bg-areia dark:hover:bg-areia/20 hover:text-foreground transition-colors"
+                className="action-icon"
+                aria-label={`Editar ${artista.nome}`}
               >
                 <Pencil className="h-4 w-4" />
               </Link>
+
               <button
                 onClick={() => {
                   if (confirm("Tem certeza que deseja excluir este artista?")) {
@@ -110,7 +133,8 @@ export default function ArtistaTable({
                   }
                 }}
                 title="Excluir"
-                className="rounded-lg p-2 text-muted hover:bg-danger/10 hover:text-danger transition-colors"
+                aria-label={`Excluir ${artista.nome}`}
+                className="action-icon action-icon-danger"
               >
                 <Trash2 className="h-4 w-4" />
               </button>

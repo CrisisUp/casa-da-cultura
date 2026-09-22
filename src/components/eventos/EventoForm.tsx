@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
-import toast from "react-hot-toast";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { eventoSchema } from "@/lib/validations";
 import { Artista } from "@/types/models";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const TIPOS = [
   { value: "", label: "Selecione..." },
@@ -81,7 +81,7 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
       local: form.get("local") as string,
       tipo: form.get("tipo") as string,
       cor: form.get("cor") as string,
-      artistaId: form.get("artistaId") as string || null,
+      artistaId: (form.get("artistaId") as string) || null,
       ativo: form.get("ativo") === "on",
     };
 
@@ -113,7 +113,11 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
 
     if (!res.ok) {
       const errorData = await res.json();
-      toast.error(errorData.details?.join(", ") || errorData.error || "Erro ao salvar evento");
+      toast.error(
+        errorData.details?.join(", ") ||
+          errorData.error ||
+          "Erro ao salvar evento"
+      );
       return;
     }
 
@@ -124,7 +128,8 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="rounded-2xl bg-white p-6 shadow-sm border border-areia space-y-4">
+      {/* Card principal — usando .cultural-card para adaptação automática ao tema */}
+      <div className="cultural-card space-y-4">
         <h3 className="font-semibold text-foreground font-[family-name:var(--font-playfair)]">
           Dados do Evento
         </h3>
@@ -135,18 +140,24 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
           defaultValue={evento?.titulo ?? ""}
           placeholder="Ex: Festival de Música"
           required
+          error={errors.titulo}
         />
 
+        {/* Textarea — substituindo bg-white e cores fixas por tokens semânticos */}
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-madeira">
+          <label
+            htmlFor="descricao"
+            className="block text-sm font-medium text-secondary"
+          >
             Descrição
           </label>
           <textarea
+            id="descricao"
             name="descricao"
             defaultValue={evento?.descricao ?? ""}
             placeholder="Descreva o evento..."
-            className="block w-full rounded-xl border border-areia bg-white px-4 py-2.5 text-foreground placeholder-madeira/40 shadow-sm transition-all duration-200 focus:border-terracota focus:outline-none focus:ring-2 focus:ring-terracota/20"
             rows={3}
+            className="block w-full rounded-xl border border-border bg-card px-4 py-2.5 text-foreground placeholder:text-muted shadow-sm transition-all duration-200 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
         </div>
 
@@ -157,6 +168,7 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
             type="date"
             defaultValue={evento?.data?.split("T")[0] ?? ""}
             required
+            error={errors.data}
           />
           <Input
             name="hora"
@@ -164,6 +176,7 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
             type="time"
             defaultValue={evento?.hora ?? ""}
             required
+            error={errors.hora}
           />
           <Input
             name="local"
@@ -171,6 +184,7 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
             defaultValue={evento?.local ?? ""}
             placeholder="Ex: Auditório Principal"
             required
+            error={errors.local}
           />
         </div>
 
@@ -181,6 +195,7 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
             options={TIPOS}
             defaultValue={evento?.tipo ?? ""}
             required
+            error={errors.tipo}
           />
           <Select
             name="cor"
@@ -199,25 +214,27 @@ export default function EventoForm({ evento, isEdit }: EventoFormProps) {
           />
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Checkbox com cores semânticas */}
+        <div className="flex items-center gap-2 pt-2">
           <input
             type="checkbox"
+            id="ativo"
             name="ativo"
             defaultChecked={evento?.ativo ?? true}
-            className="h-4 w-4 rounded border-areia text-terracota focus:ring-terracota"
+            className="h-4 w-4 rounded border-border text-primary bg-card focus:ring-primary/40 focus:ring-offset-0 cursor-pointer accent-[var(--color-terracota)]"
           />
-          <label className="text-sm text-madeira">
+          <label
+            htmlFor="ativo"
+            className="text-sm text-secondary cursor-pointer select-none"
+          >
             Evento ativo (aparece no dashboard)
           </label>
         </div>
       </div>
 
+      {/* Botões de ação */}
       <div className="flex gap-3 justify-end">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={() => router.back()}
-        >
+        <Button type="button" variant="secondary" onClick={() => router.back()}>
           Cancelar
         </Button>
         <Button type="submit" disabled={loading}>

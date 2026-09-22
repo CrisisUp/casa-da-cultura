@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
-import toast from "react-hot-toast";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
-import { depoimentoSchema } from "@/lib/validations";
 import { generos } from "@/lib/constants";
+import { depoimentoSchema } from "@/lib/validations";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface DepoimentoData {
   id?: string;
@@ -25,7 +25,10 @@ interface DepoimentoFormProps {
   isEdit?: boolean;
 }
 
-export default function DepoimentoForm({ depoimento, isEdit }: DepoimentoFormProps) {
+export default function DepoimentoForm({
+  depoimento,
+  isEdit,
+}: DepoimentoFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -61,7 +64,9 @@ export default function DepoimentoForm({ depoimento, isEdit }: DepoimentoFormPro
       return;
     }
 
-    const url = isEdit ? `/api/depoimentos/${depoimento?.id}` : "/api/depoimentos";
+    const url = isEdit
+      ? `/api/depoimentos/${depoimento?.id}`
+      : "/api/depoimentos";
     const method = isEdit ? "PUT" : "POST";
 
     const res = await fetch(url, {
@@ -74,7 +79,11 @@ export default function DepoimentoForm({ depoimento, isEdit }: DepoimentoFormPro
 
     if (!res.ok) {
       const errorData = await res.json();
-      toast.error(errorData.details?.join(", ") || errorData.error || "Erro ao salvar depoimento");
+      toast.error(
+        errorData.details?.join(", ") ||
+          errorData.error ||
+          "Erro ao salvar depoimento"
+      );
       return;
     }
 
@@ -85,7 +94,8 @@ export default function DepoimentoForm({ depoimento, isEdit }: DepoimentoFormPro
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="rounded-2xl bg-white p-6 shadow-sm border border-areia space-y-4">
+      {/* ✅ Card adaptativo — troca bg-white por .cultural-card */}
+      <div className="cultural-card space-y-4">
         <h3 className="font-semibold text-foreground font-[family-name:var(--font-playfair)]">
           Dados do Depoimento
         </h3>
@@ -96,6 +106,7 @@ export default function DepoimentoForm({ depoimento, isEdit }: DepoimentoFormPro
             label="Nome do Artista *"
             defaultValue={depoimento?.nome ?? ""}
             required
+            error={errors.nome}
           />
           <Select
             name="genero"
@@ -103,21 +114,30 @@ export default function DepoimentoForm({ depoimento, isEdit }: DepoimentoFormPro
             options={generos("Selecione...")}
             defaultValue={depoimento?.genero ?? ""}
             required
+            error={errors.genero}
           />
         </div>
 
+        {/* ✅ Textarea com cores semânticas */}
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-madeira">
+          <label
+            htmlFor="texto"
+            className="block text-sm font-medium text-secondary"
+          >
             Depoimento *
           </label>
           <textarea
+            id="texto"
             name="texto"
             defaultValue={depoimento?.texto ?? ""}
             placeholder="Escreva o depoimento do artista..."
-            className="block w-full rounded-xl border border-areia bg-white px-4 py-2.5 text-foreground placeholder-madeira/40 shadow-sm transition-all duration-200 focus:border-terracota focus:outline-none focus:ring-2 focus:ring-terracota/20"
             rows={4}
             required
+            className="block w-full rounded-xl border border-border bg-card px-4 py-2.5 text-foreground placeholder:text-muted shadow-sm transition-all duration-200 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
+          {errors.texto && (
+            <p className="text-xs text-danger">{errors.texto}</p>
+          )}
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -136,14 +156,19 @@ export default function DepoimentoForm({ depoimento, isEdit }: DepoimentoFormPro
           />
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* ✅ Checkbox com cores semânticas */}
+        <div className="flex items-center gap-2 pt-2">
           <input
             type="checkbox"
+            id="ativo"
             name="ativo"
             defaultChecked={depoimento?.ativo ?? true}
-            className="h-4 w-4 rounded border-areia text-terracota focus:ring-terracota"
+            className="h-4 w-4 rounded border-border bg-card focus:ring-primary/40 focus:ring-offset-0 cursor-pointer accent-[var(--color-terracota)]"
           />
-          <label className="text-sm text-madeira">
+          <label
+            htmlFor="ativo"
+            className="text-sm text-secondary cursor-pointer select-none"
+          >
             Depoimento ativo (aparece no dashboard)
           </label>
         </div>

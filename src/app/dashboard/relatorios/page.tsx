@@ -1,40 +1,61 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { FileText, Download, Loader2 } from "lucide-react";
-import toast from "react-hot-toast";
+import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Select from "@/components/ui/Select";
-import Badge from "@/components/ui/Badge";
-import { formatCPF, formatDate } from "@/lib/utils";
+import { generos, statusBadgeVariant, statusOptions } from "@/lib/constants";
 import { gerarPDF } from "@/lib/pdf";
-import { generos, statusOptions, statusBadgeVariant } from "@/lib/constants";
+import { formatCPF, formatDate } from "@/lib/utils";
 import { Artista } from "@/types/models";
+import { Download, FileText, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function RelatoriosPage() {
   const [genero, setGenero] = useState("");
   const [status, setStatus] = useState("");
   const [artistas, setArtistas] = useState<Artista[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // ← começa como true
   const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
-    fetchArtistas();
-  }, [genero, status]);
+    const controller = new AbortController();
 
-  async function fetchArtistas() {
-    setLoading(true);
-    const params = new URLSearchParams({ limit: "1000", genero, status });
-    const res = await fetch(`/api/artistas?${params}`);
-    const data = await res.json();
-    setArtistas(
-      data.artistas.map((a: Record<string, unknown>) => ({
-        ...a,
-        createdAt: new Date(a.createdAt as string),
-      }))
-    );
-    setLoading(false);
-  }
+    async function carregarArtistas() {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams({ limit: "1000", genero, status });
+        const res = await fetch(`/api/artistas?${params}`, {
+          signal: controller.signal,
+        });
+        const data = await res.json();
+
+        if (!controller.signal.aborted) {
+          setArtistas(
+            data.artistas.map((a: Record<string, unknown>) => ({
+              ...a,
+              createdAt: new Date(a.createdAt as string),
+            }))
+          );
+        }
+      } catch (err) {
+        if (err instanceof Error && err.name !== "AbortError") {
+          toast.error("Erro ao carregar artistas");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    carregarArtistas();
+
+    // Cleanup: cancela o fetch se o componente desmontar ou o filtro mudar
+    return () => {
+      controller.abort();
+    };
+  }, [genero, status]);
 
   function handleExportPDF() {
     setExporting(true);
@@ -58,12 +79,21 @@ export default function RelatoriosPage() {
 
   return (
     <div className="space-y-6">
+      {/* Cabeçalho */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground dark:text-white font-[family-name:var(--font-playfair)]">Relatórios</h2>
-          <p className="text-madeira/70 dark:text-areia/70">Gere relatórios dos artistas cadastrados</p>
+          <h2 className="text-2xl font-bold text-foreground font-[family-name:var(--font-playfair)]">
+            Relatórios
+          </h2>
+          <p className="text-muted">
+            Gere relatórios dos artistas cadastrados
+          </p>
         </div>
-        <Button onClick={handleExportPDF} variant="secondary" disabled={exporting || loading}>
+        <Button
+          onClick={handleExportPDF}
+          variant="secondary"
+          disabled={exporting || loading}
+        >
           {exporting ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
           ) : (
@@ -73,6 +103,7 @@ export default function RelatoriosPage() {
         </Button>
       </div>
 
+      {/* Filtros */}
       <div className="flex gap-4">
         <Select
           options={generos("Todos os gêneros")}
@@ -86,15 +117,16 @@ export default function RelatoriosPage() {
         />
       </div>
 
+      {/* Card do relatório */}
       <div className="cultural-card overflow-hidden p-0">
-        <div className="border-b border-areia dark:border-areia/20 bg-areia/20 dark:bg-[#1a120b] px-6 py-4">
+        <div className="border-b border-border-subtle bg-subtle px-6 py-4">
           <div className="flex items-center gap-3">
-            <FileText className="h-5 w-5 text-terracota" />
+            <FileText className="h-5 w-5 text-primary" />
             <div>
               <h3 className="cultural-section-title text-base">
                 Relatório de Artistas
               </h3>
-              <p className="text-sm text-madeira/60 dark:text-areia/70">
+              <p className="text-sm text-muted">
                 {artistas.length} registro{artistas.length !== 1 ? "s" : ""}
                 {genero && ` • Gênero: ${genero}`}
                 {status && ` • Status: ${status}`}
@@ -104,55 +136,56 @@ export default function RelatoriosPage() {
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-madeira/60 dark:text-areia/70">Carregando...</div>
+          <div className="p-12 text-center text-muted">Carregando...</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-areia dark:border-areia/20 bg-areia/10 dark:bg-[#1f140e]">
-                  <th className="px-6 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">
+                <tr className="border-b border-border-subtle bg-subtle">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     #
                   </th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     Nome
                   </th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     CPF
                   </th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     Gênero
                   </th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">
+                  <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted">
                     Cadastro
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-areia/50 dark:divide-areia/20">
+              <tbody className="divide-y divide-border-subtle">
                 {artistas.map((artista, index) => (
-                  <tr key={artista.id} className="hover:bg-areia/10 dark:hover:bg-areia/10 transition-colors">
-                    <td className="px-6 py-3 text-sm text-madeira/60 dark:text-areia/70">
+                  <tr
+                    key={artista.id}
+                    className="hover:bg-subtle transition-colors"
+                  >
+                    <td className="px-6 py-3 text-sm text-muted">
                       {index + 1}
                     </td>
-                    <td className="px-6 py-3 text-sm font-medium text-foreground dark:text-white">
+                    <td className="px-6 py-3 text-sm font-medium text-foreground">
                       {artista.nome}
                     </td>
-                    <td className="px-6 py-3 text-sm text-madeira/80 dark:text-areia/80">
+                    <td className="px-6 py-3 text-sm text-muted">
                       {formatCPF(artista.cpf)}
                     </td>
-                    <td className="px-6 py-3 text-sm text-madeira/80 dark:text-areia/80">
+                    <td className="px-6 py-3 text-sm text-muted">
                       {artista.generoArtistico}
                     </td>
                     <td className="px-6 py-3">
-                      <Badge
-                        variant={statusBadgeVariant(artista.status)}
-                      >
+                      <Badge variant={statusBadgeVariant(artista.status)}>
                         {artista.status}
                       </Badge>
                     </td>
-                    <td className="px-6 py-3 text-sm text-madeira/60 dark:text-areia/70">
+                    <td className="px-6 py-3 text-sm text-muted">
                       {formatDate(artista.createdAt)}
                     </td>
                   </tr>

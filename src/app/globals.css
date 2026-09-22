@@ -26,6 +26,36 @@
   --background: var(--bg-page);
   --foreground: var(--text-primary);
   --font-playfair: var(--font-lora);
+
+  /* --- NOVO: Sombras adaptativas --- */
+  --card-shadow: 0 4px 6px -1px rgba(117, 71, 40, 0.08);
+  --card-shadow-hover: 0 10px 15px -3px rgba(117, 71, 40, 0.15);
+
+  /* --- NOVO: Cores de estado (badges) --- */
+  --badge-active-bg: rgba(76, 124, 44, 0.15);
+  --badge-active-text: var(--color-oliva);
+  --badge-active-border: rgba(76, 124, 44, 0.3);
+
+  --badge-inactive-bg: rgba(217, 56, 41, 0.15);
+  --badge-inactive-text: #d93829;
+  --badge-inactive-border: rgba(217, 56, 41, 0.3);
+
+  /* Badges semânticos - Modo Dia */
+  --badge-success-bg: rgba(76, 124, 44, 0.1);
+  --badge-success-text: #3d6621;
+  --badge-success-border: rgba(76, 124, 44, 0.25);
+
+  --badge-warning-bg: rgba(229, 175, 22, 0.1);
+  --badge-warning-text: #a37a0a;
+  --badge-warning-border: rgba(229, 175, 22, 0.25);
+
+  --badge-danger-bg: rgba(217, 56, 41, 0.1);
+  --badge-danger-text: #b52518;
+  --badge-danger-border: rgba(217, 56, 41, 0.25);
+
+  --badge-info-bg: rgba(217, 78, 24, 0.1);
+  --badge-info-text: #b0380d;
+  --badge-info-border: rgba(217, 78, 24, 0.25);
 }
 
 .dark {
@@ -52,6 +82,36 @@
 
   --background: var(--bg-page);
   --foreground: var(--text-primary);
+
+  /* --- NOVO: Sombras adaptativas para modo escuro --- */
+  --card-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.5);
+  --card-shadow-hover: 0 10px 20px -3px rgba(0, 0, 0, 0.7);
+
+  /* --- NOVO: Cores de estado (badges) para modo escuro --- */
+  --badge-active-bg: rgba(100, 156, 63, 0.2);
+  --badge-active-text: #a3e07a;
+  --badge-active-border: rgba(100, 156, 63, 0.4);
+
+  --badge-inactive-bg: rgba(217, 56, 41, 0.2);
+  --badge-inactive-text: #ff8a7a;
+  --badge-inactive-border: rgba(217, 56, 41, 0.4);
+
+  /* Badges semânticos - Modo Noite */
+  --badge-success-bg: rgba(100, 156, 63, 0.2);
+  --badge-success-text: #a3e07a;
+  --badge-success-border: rgba(100, 156, 63, 0.4);
+
+  --badge-warning-bg: rgba(247, 199, 49, 0.2);
+  --badge-warning-text: #ffdd7a;
+  --badge-warning-border: rgba(247, 199, 49, 0.4);
+
+  --badge-danger-bg: rgba(217, 56, 41, 0.2);
+  --badge-danger-text: #ff8a7a;
+  --badge-danger-border: rgba(217, 56, 41, 0.4);
+
+  --badge-info-bg: rgba(242, 104, 34, 0.2);
+  --badge-info-text: #ffb088;
+  --badge-info-border: rgba(242, 104, 34, 0.4);
 }
 
 @theme inline {
@@ -69,10 +129,8 @@
   --color-border-subtle: var(--border-subtle);
 
   /* Textos */
-  --color-muted: var(--text-muted); /* ← NOVO: textos secundários */
-  --color-muted-strong: var(
-    --text-secondary
-  ); /* ← NOVO: alias mais explícito */
+  --color-muted: var(--text-muted); /* ← textos secundários */
+  --color-muted-strong: var(--text-secondary); /* ← alias mais explícito */
 
   /* Paleta institucional */
   --color-primary: var(--color-terracota);
@@ -93,7 +151,7 @@
   --color-oliva: var(--color-oliva);
   --color-barro: var(--color-barro);
   --color-areia: var(--color-areia);
-  --color-madeira: #754728; /* ← NOVO */
+  --color-madeira: #754728;
 }
 
 body {
@@ -120,7 +178,10 @@ body {
   background: var(--color-terracota);
 }
 
-/* Estética Artística, Orgânica e Semântica */
+/* ============================================================
+   Estética Artística, Orgânica e Semântica
+   ============================================================ */
+
 .organic-card {
   border-radius: 1.5rem 0.75rem 1.75rem 0.5rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -135,17 +196,29 @@ body {
   border-radius: 9999px 12px 9999px 12px;
 }
 
-/* Componentes Semânticos Centralizados (Design Tokens) */
+/* ============================================================
+   Componentes Semânticos Centralizados (Design Tokens)
+   ============================================================ */
+
 .cultural-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(117, 71, 40, 0.08);
+  box-shadow: var(--card-shadow); /* ← sombra adaptativa */
   transition:
     background-color 0.3s ease,
     border-color 0.3s ease,
     box-shadow 0.3s ease;
+}
+
+.cultural-card:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* ← NOVO: Borda sutil que só aparece no modo escuro para delimitar melhor os cards */
+.dark .cultural-card {
+  border-color: rgba(255, 255, 255, 0.05);
 }
 
 .cultural-section-title {
@@ -156,7 +229,97 @@ body {
   transition: color 0.3s ease;
 }
 
-/* Animações customizadas */
+/* ============================================================
+   NOVO: Badges de Status (ATIVO / INATIVO)
+   ============================================================ */
+
+.badge-status-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: var(--badge-active-bg);
+  color: var(--badge-active-text);
+  border: 1px solid var(--badge-active-border);
+  transition: all 0.2s ease;
+}
+
+.badge-status-active::before {
+  content: "";
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background-color: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.badge-status-inactive {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: var(--badge-inactive-bg);
+  color: var(--badge-inactive-text);
+  border: 1px solid var(--badge-inactive-border);
+  transition: all 0.2s ease;
+}
+
+.badge-status-inactive::before {
+  content: "";
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background-color: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+
+/* ============================================================
+   NOVO: Ícones de Ação em Tabelas/Listas
+   ============================================================ */
+
+.action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem;
+  border-radius: 0.5rem;
+  color: var(--text-muted);
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.action-icon:hover {
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
+}
+
+.action-icon.action-icon-danger:hover {
+  background-color: var(--badge-inactive-bg);
+  color: var(--badge-inactive-text);
+}
+
+.action-icon.action-icon-success:hover {
+  background-color: var(--badge-active-bg);
+  color: var(--badge-active-text);
+}
+
+/* ============================================================
+   Animações customizadas
+   ============================================================ */
+
 @keyframes float {
   0%,
   100% {
@@ -220,7 +383,10 @@ body {
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
-/* Transições suaves */
+/* ============================================================
+   Transições suaves
+   ============================================================ */
+
 a,
 button,
 [role="button"] {
@@ -238,6 +404,10 @@ button,
     0 20px 25px -5px rgba(117, 71, 40, 0.2),
     0 8px 10px -6px rgba(117, 71, 40, 0.15);
 }
+
+/* ============================================================
+   Padrões visuais e texturas culturais
+   ============================================================ */
 
 /* Padrão cultural de fundo */
 .cultural-pattern {
