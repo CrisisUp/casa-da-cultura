@@ -13,17 +13,17 @@ interface StatsCardsProps {
 
 export default function StatsCards({ stats }: StatsCardsProps) {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Estatísticas gerais">
       {stats.map((stat) => (
-        <div
+        <article
           key={stat.title}
-          className="group relative overflow-hidden organic-card bg-white dark:bg-[#150e09] p-6 shadow-sm border border-areia dark:border-areia/25 transition-all duration-500 hover:shadow-xl hover:shadow-terracota/10 hover:-translate-y-1 hover:border-terracota/30"
+          className="group relative overflow-hidden organic-card cultural-card p-6 transition-all duration-500 hover:shadow-xl hover:shadow-terracota/10 hover:-translate-y-1 hover:border-terracota/30"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-madeira/70 dark:text-areia/70 group-hover:text-madeira dark:group-hover:text-areia transition-colors">
+              <h3 className="text-sm font-medium text-madeira/70 dark:text-areia/70 group-hover:text-madeira dark:group-hover:text-areia transition-colors">
                 {stat.title}
-              </p>
+              </h3>
               <p className="mt-2 text-4xl font-bold text-foreground dark:text-foreground transition-all duration-500 group-hover:scale-105 group-hover:text-terracota font-[family-name:var(--font-playfair)]">
                 {stat.value}
               </p>
@@ -41,8 +41,8 @@ export default function StatsCards({ stats }: StatsCardsProps) {
           <div
             className={`absolute -top-4 -left-4 h-16 w-16 rounded-full ${stat.color} opacity-5 transition-all duration-700 group-hover:scale-125 group-hover:opacity-10`}
           />
-        </div>
+        </article>
       ))}
-    </div>
+    </section>
   );
 }

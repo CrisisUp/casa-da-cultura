@@ -1,32 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import {
-  Users,
-  UserCheck,
-  UserX,
-  TrendingUp,
-  LayoutDashboard,
-  Clock,
-  Plus,
-  Shuffle,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import StatsCards from "@/components/dashboard/StatsCards";
 import Charts from "@/components/dashboard/Charts";
-import GenreCards from "@/components/dashboard/GenreCards";
-import WelcomeBanner from "@/components/dashboard/WelcomeBanner";
-import PhotoGallery from "@/components/dashboard/PhotoGallery";
-import Testimonials from "@/components/dashboard/Testimonials";
 import EventsCalendar from "@/components/dashboard/EventsCalendar";
+import GenreCards from "@/components/dashboard/GenreCards";
 import HeroFeatured from "@/components/dashboard/HeroFeatured";
+import PhotoGallery from "@/components/dashboard/PhotoGallery";
+import StatsCards from "@/components/dashboard/StatsCards";
+import Testimonials from "@/components/dashboard/Testimonials";
+import WelcomeBanner from "@/components/dashboard/WelcomeBanner";
+import AlertBanner from "@/components/ui/AlertBanner";
 import AnimatedCard from "@/components/ui/AnimatedCard";
 import Badge from "@/components/ui/Badge";
-import AlertBanner from "@/components/ui/AlertBanner";
 import Tabs from "@/components/ui/Tabs";
-import { Artista } from "@/types/models";
 import { statusBadgeVariant } from "@/lib/constants";
+import { Artista } from "@/types/models";
+import {
+  Clock,
+  LayoutDashboard,
+  Plus,
+  Shuffle,
+  TrendingUp,
+  UserCheck,
+  Users,
+  UserX,
+} from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface DashboardContentProps {
   totalArtistas: number;
@@ -54,30 +54,10 @@ export default function DashboardContent({
   const router = useRouter();
 
   const stats = [
-    {
-      title: "Total de Artistas",
-      value: totalArtistas,
-      icon: Users,
-      color: "bg-terracota",
-    },
-    {
-      title: "Ativos",
-      value: ativos,
-      icon: UserCheck,
-      color: "bg-oliva",
-    },
-    {
-      title: "Inativos",
-      value: inativos,
-      icon: UserX,
-      color: "bg-barro",
-    },
-    {
-      title: "Gêneros Cadastrados",
-      value: porGenero.length,
-      icon: TrendingUp,
-      color: "bg-ambar",
-    },
+    { title: "Total de Artistas", value: totalArtistas, icon: Users, color: "bg-terracota" },
+    { title: "Ativos", value: ativos, icon: UserCheck, color: "bg-oliva" },
+    { title: "Inativos", value: inativos, icon: UserX, color: "bg-barro" },
+    { title: "Gêneros Cadastrados", value: porGenero.length, icon: TrendingUp, color: "bg-ambar" },
   ];
 
   const chartData = porGenero.map((item) => ({
@@ -114,12 +94,11 @@ export default function DashboardContent({
                 <p className="text-lg font-bold font-[family-name:var(--font-playfair)]">
                   Artista Aleatório
                 </p>
-                <p className="text-sm text-white/70">
-                  Clique para descobrir
-                </p>
+                <p className="text-sm text-white/70">Clique para descobrir</p>
               </div>
             </button>
-            <div className="flex-1 rounded-3xl bg-gradient-to-br from-areia to-creme dark:from-[#1a120b] dark:to-[#150e09] p-6 border border-areia dark:border-areia/25 transition-colors">
+
+            <div className="flex-1">
               <WelcomeBanner />
             </div>
           </div>
@@ -148,12 +127,15 @@ export default function DashboardContent({
           {activeTab === "visao-geral" && (
             <div className="space-y-10">
               {/* Gêneros */}
-              <section>
+              <section aria-label="Gêneros Artísticos">
                 <GenreCards counts={genreCounts} />
               </section>
 
-              {/* Galeria + Gráfico (layout assimétrico) */}
-              <section className="grid grid-cols-1 gap-8 lg:grid-cols-5">
+              {/* Galeria + Gráfico */}
+              <section
+                className="grid grid-cols-1 gap-8 lg:grid-cols-5"
+                aria-label="Galeria e Gráficos"
+              >
                 <div className="lg:col-span-3">
                   <PhotoGallery artistas={recentes} />
                 </div>
@@ -163,58 +145,61 @@ export default function DashboardContent({
               </section>
 
               {/* Eventos + Recentes */}
-              <section className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+              <section
+                className="grid grid-cols-1 gap-8 lg:grid-cols-2"
+                aria-label="Eventos e Cadastros Recentes"
+              >
                 <EventsCalendar />
 
-                <div className="rounded-2xl bg-white dark:bg-[#150e09] p-6 shadow-sm border border-areia dark:border-areia/20 transition-colors">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-foreground dark:text-foreground font-[family-name:var(--font-playfair)]">
-                      Cadastros Recentes
-                    </h3>
+                <div className="cultural-card" aria-label="Cadastros Recentes">
+                  <header className="flex items-center justify-between mb-4">
+                    <h3 className="cultural-section-title">Cadastros Recentes</h3>
                     <Link
                       href="/dashboard/artistas"
                       className="text-sm text-terracota hover:text-terracota-dark font-medium"
                     >
                       Ver todos →
                     </Link>
-                  </div>
+                  </header>
                   {recentes.length === 0 ? (
-                    <p className="text-madeira/60 dark:text-areia/70 text-center py-8">
+                    <p className="text-secondary text-center py-8">
                       Nenhum artista cadastrado ainda
                     </p>
                   ) : (
                     <div className="space-y-3">
                       {recentes.slice(0, 5).map((artista) => (
-                        <Link
+                        <article
                           key={artista.id}
-                          href={`/dashboard/artistas/${artista.id}`}
-                          className="flex items-center gap-3 rounded-xl p-3 hover:bg-areia/30 dark:hover:bg-areia/15 transition-all duration-300 group"
+                          className="rounded-xl bg-surface border border-border shadow-xs hover:shadow-md transition-all duration-300"
                         >
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-terracota/10 dark:bg-terracota/20 text-terracota font-semibold text-sm overflow-hidden group-hover:scale-105 transition-transform">
-                            {artista.foto ? (
-                              <img
-                                src={artista.foto}
-                                alt={artista.nome}
-                                className="h-10 w-10 rounded-full object-cover"
-                              />
-                            ) : (
-                              artista.nome.charAt(0)
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-foreground dark:text-foreground truncate group-hover:text-terracota transition-colors">
-                              {artista.nome}
-                            </p>
-                            <p className="text-xs text-madeira/60 dark:text-areia/70">
-                              {artista.generoArtistico}
-                            </p>
-                          </div>
-                          <Badge
-                            variant={statusBadgeVariant(artista.status)}
+                          <Link
+                            href={`/dashboard/artistas/${artista.id}`}
+                            className="flex items-center gap-3 p-3 group"
                           >
-                            {artista.status}
-                          </Badge>
-                        </Link>
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-terracota/10 dark:bg-terracota/20 text-terracota font-semibold text-sm overflow-hidden group-hover:scale-105 transition-transform">
+                              {artista.foto ? (
+                                <img
+                                  src={artista.foto}
+                                  alt={artista.nome}
+                                  className="h-10 w-10 rounded-full object-cover"
+                                />
+                              ) : (
+                                artista.nome.charAt(0)
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-semibold text-foreground truncate group-hover:text-terracota transition-colors">
+                                {artista.nome}
+                              </p>
+                              <p className="text-xs text-secondary">
+                                {artista.generoArtistico}
+                              </p>
+                            </div>
+                            <Badge variant={statusBadgeVariant(artista.status)}>
+                              {artista.status}
+                            </Badge>
+                          </Link>
+                        </article>
                       ))}
                     </div>
                   )}
@@ -222,7 +207,7 @@ export default function DashboardContent({
               </section>
 
               {/* Depoimentos */}
-              <section>
+              <section aria-label="Depoimentos">
                 <Testimonials />
               </section>
             </div>
@@ -230,8 +215,8 @@ export default function DashboardContent({
 
           {activeTab === "recentes" && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-foreground dark:text-white font-[family-name:var(--font-playfair)]">
+              <header className="flex items-center justify-between">
+                <h3 className="cultural-section-title text-xl">
                   Últimos Artistas Cadastrados
                 </h3>
                 <Link
@@ -241,12 +226,12 @@ export default function DashboardContent({
                   <Plus className="h-4 w-4" />
                   Novo Artista
                 </Link>
-              </div>
+              </header>
 
               {recentes.length === 0 ? (
-                <div className="rounded-2xl bg-white dark:bg-[#150e09] p-12 text-center shadow-sm border border-areia dark:border-areia/25">
+                <div className="cultural-card text-center p-12">
                   <Users className="h-12 w-12 text-madeira/30 dark:text-areia/40 mx-auto mb-4" />
-                  <p className="text-madeira/60 dark:text-areia/70">
+                  <p className="text-secondary">
                     Nenhum artista cadastrado ainda
                   </p>
                   <Link
@@ -260,12 +245,14 @@ export default function DashboardContent({
               ) : (
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {recentes.map((artista) => (
-                    <Link
+                    <article
                       key={artista.id}
-                      href={`/dashboard/artistas/${artista.id}`}
-                      className="group rounded-2xl bg-white dark:bg-[#150e09] p-4 shadow-sm border border-areia dark:border-areia/25 hover:shadow-md hover:border-terracota/20 transition-all duration-300"
+                      className="bg-surface border border-border rounded-xl p-4 hover:shadow-md hover:border-terracota/30 transition-all duration-300"
                     >
-                      <div className="flex items-center gap-4">
+                      <Link
+                        href={`/dashboard/artistas/${artista.id}`}
+                        className="group flex items-center gap-4"
+                      >
                         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-terracota/10 dark:bg-terracota/20 text-terracota font-bold text-lg overflow-hidden group-hover:scale-105 transition-transform">
                           {artista.foto ? (
                             <img
@@ -278,20 +265,18 @@ export default function DashboardContent({
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-foreground dark:text-white truncate group-hover:text-terracota transition-colors">
+                          <p className="font-semibold text-foreground truncate group-hover:text-terracota transition-colors">
                             {artista.nome}
                           </p>
-                          <p className="text-sm text-madeira/60 dark:text-areia/70">
+                          <p className="text-sm text-secondary">
                             {artista.generoArtistico}
                           </p>
                         </div>
-                        <Badge
-                          variant={statusBadgeVariant(artista.status)}
-                        >
+                        <Badge variant={statusBadgeVariant(artista.status)}>
                           {artista.status}
                         </Badge>
-                      </div>
-                    </Link>
+                      </Link>
+                    </article>
                   ))}
                 </div>
               )}

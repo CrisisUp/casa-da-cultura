@@ -1,7 +1,7 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { Sparkles } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 export default function WelcomeBanner() {
   const { data: session } = useSession();
@@ -13,7 +13,10 @@ export default function WelcomeBanner() {
   if (hour >= 18) greeting = "Boa noite";
 
   return (
-    <div className="relative overflow-hidden organic-card text-white shadow-xl h-48" style={{ borderRadius: "2rem 1rem 2.5rem 1rem" }}>
+    <div
+      className="relative overflow-hidden organic-card text-white shadow-xl h-full w-full"
+      style={{ borderRadius: "2rem 1rem 2.5rem 1rem" }}
+    >
       {/* Imagem de fundo */}
       <div
         className="absolute inset-0 bg-cover bg-center"
