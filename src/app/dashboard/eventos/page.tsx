@@ -30,7 +30,6 @@ export default function EventosPage() {
   async function fetchEventos() {
     const res = await fetch("/api/eventos?all=true");
     const data = await res.json();
-    // Handle new pagination response format
     setEventos(data.eventos || data || []);
     setLoading(false);
   }
@@ -69,10 +68,10 @@ export default function EventosPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground font-[family-name:var(--font-playfair)]">
+          <h2 className="text-2xl font-bold text-foreground dark:text-white font-[family-name:var(--font-playfair)]">
             Eventos
           </h2>
-          <p className="text-madeira/70">
+          <p className="text-madeira/70 dark:text-areia/70">
             {eventos.length} evento{eventos.length !== 1 ? "s" : ""} cadastrado{eventos.length !== 1 ? "s" : ""}
           </p>
         </div>
@@ -85,13 +84,13 @@ export default function EventosPage() {
       </div>
 
       {loading ? (
-        <div className="rounded-2xl bg-white p-12 text-center shadow-sm border border-areia">
-          <p className="text-madeira/60">Carregando...</p>
+        <div className="cultural-card p-12 text-center">
+          <p className="text-madeira/60 dark:text-areia/70">Carregando...</p>
         </div>
       ) : eventos.length === 0 ? (
-        <div className="rounded-2xl bg-white p-12 text-center shadow-sm border border-areia">
-          <Calendar className="h-12 w-12 text-madeira/30 mx-auto mb-4" />
-          <p className="text-madeira/60 mb-4">Nenhum evento cadastrado</p>
+        <div className="cultural-card p-12 text-center">
+          <Calendar className="h-12 w-12 text-madeira/30 dark:text-areia/40 mx-auto mb-4" />
+          <p className="text-madeira/60 dark:text-areia/70 mb-4">Nenhum evento cadastrado</p>
           <Link href="/dashboard/eventos/novo">
             <Button>
               <Plus className="h-4 w-4 mr-2" />
@@ -102,9 +101,9 @@ export default function EventosPage() {
       ) : (
         <div className="space-y-3">
           {eventos.map((evento) => (
-            <div
+            <article
               key={evento.id}
-              className={`rounded-2xl bg-white p-4 shadow-sm border border-areia transition-all ${
+              className={`cultural-card p-4 transition-all ${
                 !evento.ativo ? "opacity-60" : ""
               }`}
             >
@@ -122,14 +121,14 @@ export default function EventosPage() {
                 {/* Conteúdo */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-semibold text-foreground">
+                    <h4 className="font-semibold text-foreground dark:text-white">
                       {evento.titulo}
                     </h4>
                     <Badge variant={evento.ativo ? "success" : "warning"}>
                       {evento.ativo ? "Ativo" : "Inativo"}
                     </Badge>
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-madeira/60">
+                  <div className="flex items-center gap-4 text-sm text-madeira/60 dark:text-areia/70">
                     <span>{formatarData(evento.data)}</span>
                     <span>{evento.hora}</span>
                     <span>{evento.local}</span>
@@ -146,7 +145,7 @@ export default function EventosPage() {
                 <div className="flex items-center gap-1 shrink-0">
                   <button
                     onClick={() => toggleAtivo(evento.id, evento.ativo)}
-                    className="rounded-lg p-2 text-madeira/50 hover:bg-areia hover:text-madeira transition-colors"
+                    className="rounded-lg p-2 text-madeira/50 hover:bg-areia dark:hover:bg-areia/20 hover:text-madeira dark:hover:text-white transition-colors"
                     title={evento.ativo ? "Desativar" : "Ativar"}
                   >
                     {evento.ativo ? (
@@ -157,7 +156,7 @@ export default function EventosPage() {
                   </button>
                   <Link
                     href={`/dashboard/eventos/${evento.id}/editar`}
-                    className="rounded-lg p-2 text-madeira/50 hover:bg-areia hover:text-madeira transition-colors"
+                    className="rounded-lg p-2 text-madeira/50 hover:bg-areia dark:hover:bg-areia/20 hover:text-madeira dark:hover:text-white transition-colors"
                   >
                     <Pencil className="h-4 w-4" />
                   </Link>
@@ -173,7 +172,7 @@ export default function EventosPage() {
                   </button>
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       )}

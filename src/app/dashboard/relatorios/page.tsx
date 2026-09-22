@@ -27,7 +27,6 @@ export default function RelatoriosPage() {
     const params = new URLSearchParams({ limit: "1000", genero, status });
     const res = await fetch(`/api/artistas?${params}`);
     const data = await res.json();
-    // API returns dates as strings; parse them for the Artista type
     setArtistas(
       data.artistas.map((a: Record<string, unknown>) => ({
         ...a,
@@ -61,8 +60,8 @@ export default function RelatoriosPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Relatórios</h2>
-          <p className="text-gray-500">Gere relatórios dos artistas cadastrados</p>
+          <h2 className="text-2xl font-bold text-foreground dark:text-white font-[family-name:var(--font-playfair)]">Relatórios</h2>
+          <p className="text-madeira/70 dark:text-areia/70">Gere relatórios dos artistas cadastrados</p>
         </div>
         <Button onClick={handleExportPDF} variant="secondary" disabled={exporting || loading}>
           {exporting ? (
@@ -87,15 +86,15 @@ export default function RelatoriosPage() {
         />
       </div>
 
-      <div className="rounded-xl bg-white shadow-sm border border-gray-100 overflow-hidden">
-        <div className="border-b border-gray-100 bg-gray-50 px-6 py-4">
+      <div className="cultural-card overflow-hidden p-0">
+        <div className="border-b border-areia dark:border-areia/20 bg-areia/20 dark:bg-[#1a120b] px-6 py-4">
           <div className="flex items-center gap-3">
-            <FileText className="h-5 w-5 text-primary" />
+            <FileText className="h-5 w-5 text-terracota" />
             <div>
-              <h3 className="font-medium text-gray-900">
+              <h3 className="cultural-section-title text-base">
                 Relatório de Artistas
               </h3>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-madeira/60 dark:text-areia/70">
                 {artistas.length} registro{artistas.length !== 1 ? "s" : ""}
                 {genero && ` • Gênero: ${genero}`}
                 {status && ` • Status: ${status}`}
@@ -105,45 +104,45 @@ export default function RelatoriosPage() {
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-gray-500">Carregando...</div>
+          <div className="p-12 text-center text-madeira/60 dark:text-areia/70">Carregando...</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                <tr className="border-b border-areia dark:border-areia/20 bg-areia/10 dark:bg-[#1f140e]">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">
                     #
                   </th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">
                     Nome
                   </th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">
                     CPF
                   </th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">
                     Gênero
                   </th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">
                     Cadastro
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-areia/50 dark:divide-areia/20">
                 {artistas.map((artista, index) => (
-                  <tr key={artista.id}>
-                    <td className="px-6 py-3 text-sm text-gray-500">
+                  <tr key={artista.id} className="hover:bg-areia/10 dark:hover:bg-areia/10 transition-colors">
+                    <td className="px-6 py-3 text-sm text-madeira/60 dark:text-areia/70">
                       {index + 1}
                     </td>
-                    <td className="px-6 py-3 text-sm font-medium text-gray-900">
+                    <td className="px-6 py-3 text-sm font-medium text-foreground dark:text-white">
                       {artista.nome}
                     </td>
-                    <td className="px-6 py-3 text-sm text-gray-600">
+                    <td className="px-6 py-3 text-sm text-madeira/80 dark:text-areia/80">
                       {formatCPF(artista.cpf)}
                     </td>
-                    <td className="px-6 py-3 text-sm text-gray-600">
+                    <td className="px-6 py-3 text-sm text-madeira/80 dark:text-areia/80">
                       {artista.generoArtistico}
                     </td>
                     <td className="px-6 py-3">
@@ -153,7 +152,7 @@ export default function RelatoriosPage() {
                         {artista.status}
                       </Badge>
                     </td>
-                    <td className="px-6 py-3 text-sm text-gray-500">
+                    <td className="px-6 py-3 text-sm text-madeira/60 dark:text-areia/70">
                       {formatDate(artista.createdAt)}
                     </td>
                   </tr>

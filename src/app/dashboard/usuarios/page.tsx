@@ -94,8 +94,8 @@ export default function UsuariosPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Gestão de Usuários e Permissões</h2>
-          <p className="text-gray-500">
+          <h2 className="text-2xl font-bold text-foreground dark:text-white font-[family-name:var(--font-playfair)]">Gestão de Usuários e Permissões</h2>
+          <p className="text-madeira/70 dark:text-areia/70">
             Gerencie quem tem acesso ao sistema e seus respectivos níveis de privilégio (RBAC)
           </p>
         </div>
@@ -106,39 +106,39 @@ export default function UsuariosPage() {
       </div>
 
       {loading ? (
-        <div className="rounded-xl bg-white p-12 text-center shadow-sm border border-gray-100">
-          <p className="text-gray-500">Carregando usuários...</p>
+        <div className="cultural-card p-12 text-center">
+          <p className="text-madeira/60 dark:text-areia/70">Carregando usuários...</p>
         </div>
       ) : (
-        <div className="rounded-xl bg-white shadow-sm border border-areia overflow-hidden">
+        <div className="cultural-card overflow-hidden p-0">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-areia bg-areia/50">
-                <th className="px-4 py-3 text-left text-sm font-medium text-madeira/60">Nome</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-madeira/60">Email</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-madeira/60">Perfil</th>
-                <th className="px-4 py-3 text-left text-sm font-medium text-madeira/60">Criado em</th>
-                <th className="px-4 py-3 text-right text-sm font-medium text-madeira/60">Ações</th>
+              <tr className="border-b border-areia dark:border-areia/20 bg-areia/20 dark:bg-[#1a120b]">
+                <th className="px-4 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">Nome</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">Email</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">Perfil</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-madeira/80 dark:text-areia">Criado em</th>
+                <th className="px-4 py-3 text-right text-sm font-medium text-madeira/80 dark:text-areia">Ações</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-areia">
+            <tbody className="divide-y divide-areia/50 dark:divide-areia/20">
               {usuarios.map((user) => (
-                <tr key={user.id} className="hover:bg-areia/50 transition-colors">
+                <tr key={user.id} className="hover:bg-areia/10 dark:hover:bg-areia/10 transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-full bg-terracota/10 flex items-center justify-center text-terracota font-semibold">
+                      <div className="h-8 w-8 rounded-full bg-terracota/10 dark:bg-terracota/20 flex items-center justify-center text-terracota font-semibold">
                         {user.role === "ADMIN" ? <Shield className="h-4 w-4" /> : <User className="h-4 w-4" />}
                       </div>
-                      <span className="font-medium text-foreground">{user.name}</span>
+                      <span className="font-medium text-foreground dark:text-white">{user.name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-madeira/60">{user.email}</td>
+                  <td className="px-4 py-3 text-sm text-madeira/70 dark:text-areia/70">{user.email}</td>
                   <td className="px-4 py-3">
                     <Badge variant={user.role === "ADMIN" ? "success" : "warning"}>
                       {user.role === "ADMIN" ? "Administrador" : "Operador"}
                     </Badge>
                   </td>
-                  <td className="px-4 py-3 text-sm text-madeira/60">{formatDate(new Date(user.createdAt))}</td>
+                  <td className="px-4 py-3 text-sm text-madeira/70 dark:text-areia/70">{formatDate(new Date(user.createdAt))}</td>
                   <td className="px-4 py-3 text-right">
                     <button
                       onClick={() => handleDelete(user.id)}
@@ -157,9 +157,9 @@ export default function UsuariosPage() {
 
       {/* Modal Novo Usuário */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl space-y-4">
-            <h3 className="text-xl font-bold text-foreground">Cadastrar Novo Usuário</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
+          <div className="w-full max-w-md rounded-2xl bg-white dark:bg-[#150e09] p-6 shadow-xl border border-areia dark:border-areia/25 space-y-4">
+            <h3 className="text-xl font-bold text-foreground dark:text-white font-[family-name:var(--font-playfair)]">Cadastrar Novo Usuário</h3>
             <form onSubmit={handleCreateUser} className="space-y-4">
               <Input
                 label="Nome Completo *"
