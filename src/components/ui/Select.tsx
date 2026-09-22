@@ -1,7 +1,7 @@
 "use client";
 
-import { SelectHTMLAttributes, forwardRef } from "react";
 import { classNames } from "@/lib/utils";
+import { SelectHTMLAttributes, forwardRef } from "react";
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
@@ -16,7 +16,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={id}
-            className="block text-sm font-medium text-madeira"
+            className="block text-sm font-semibold text-foreground"
           >
             {label}
           </label>
@@ -25,7 +25,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={id}
           className={classNames(
-            "block w-full rounded-lg border border-areia px-3 py-2 text-foreground shadow-sm transition-colors",
+            "block w-full h-9 rounded-lg border border-border bg-surface px-3  text-foreground shadow-sm transition-colors",
             "focus:border-terracota focus:outline-none focus:ring-1 focus:ring-terracota",
             error && "border-danger focus:border-danger focus:ring-danger",
             className
