@@ -1,11 +1,11 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import { prisma } from "@/lib/prisma";
-import { formatCPF, formatDate } from "@/lib/utils";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
-import { Pencil, ArrowLeft, Phone, Mail, MapPin } from "lucide-react";
 import { statusBadgeVariant } from "@/lib/constants";
+import { prisma } from "@/lib/prisma";
+import { formatCPF, formatDate } from "@/lib/utils";
+import { ArrowLeft, Mail, MapPin, Pencil, Phone } from "lucide-react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -26,17 +26,20 @@ export default async function ArtistaDetailPage({
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
+      {/* Cabeçalho */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link
             href="/dashboard/artistas"
-            className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            className="rounded-lg p-2 text-muted hover:bg-areia/40 dark:hover:bg-areia/20 hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">{artista.nome}</h2>
-            <p className="text-gray-500">{artista.generoArtistico}</p>
+            <h2 className="text-2xl font-bold text-foreground font-[family-name:var(--font-playfair)]">
+              {artista.nome}
+            </h2>
+            <p className="text-muted font-medium">{artista.generoArtistico}</p>
           </div>
         </div>
         <Link href={`/dashboard/artistas/${artista.id}/editar`}>
@@ -47,9 +50,10 @@ export default async function ArtistaDetailPage({
         </Link>
       </div>
 
-      <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-100">
+      {/* Dados principais */}
+      <div className="cultural-card p-6">
         <div className="flex items-start gap-6">
-          <div className="h-24 w-24 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center shrink-0">
+          <div className="h-24 w-24 rounded-full bg-areia/40 dark:bg-areia/20 overflow-hidden flex items-center justify-center shrink-0 border border-border">
             {artista.foto ? (
               <img
                 src={artista.foto}
@@ -57,7 +61,7 @@ export default async function ArtistaDetailPage({
                 className="h-full w-full object-cover"
               />
             ) : (
-              <span className="text-2xl font-bold text-gray-400">
+              <span className="text-2xl font-bold text-terracota">
                 {artista.nome.charAt(0)}
               </span>
             )}
@@ -71,27 +75,31 @@ export default async function ArtistaDetailPage({
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <p className="text-sm text-gray-500">CPF</p>
-                <p className="font-medium">{formatCPF(artista.cpf)}</p>
+                <p className="text-sm text-muted">CPF</p>
+                <p className="font-medium text-foreground">
+                  {formatCPF(artista.cpf)}
+                </p>
               </div>
               {artista.rg && (
                 <div>
-                  <p className="text-sm text-gray-500">RG</p>
-                  <p className="font-medium">{artista.rg}</p>
+                  <p className="text-sm text-muted">RG</p>
+                  <p className="font-medium text-foreground">{artista.rg}</p>
                 </div>
               )}
               {artista.dataNascimento && (
                 <div>
-                  <p className="text-sm text-gray-500">Data de Nascimento</p>
-                  <p className="font-medium">
+                  <p className="text-sm text-muted">Data de Nascimento</p>
+                  <p className="font-medium text-foreground">
                     {formatDate(artista.dataNascimento)}
                   </p>
                 </div>
               )}
               {artista.escolaridade && (
                 <div>
-                  <p className="text-sm text-gray-500">Escolaridade</p>
-                  <p className="font-medium">{artista.escolaridade}</p>
+                  <p className="text-sm text-muted">Escolaridade</p>
+                  <p className="font-medium text-foreground">
+                    {artista.escolaridade}
+                  </p>
                 </div>
               )}
             </div>
@@ -99,54 +107,69 @@ export default async function ArtistaDetailPage({
         </div>
       </div>
 
-      <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-100">
-        <h3 className="mb-4 font-medium text-gray-900">Contato</h3>
-        <div className="space-y-3">
-          <div className="flex items-center gap-3">
-            <Phone className="h-4 w-4 text-gray-400" />
-            <span>{artista.telefone}</span>
-          </div>
+      {/* Contato */}
+      <div className="cultural-card p-6">
+        <h3 className="mb-4 font-semibold text-foreground font-[family-name:var(--font-playfair)]">
+          Contato
+        </h3>
+        <div className="space-y-3 text-foreground">
+          {artista.telefone && (
+            <div className="flex items-center gap-3">
+              <Phone className="h-4 w-4 text-terracota shrink-0" />
+              <span>{artista.telefone}</span>
+            </div>
+          )}
           {artista.email && (
             <div className="flex items-center gap-3">
-              <Mail className="h-4 w-4 text-gray-400" />
+              <Mail className="h-4 w-4 text-terracota shrink-0" />
               <span>{artista.email}</span>
             </div>
           )}
           {artista.endereco && (
             <div className="flex items-center gap-3">
-              <MapPin className="h-4 w-4 text-gray-400" />
+              <MapPin className="h-4 w-4 text-terracota shrink-0" />
               <span>{artista.endereco}</span>
             </div>
           )}
         </div>
       </div>
 
+      {/* Experiência Artística */}
       {artista.experienciaArtistica && (
-        <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-100">
-          <h3 className="mb-2 font-medium text-gray-900">Experiência Artística</h3>
-          <p className="text-gray-600 whitespace-pre-wrap">
+        <div className="cultural-card p-6">
+          <h3 className="mb-2 font-semibold text-foreground font-[family-name:var(--font-playfair)]">
+            Experiência Artística
+          </h3>
+          <p className="text-foreground whitespace-pre-wrap leading-relaxed">
             {artista.experienciaArtistica}
           </p>
         </div>
       )}
 
+      {/* Redes Sociais */}
       {artista.redesSociais && (
-        <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-100">
-          <h3 className="mb-2 font-medium text-gray-900">Redes Sociais</h3>
-          <p className="text-gray-600">{artista.redesSociais}</p>
+        <div className="cultural-card p-6">
+          <h3 className="mb-2 font-semibold text-foreground font-[family-name:var(--font-playfair)]">
+            Redes Sociais
+          </h3>
+          <p className="text-foreground">{artista.redesSociais}</p>
         </div>
       )}
 
+      {/* Observações */}
       {artista.observacoes && (
-        <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-100">
-          <h3 className="mb-2 font-medium text-gray-900">Observações</h3>
-          <p className="text-gray-600 whitespace-pre-wrap">
+        <div className="cultural-card p-6">
+          <h3 className="mb-2 font-semibold text-foreground font-[family-name:var(--font-playfair)]">
+            Observações
+          </h3>
+          <p className="text-foreground whitespace-pre-wrap leading-relaxed">
             {artista.observacoes}
           </p>
         </div>
       )}
 
-      <div className="text-sm text-gray-400">
+      {/* Rodapé */}
+      <div className="text-sm text-muted">
         Cadastrado em: {formatDate(artista.createdAt)}
       </div>
     </div>
