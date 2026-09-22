@@ -138,30 +138,30 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Foto */}
-      <div className="flex items-center gap-6">
-        <div className="h-24 w-24 rounded-full bg-areia overflow-hidden flex items-center justify-center">
+      <div className="cultural-card flex items-center gap-6">
+        <div className="h-24 w-24 rounded-full bg-areia/50 dark:bg-[#1f140e] overflow-hidden flex items-center justify-center border border-areia dark:border-[#3d2618]">
           {foto ? (
             <img src={foto} alt="Foto" className="h-full w-full object-cover" />
           ) : (
-            <span className="text-madeira/40 text-sm">Sem foto</span>
+            <span className="text-foreground/60 dark:text-gray-400 text-sm">Sem foto</span>
           )}
         </div>
         <div>
-          <label className="block text-sm font-medium text-madeira mb-1">
+          <label className="block text-sm font-semibold text-foreground dark:text-white mb-1">
             Foto do Artista
           </label>
           <input
             type="file"
             accept="image/*"
             onChange={handlePhotoUpload}
-            className="text-sm text-madeira/60 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-terracota/10 file:text-terracota hover:file:bg-terracota/20"
+            className="text-sm text-foreground/80 dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-terracota/10 file:text-terracota hover:file:bg-terracota/20"
           />
         </div>
       </div>
 
       {/* Dados Pessoais */}
-      <div className="rounded-xl bg-areia/50 p-4 space-y-4">
-        <h3 className="font-medium text-foreground">Dados Pessoais</h3>
+      <div className="cultural-card space-y-4">
+        <h3 className="font-semibold text-foreground dark:text-white text-lg font-[family-name:var(--font-playfair)]">Dados Pessoais</h3>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Input
             name="nome"
@@ -196,8 +196,8 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
       </div>
 
       {/* Contato */}
-      <div className="rounded-xl bg-areia/50 p-4 space-y-4">
-        <h3 className="font-medium text-foreground">Contato</h3>
+      <div className="cultural-card space-y-4">
+        <h3 className="font-semibold text-foreground dark:text-white text-lg font-[family-name:var(--font-playfair)]">Contato</h3>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Input
             name="telefone"
@@ -227,8 +227,8 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
       </div>
 
       {/* Dados Artísticos */}
-      <div className="rounded-xl bg-areia/50 p-4 space-y-4">
-        <h3 className="font-medium text-foreground">Dados Artísticos</h3>
+      <div className="cultural-card space-y-4">
+        <h3 className="font-semibold text-foreground dark:text-white text-lg font-[family-name:var(--font-playfair)]">Dados Artísticos</h3>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="space-y-1">
             <Select
@@ -247,44 +247,42 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
             name="escolaridade"
             label="Escolaridade"
             options={ESCOLARIDADES}
-            defaultValue={artista?.escolaridade || ""}
+            defaultValue={toStr(artista?.escolaridade)}
           />
-          <div className="md:col-span-2 space-y-1">
-            <label className="block text-sm font-medium text-madeira">
+          <div className="md:col-span-2 space-y-1.5">
+            <label className="block text-sm font-semibold text-foreground dark:text-white">
               Experiência Artística
             </label>
             <textarea
               name="experienciaArtistica"
+              rows={4}
               defaultValue={toStr(artista?.experienciaArtistica)}
-              placeholder="Descreva a experiência artística..."
-              className="block w-full rounded-lg border border-areia px-3 py-2 text-foreground placeholder-madeira/40 shadow-sm focus:border-terracota focus:outline-none focus:ring-1 focus:ring-terracota"
-              rows={3}
+              className="block w-full rounded-xl border border-areia dark:border-[#3d2618] bg-white dark:bg-[#150e09] px-4 py-2.5 text-foreground dark:text-white placeholder-foreground/40 dark:placeholder-gray-400 shadow-sm transition-all duration-200 focus:border-terracota focus:outline-none focus:ring-2 focus:ring-terracota/20"
+              placeholder="Descreva a trajetória e experiência artística..."
             />
           </div>
           <Input
             name="redesSociais"
-            label="Redes Sociais"
+            label="Redes Sociais / Portfólio (URL)"
             defaultValue={toStr(artista?.redesSociais)}
-            placeholder="@instagram, link do facebook..."
-            className="md:col-span-2"
+            placeholder="https://instagram.com/artista"
           />
-          <div className="md:col-span-2 space-y-1">
-            <label className="block text-sm font-medium text-madeira">
+          <div className="md:col-span-2 space-y-1.5">
+            <label className="block text-sm font-semibold text-foreground dark:text-white">
               Observações
             </label>
             <textarea
               name="observacoes"
+              rows={3}
               defaultValue={toStr(artista?.observacoes)}
-              placeholder="Observações adicionais..."
-              className="block w-full rounded-lg border border-areia px-3 py-2 text-foreground placeholder-madeira/40 shadow-sm focus:border-terracota focus:outline-none focus:ring-1 focus:ring-terracota"
-              rows={2}
+              className="block w-full rounded-xl border border-areia dark:border-[#3d2618] bg-white dark:bg-[#150e09] px-4 py-2.5 text-foreground dark:text-white placeholder-foreground/40 dark:placeholder-gray-400 shadow-sm transition-all duration-200focus:border-terracota focus:outline-none focus:ring-2 focus:ring-terracota/20"
+              placeholder="Informações adicionais..."
             />
           </div>
         </div>
       </div>
 
-      {/* Ações */}
-      <div className="flex gap-3 justify-end">
+      <div className="flex justify-end gap-4">
         <Button
           type="button"
           variant="secondary"
@@ -293,13 +291,8 @@ export default function ArtistaForm({ artista, isEdit }: ArtistaFormProps) {
           Cancelar
         </Button>
         <Button type="submit" disabled={loading}>
-          {loading ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : isEdit ? (
-            "Salvar Alterações"
-          ) : (
-            "Cadastrar Artista"
-          )}
+          {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+          {isEdit ? "Salvar Alterações" : "Cadastrar Artista"}
         </Button>
       </div>
     </form>
