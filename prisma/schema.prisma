@@ -7,16 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  ADMIN
-  OPERATOR
-}
-
-enum StatusArtista {
-  ATIVO
-  INATIVO
-}
-
 model User {
   id        String   @id @default(cuid())
   name      String
@@ -45,10 +35,10 @@ model Artista {
   generoArtistico      String
   foto                 String?
   status               StatusArtista @default(ATIVO)
-  destaque             Boolean       @default(false)
-  deletedAt            DateTime?
   createdAt            DateTime      @default(now())
   updatedAt            DateTime      @updatedAt
+  deletedAt            DateTime?
+  destaque             Boolean       @default(false)
   eventos              Evento[]
 
   @@index([nome])
@@ -76,21 +66,31 @@ model Depoimento {
 }
 
 model Evento {
-  id          String   @id @default(cuid())
-  titulo      String
-  descricao   String?
-  data        DateTime
-  hora        String
-  local       String
-  tipo        String
-  cor         String?
-  artistaId   String?
-  artista     Artista? @relation(fields: [artistaId], references: [id])
-  ativo       Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  titulo    String
+  descricao String?
+  data      DateTime
+  hora      String
+  local     String
+  tipo      String
+  cor       String?
+  artistaId String?
+  ativo     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  artista   Artista? @relation(fields: [artistaId], references: [id])
 
   @@index([data])
   @@index([ativo])
   @@map("eventos")
+}
+
+enum Role {
+  ADMIN
+  OPERATOR
+}
+
+enum StatusArtista {
+  ATIVO
+  INATIVO
 }
