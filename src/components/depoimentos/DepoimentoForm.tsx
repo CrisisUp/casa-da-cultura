@@ -25,6 +25,12 @@ interface DepoimentoFormProps {
   isEdit?: boolean;
 }
 
+interface ApiErrorResponse {
+  error?: string;
+  details?: string[] | string;
+  success?: boolean;
+}
+
 export default function DepoimentoForm({
   depoimento,
   isEdit,
@@ -38,63 +44,76 @@ export default function DepoimentoForm({
     setLoading(true);
     setErrors({});
 
-    const form = new FormData(e.currentTarget);
+    try {
+      const form = new FormData(e.currentTarget);
 
-    const data = {
-      nome: form.get("nome") as string,
-      genero: form.get("genero") as string,
-      texto: form.get("texto") as string,
-      avatar: form.get("avatar") as string,
-      ativo: form.get("ativo") === "on",
-      ordem: parseInt(form.get("ordem") as string) || 0,
-    };
+      const data = {
+        nome: (form.get("nome") as string)?.trim() || "",
+        genero: (form.get("genero") as string) || "",
+        texto: (form.get("texto") as string)?.trim() || "",
+        avatar: (form.get("avatar") as string)?.trim() || null,
+        ativo: form.get("ativo") === "on",
+        ordem: parseInt(form.get("ordem") as string) || 0,
+      };
 
-    // Validar com Zod
-    const result = depoimentoSchema.safeParse(data);
+      const result = depoimentoSchema.safeParse(data);
 
-    if (!result.success) {
-      const fieldErrors: Record<string, string> = {};
-      result.error.issues.forEach((issue) => {
-        const field = issue.path[0] as string;
-        fieldErrors[field] = issue.message;
+      if (!result.success) {
+        const fieldErrors: Record<string, string> = {};
+        result.error.issues.forEach((issue) => {
+          const field = issue.path[0] as string;
+          fieldErrors[field] = issue.message;
+        });
+        setErrors(fieldErrors);
+        toast.error("Corrija os erros no formulário");
+        return;
+      }
+
+      const url = isEdit
+        ? `/api/depoimentos/${depoimento?.id}`
+        : "/api/depoimentos";
+      const method = isEdit ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(result.data),
       });
-      setErrors(fieldErrors);
-      toast.error("Corrija os erros no formulário");
-      setLoading(false);
-      return;
-    }
 
-    const url = isEdit
-      ? `/api/depoimentos/${depoimento?.id}`
-      : "/api/depoimentos";
-    const method = isEdit ? "PUT" : "POST";
+      if (!res.ok) {
+        const texto = await res.text();
+        let errorData: ApiErrorResponse = {};
 
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(result.data),
-    });
+        try {
+          errorData = texto ? JSON.parse(texto) : {};
+        } catch {
+          errorData = {};
+        }
 
-    setLoading(false);
-
-    if (!res.ok) {
-      const errorData = await res.json();
-      toast.error(
-        errorData.details?.join(", ") ||
+        const msg =
+          (Array.isArray(errorData.details)
+            ? errorData.details.join(", ")
+            : errorData.details) ||
           errorData.error ||
-          "Erro ao salvar depoimento"
-      );
-      return;
-    }
+          `Erro ${res.status}: ${res.statusText || "falha na requisição"}`;
 
-    toast.success(isEdit ? "Depoimento atualizado!" : "Depoimento criado!");
-    router.push("/dashboard/depoimentos");
-    router.refresh();
+        toast.error(msg);
+        return;
+      }
+
+      toast.success(isEdit ? "Depoimento atualizado!" : "Depoimento criado!");
+      router.push("/dashboard/depoimentos");
+      router.refresh();
+    } catch (err) {
+      console.error("Erro no submit:", err);
+      toast.error("Erro inesperado ao salvar. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* ✅ Card adaptativo — troca bg-white por .cultural-card */}
       <div className="cultural-card space-y-4">
         <h3 className="font-semibold text-foreground font-[family-name:var(--font-playfair)]">
           Dados do Depoimento
@@ -118,7 +137,6 @@ export default function DepoimentoForm({
           />
         </div>
 
-        {/* ✅ Textarea com cores semânticas */}
         <div className="space-y-1.5">
           <label
             htmlFor="texto"
@@ -156,7 +174,6 @@ export default function DepoimentoForm({
           />
         </div>
 
-        {/* ✅ Checkbox com cores semânticas */}
         <div className="flex items-center gap-2 pt-2">
           <input
             type="checkbox"
@@ -174,7 +191,6 @@ export default function DepoimentoForm({
         </div>
       </div>
 
-      {/* Ações */}
       <div className="flex gap-3 justify-end">
         <Button
           type="button"
