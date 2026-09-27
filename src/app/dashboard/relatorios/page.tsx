@@ -28,11 +28,12 @@ export default function RelatoriosPage() {
         const res = await fetch(`/api/artistas?${params}`, {
           signal: controller.signal,
         });
-        const data = await res.json();
+        const json = await res.json();
+        const artistasList = json.data || json.artistas || [];
 
         if (!controller.signal.aborted) {
           setArtistas(
-            data.artistas.map((a: Record<string, unknown>) => ({
+            (Array.isArray(artistasList) ? artistasList : []).map((a: Record<string, unknown>) => ({
               ...a,
               createdAt: new Date(a.createdAt as string),
             }))

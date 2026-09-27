@@ -44,9 +44,10 @@ export default function UsuariosPage() {
           signal: controller.signal,
         });
         if (res.ok) {
-          const data = await res.json();
+          const json = await res.json();
+          const list = json.data || json.usuarios || (Array.isArray(json) ? json : []);
           if (!controller.signal.aborted) {
-            setUsuarios(data.usuarios);
+            setUsuarios(Array.isArray(list) ? list : []);
           }
         } else {
           toast.error("Erro ao carregar usuários");
@@ -71,8 +72,9 @@ export default function UsuariosPage() {
   async function refreshUsuarios() {
     const res = await fetch("/api/usuarios");
     if (res.ok) {
-      const data = await res.json();
-      setUsuarios(data.usuarios);
+      const json = await res.json();
+      const list = json.data || json.usuarios || (Array.isArray(json) ? json : []);
+      setUsuarios(Array.isArray(list) ? list : []);
     }
   }
 
