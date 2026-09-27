@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { eventoSchema } from "@/lib/validations";
-import { handleApiError } from "@/lib/api-response";
+import { formatResponse, handleApiError } from "@/lib/api-response";
+import { auth } from "@/lib/auth";
 
 export async function GET(
   request: NextRequest,
@@ -21,7 +22,7 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(evento);
+    return NextResponse.json(formatResponse(evento));
   } catch (error) {
     console.error("Erro ao buscar evento:", error);
     return NextResponse.json(
@@ -36,6 +37,11 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+    if (!session || (session.user?.role !== "ADMIN" && session.user?.role !== "OPERATOR")) {
+      return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
+    }
+
     const { id } = await params;
     const body = await request.json();
     const validated = eventoSchema.parse(body);
@@ -48,7 +54,7 @@ export async function PUT(
       },
     });
 
-    return NextResponse.json(evento);
+    return NextResponse.json(formatResponse(evento));
   } catch (error) {
     return handleApiError(error, "atualizar evento");
   }
@@ -59,6 +65,11 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+    if (!session || session.user?.role !== "ADMIN") {
+      return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
+    }
+
     const { id } = await params;
 
     const evento = await prisma.evento.findUnique({ where: { id } });
@@ -72,7 +83,7 @@ export async function DELETE(
     await prisma.evento.delete({ where: { id } });
     console.log(`[AUDIT] Evento deletado: ${id} (${evento.titulo})`);
 
-    return NextResponse.json({ message: "Evento removido" });
+    return NextResponse.json(formatResponse({ message: "Evento removido" }));
   } catch (error) {
     console.error("Erro ao deletar evento:", error);
     return NextResponse.json(

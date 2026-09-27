@@ -18,8 +18,9 @@ export default function EventsCalendar() {
         return res.json();
       })
       .then((data) => {
-        // ✅ Verificação explícita (evita bug com array vazio)
-        setEventos(Array.isArray(data) ? data : data.eventos ?? []);
+        // ✅ Suporta o formato padronizado { success: true, data: [...] } ou array direto
+        const list = data.data || data.eventos || (Array.isArray(data) ? data : []);
+        setEventos(Array.isArray(list) ? list : []);
         setLoading(false);
       })
       .catch((err) => {

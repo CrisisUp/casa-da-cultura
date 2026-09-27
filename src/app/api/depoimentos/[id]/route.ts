@@ -1,4 +1,4 @@
-import { handleApiError } from "@/lib/api-response";
+import { handleApiError, formatResponse } from "@/lib/api-response";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { depoimentoSchema } from "@/lib/validations";
@@ -23,7 +23,7 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ success: true, data: depoimento });
+    return NextResponse.json(formatResponse(depoimento));
   } catch (error) {
     return handleApiError(error, "buscar depoimento");
   }
@@ -40,7 +40,7 @@ export async function PUT(
 
   try {
     const session = await auth();
-    if (!session || session.user?.role !== "ADMIN") {
+    if (!session || (session.user?.role !== "ADMIN" && session.user?.role !== "OPERATOR")) {
       return NextResponse.json(
         { success: false, error: "Acesso negado" },
         { status: 403 }
@@ -57,14 +57,14 @@ export async function PUT(
     });
 
     console.log("✅ [PUT] Atualizado:", depoimento.id);
-    return NextResponse.json({ success: true, data: depoimento });
+    return NextResponse.json(formatResponse(depoimento));
   } catch (error) {
     return handleApiError(error, "atualizar depoimento");
   }
 }
 
 // ─────────────────────────────────────────────
-// DELETE /api/depoimentos/[id]  (mantido como está)
+// DELETE /api/depoimentos/[id]
 // ─────────────────────────────────────────────
 export async function DELETE(
   request: NextRequest,
@@ -96,7 +96,7 @@ export async function DELETE(
     const removido = await prisma.depoimento.delete({ where: { id } });
     console.log("✅ [DELETE] Removido com sucesso! ID:", removido.id, "Nome:", removido.nome);
 
-    return NextResponse.json({ message: "Depoimento removido com sucesso" });
+    return NextResponse.json(formatResponse({ message: "Depoimento removido com sucesso" }));
   } catch (error) {
     console.error("❌ [DELETE] Erro capturado:", error);
     if (error instanceof Error) {

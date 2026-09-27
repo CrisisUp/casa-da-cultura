@@ -25,7 +25,8 @@ export default function Testimonials() {
         return res.json();
       })
       .then((data) => {
-        setDepoimentos(Array.isArray(data) ? data : data.depoimentos ?? []);
+        const list = data.data || data.depoimentos || (Array.isArray(data) ? data : []);
+        setDepoimentos(Array.isArray(list) ? list : []);
         setLoading(false);
       })
       .catch((err) => {
