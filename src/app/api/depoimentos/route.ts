@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { depoimentoSchema } from "@/lib/validations";
-import { handleApiError } from "@/lib/api-response";
+import { formatResponse, handleApiError } from "@/lib/api-response";
 
 export async function GET(request: NextRequest) {
   try {
@@ -23,15 +23,14 @@ export async function GET(request: NextRequest) {
       prisma.depoimento.count({ where }),
     ]);
 
-    return NextResponse.json({
-      depoimentos,
-      pagination: {
+    return NextResponse.json(
+      formatResponse(depoimentos, {
         page,
         limit,
         total,
         totalPages: Math.ceil(total / limit),
-      },
-    });
+      })
+    );
   } catch (error) {
     return handleApiError(error, "buscar depoimentos");
   }
@@ -46,7 +45,7 @@ export async function POST(request: NextRequest) {
       data: validated,
     });
 
-    return NextResponse.json(depoimento, { status: 201 });
+    return NextResponse.json(formatResponse(depoimento), { status: 201 });
   } catch (error) {
     return handleApiError(error, "criar depoimento");
   }

@@ -29,8 +29,9 @@ export default function EventosPage() {
 
   async function fetchEventos() {
     const res = await fetch("/api/eventos?all=true");
-    const data = await res.json();
-    setEventos(data.eventos || data || []);
+    const json = await res.json();
+    const data = json.data || json.eventos || json || [];
+    setEventos(Array.isArray(data) ? data : []);
     setLoading(false);
   }
 

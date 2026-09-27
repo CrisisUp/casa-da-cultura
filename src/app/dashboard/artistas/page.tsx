@@ -44,9 +44,10 @@ export default function ArtistasPage() {
       const res = await fetch(`/api/artistas?${params}`);
       if (!res.ok) throw new Error("Falha ao carregar artistas");
 
-      const data = await res.json();
-      setArtistas(data.artistas);
-      setPagination(data.pagination);
+      const json = await res.json();
+      const data = json.data || json.artistas || [];
+      setArtistas(Array.isArray(data) ? data : []);
+      setPagination(json.pagination || pagination);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erro desconhecido");
     } finally {

@@ -17,6 +17,7 @@ export interface Artista {
   destaque: boolean;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date | null;
 }
 
 export interface Evento {
@@ -32,6 +33,7 @@ export interface Evento {
   ativo: boolean;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date | null;
 }
 
 export interface Depoimento {
@@ -44,6 +46,7 @@ export interface Depoimento {
   ordem: number;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date | null;
 }
 
 export interface User {

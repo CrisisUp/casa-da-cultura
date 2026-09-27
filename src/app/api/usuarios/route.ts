@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-import { handleApiError } from "@/lib/api-response";
+import { formatResponse, handleApiError } from "@/lib/api-response";
 import bcrypt from "bcryptjs";
 
 export async function GET() {
@@ -22,7 +22,7 @@ export async function GET() {
       orderBy: { createdAt: "desc" },
     });
 
-    return NextResponse.json({ usuarios });
+    return NextResponse.json(formatResponse(usuarios));
   } catch (error) {
     return handleApiError(error, "listar usuários");
   }
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(newUser, { status: 201 });
+    return NextResponse.json(formatResponse(newUser), { status: 201 });
   } catch (error) {
     return handleApiError(error, "criar usuário");
   }

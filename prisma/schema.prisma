@@ -50,15 +50,16 @@ model Artista {
 }
 
 model Depoimento {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   nome      String
   genero    String
   texto     String
   avatar    String?
-  ativo     Boolean  @default(true)
-  ordem     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  ativo     Boolean   @default(true)
+  ordem     Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   @@index([ativo])
   @@index([ordem])
@@ -66,7 +67,7 @@ model Depoimento {
 }
 
 model Evento {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   titulo    String
   descricao String?
   data      DateTime
@@ -75,10 +76,11 @@ model Evento {
   tipo      String
   cor       String?
   artistaId String?
-  ativo     Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  artista   Artista? @relation(fields: [artistaId], references: [id])
+  ativo     Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  artista   Artista?  @relation(fields: [artistaId], references: [id])
 
   @@index([data])
   @@index([ativo])

@@ -1,6 +1,10 @@
 import { ZodError } from "zod";
 
-export function formatResponse(data: any, pagination?: any, meta?: any) {
+export function formatResponse<T>(
+  data: T,
+  pagination?: { page: number; limit: number; total: number; totalPages: number },
+  meta?: Record<string, unknown>
+) {
   return {
     success: true,
     data,
@@ -24,16 +28,16 @@ export function handleApiError(
     error instanceof ZodError ||
     (typeof error === "object" &&
       error !== null &&
-      (error as any).name === "ZodError")
+      "name" in error &&
+      (error as Record<string, unknown>).name === "ZodError")
   ) {
-    const issues = (error as any).issues ?? [];
+    const issues =
+      (error as { issues?: Array<{ path: (string | number)[]; message: string }> }).issues ?? [];
     return Response.json(
       {
         success: false,
         error: "Dados inválidos",
-        details: issues.map(
-          (i: any) => `${i.path.join(".")}: ${i.message}`
-        ),
+        details: issues.map((i) => `${i.path.join(".")}: ${i.message}`),
       },
       { status: 400 }
     );
@@ -44,7 +48,7 @@ export function handleApiError(
     typeof error === "object" &&
     error !== null &&
     "code" in error &&
-    (error as any).code === "P2002"
+    (error as Record<string, unknown>).code === "P2002"
   ) {
     return Response.json(
       { success: false, error: "Registro já cadastrado" },
