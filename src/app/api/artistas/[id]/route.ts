@@ -71,6 +71,11 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+    if (!session || session.user?.role !== "admin") {
+      return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
+    }
+
     const { id } = await params;
 
     const artista = await prisma.artista.findUnique({ where: { id } });
