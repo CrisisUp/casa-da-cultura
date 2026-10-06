@@ -14,7 +14,8 @@ jest.mock("@/lib/prisma", () => ({
 
 describe("API /api/stats", () => {
   it("should return statistics successfully", async () => {
-    (prisma.artista.count as jest.Mock).mockResolvedValueOnce(10) // total
+    (prisma.artista.count as jest.Mock)
+      .mockResolvedValueOnce(10) // total
       .mockResolvedValueOnce(8)  // ativos
       .mockResolvedValueOnce(2); // inativos
 
@@ -27,7 +28,8 @@ describe("API /api/stats", () => {
     ]);
 
     const response = await GET();
-    const data = await response.json();
+    const result = await response.json();
+    const data = result.data ?? result;
 
     expect(response.status).toBe(200);
     expect(data.total).toBe(10);
