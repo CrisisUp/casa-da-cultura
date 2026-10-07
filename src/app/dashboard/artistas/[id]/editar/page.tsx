@@ -1,5 +1,7 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { isValidUUID } from "@/lib/utils";
 import ArtistaForm from "@/components/artistas/ArtistaForm";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +11,18 @@ export default async function EditarArtistaPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  // Verificar autenticação
+  const session = await auth();
+  if (!session) {
+    redirect("/login");
+  }
+
   const { id } = await params;
+
+  // Validar formato do ID
+  if (!isValidUUID(id)) {
+    notFound();
+  }
 
   const artista = await prisma.artista.findUnique({
     where: { id },

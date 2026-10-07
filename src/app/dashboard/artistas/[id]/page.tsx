@@ -1,11 +1,12 @@
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { statusBadgeVariant } from "@/lib/constants";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { formatCPF, formatDate } from "@/lib/utils";
+import { formatCPF, formatDate, isValidUUID } from "@/lib/utils";
 import { ArrowLeft, Mail, MapPin, Pencil, Phone } from "lucide-react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,18 @@ export default async function ArtistaDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  // Verificar autenticação
+  const session = await auth();
+  if (!session) {
+    redirect("/login");
+  }
+
   const { id } = await params;
+
+  // Validar formato do ID
+  if (!isValidUUID(id)) {
+    notFound();
+  }
 
   const artista = await prisma.artista.findUnique({
     where: { id },

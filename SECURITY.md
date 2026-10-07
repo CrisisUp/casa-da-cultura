@@ -120,7 +120,17 @@ if (!session || session.user?.role !== "ADMIN") {
 
 ---
 
-## 🛡️ Boas Práticas
+## 🛡️ Proteção CSRF
+
+NextAuth v5 fornece proteção CSRF automática:
+
+1. **SameSite Cookies:** Padrão `Strict` — cookies não são enviados em requisições cross-site
+2. **Verificação de origem:** Valida `NEXTAUTH_URL`
+3. **Token de sessão:** JWT assinado
+
+Todos os endpoints `POST`, `PUT`, `DELETE` requerem autenticação (token JWT), o que fornece proteção adicional contra CSRF.
+
+---
 
 ### Ao criar novo endpoint:
 

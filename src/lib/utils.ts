@@ -36,3 +36,11 @@ export function classNames(
     })
     .join(" ");
 }
+
+export function isValidUUID(id: string): boolean {
+  // Prisma usa CUID por padrão (c + 24 caracteres)
+  // Também aceitar UUID v4
+  const cuidRegex = /^c[a-z0-9]{24}$/;
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return cuidRegex.test(id) || uuidRegex.test(id);
+}
