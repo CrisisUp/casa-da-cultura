@@ -36,7 +36,7 @@ export default function RelatoriosPage() {
             (Array.isArray(artistasList) ? artistasList : []).map((a: Record<string, unknown>) => ({
               ...a,
               createdAt: new Date(a.createdAt as string),
-            }))
+            })) as unknown as Artista[]
           );
         }
       } catch (err) {
