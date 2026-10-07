@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 // Gera CPF único por teste para evitar conflito de unique constraint no banco
 function cpfUnico(): string {
@@ -13,14 +13,16 @@ function nomeUnico(prefixo: string): string {
 
 test.describe('CRUD de Artistas - Fluxo Completo', () => {
   test.beforeEach(async ({ page }) => {
-    // Login
     await page.goto('/login');
+    await page.waitForLoadState('networkidle');
+
     await page.fill('input[type="email"]', 'admin@casa.gov.br');
     await page.fill('input[type="password"]', 'admin123');
     await page.click('button[type="submit"]');
-    await page.waitForURL('/dashboard');
 
-    // Ir para artistas
+    // Aceita /dashboard com ou sem barra/subrota
+    await page.waitForURL(/\/dashboard/, { timeout: 15000 });
+
     await page.goto('/dashboard/artistas');
     await page.waitForLoadState('networkidle');
   });
@@ -79,7 +81,6 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
   });
 
   test('deletar artista com confirmação', async ({ page }) => {
-    // Criar artista com nome único
     const cpf = cpfUnico();
     const nome = nomeUnico('Artista Del');
     await page.click('a[href="/dashboard/artistas/novo"]');
@@ -91,21 +92,28 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
     await page.click('button[type="submit"]');
     await page.waitForURL(/artistas$/, { timeout: 10000 });
 
-    // Aguardar que o artista apareça na lista
-    await expect(page.locator(`text=${nome}`).first()).toBeVisible({ timeout: 5000 });
+    const card = page.locator('article', { hasText: nome }).first();
+    await expect(card).toBeVisible({ timeout: 10000 });
 
-    // Registrar handler de dialog ANTES de clicar delete
-    page.on('dialog', dialog => dialog.accept());
+    page.on('dialog', async (dialog) => {
+      await dialog.accept();
+    });
 
-    // Encontrar a linha específica e clicar delete
-    const row = page.locator('article, table tbody tr', { hasText: nome }).first();
-    await row.locator('button[title*="Excluir"], button').last().click();
+    const deleteBtn = card.locator(`button[aria-label="Excluir ${nome}"]`);
 
-    // Aguardar recarregamento da lista
+    await Promise.all([
+      page.waitForResponse(
+        (res) => res.url().includes('/api/artistas') && res.request().method() === 'DELETE',
+        { timeout: 10000 }
+      ),
+      deleteBtn.click(),
+    ]);
+
+    await page.waitForTimeout(500);
+    await page.goto('/dashboard/artistas');
     await page.waitForLoadState('networkidle');
 
-    // Verificar que não aparece mais na lista
-    await expect(page.locator(`text=${nome}`).first()).not.toBeVisible({ timeout: 5000 });
+    await expect(page.locator(`text=${nome}`)).toHaveCount(0, { timeout: 10000 });
   });
 
   test('listar artistas com paginação', async ({ page }) => {

@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { handleApiError } from "@/lib/api-response";
 import { prisma } from "@/lib/prisma";
 import { artistaSchema } from "@/lib/validations";
-import { handleApiError } from "@/lib/api-response";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
@@ -71,8 +72,14 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await auth();
-    if (!session || session.user?.role !== "admin") {
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
+
+    const userRole = (token?.role as string)?.toLowerCase();
+
+    if (!token || userRole !== "admin") {
       return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
     }
 
