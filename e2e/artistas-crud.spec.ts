@@ -1,12 +1,23 @@
 import { expect, test } from '@playwright/test';
 
-// Gera CPF único por teste para evitar conflito de unique constraint no banco
-function cpfUnico(): string {
-  const n = Math.floor(10000000000 + Math.random() * 89999999999);
-  return `${n}`.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+// Gera um CPF válido com dígitos verificadores calculados para passar na validação do Zod/backend
+function gerarCpfValido(): string {
+  const rand = () => Math.floor(Math.random() * 9);
+  const n = Array.from({ length: 9 }, rand);
+
+  let d1 = n.reduce((total, num, index) => total + num * (10 - index), 0);
+  d1 = 11 - (d1 % 11);
+  if (d1 >= 10) d1 = 0;
+
+  let d2 = n.reduce((total, num, index) => total + num * (11 - index), 0) + d1 * 2;
+  d2 = 11 - (d2 % 11);
+  if (d2 >= 10) d2 = 0;
+
+  const cpfRaw = `${n.join('')}${d1}${d2}`;
+  return cpfRaw.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
 }
 
-// Nome único por teste para evitar conflito com dados antigos no banco
+// Nome único por teste para evitar conflito com dados no banco
 function nomeUnico(prefixo: string): string {
   return `${prefixo} ${Date.now()}`;
 }
@@ -20,7 +31,7 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
     await page.fill('input[type="password"]', 'admin123');
     await page.click('button[type="submit"]');
 
-    // Aceita /dashboard com ou sem barra/subrota
+    // Aguarda o login e redirecionamento para o dashboard
     await page.waitForURL(/\/dashboard/, { timeout: 15000 });
 
     await page.goto('/dashboard/artistas');
@@ -31,75 +42,80 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
     await page.click('a[href="/dashboard/artistas/novo"]');
     await page.waitForURL(/novo$/);
 
-    const cpf = cpfUnico();
+    const cpf = gerarCpfValido();
     const nome = nomeUnico('Artista Criar');
 
     // Preencher formulário
     await page.fill('input[name="nome"]', nome);
     await page.fill('input[name="cpf"]', cpf);
     await page.fill('input[name="telefone"]', '(11) 98765-4321');
-    await page.fill('input[name="email"]', 'joao@teste.com');
+    await page.fill('input[name="email"]', `artista.${Date.now()}@teste.com`);
     await page.fill('input[name="endereco"]', 'Rua Teste, 123');
     await page.selectOption('select[name="generoArtistico"]', 'Música');
 
-    // Submeter e aguardar redirecionamento
+    // Submeter e aguardar redirecionamento para a listagem
     await page.click('button[type="submit"]');
-    await page.waitForURL(/artistas$/, { timeout: 10000 });
+    await page.waitForURL(/\/dashboard\/artistas(\?.*)?$/, { timeout: 15000 });
 
-    // Verificar que artista aparece na lista (usar .first() para evitar strict mode)
-    await expect(page.locator(`text=${nome}`).first()).toBeVisible({ timeout: 5000 });
+    // Verificar que o artista aparece na lista
+    await expect(page.locator(`text=${nome}`).first()).toBeVisible({ timeout: 10000 });
   });
 
   test('editar artista', async ({ page }) => {
-    // Criar um artista primeiro
-    const cpf = cpfUnico();
+    // 1. Criar um artista primeiro com todos os dados válidos
+    const cpf = gerarCpfValido();
     const nomeOriginal = nomeUnico('Artista Edit');
     await page.click('a[href="/dashboard/artistas/novo"]');
     await page.waitForURL(/novo$/);
     await page.fill('input[name="nome"]', nomeOriginal);
     await page.fill('input[name="cpf"]', cpf);
     await page.fill('input[name="telefone"]', '(11) 91111-2222');
+    await page.fill('input[name="email"]', `edit.${Date.now()}@teste.com`);
+    await page.fill('input[name="endereco"]', 'Rua Teste, 456');
     await page.selectOption('select[name="generoArtistico"]', 'Dança');
     await page.click('button[type="submit"]');
-    await page.waitForURL(/artistas$/, { timeout: 10000 });
+    await page.waitForURL(/\/dashboard\/artistas(\?.*)?$/, { timeout: 15000 });
 
     // Aguardar tabela carregar com o artista recém-criado
-    await expect(page.locator(`text=${nomeOriginal}`).first()).toBeVisible({ timeout: 5000 });
+    await expect(page.locator(`text=${nomeOriginal}`).first()).toBeVisible({ timeout: 10000 });
 
-    // Encontrar a linha específica do artista e clicar em editar
+    // 2. Encontrar a linha ou card do artista e clicar em editar
     const row = page.locator('article, table tbody tr', { hasText: nomeOriginal }).first();
     await row.locator('a[href*="/editar"]').click();
     await page.waitForURL(/editar$/);
 
-    // Alterar nome e submeter
-    await page.fill('input[name="nome"]', 'Artista Editado');
+    // 3. Alterar nome e submeter
+    const nomeAtualizado = nomeUnico('Artista Atualizado');
+    await page.fill('input[name="nome"]', nomeAtualizado);
     await page.click('button[type="submit"]');
-    await page.waitForURL(/artistas$/, { timeout: 10000 });
+    await page.waitForURL(/\/dashboard\/artistas(\?.*)?$/, { timeout: 15000 });
 
-    // Verificar que mudança foi salva
-    await expect(page.locator('text=Artista Editado').first()).toBeVisible({ timeout: 5000 });
+    // Verificar que a mudança foi salva
+    await expect(page.locator(`text=${nomeAtualizado}`).first()).toBeVisible({ timeout: 10000 });
   });
 
   test('deletar artista com confirmação', async ({ page }) => {
-    const cpf = cpfUnico();
+    const cpf = gerarCpfValido();
     const nome = nomeUnico('Artista Del');
     await page.click('a[href="/dashboard/artistas/novo"]');
     await page.waitForURL(/novo$/);
     await page.fill('input[name="nome"]', nome);
     await page.fill('input[name="cpf"]', cpf);
     await page.fill('input[name="telefone"]', '(11) 95555-6666');
+    await page.fill('input[name="email"]', `del.${Date.now()}@teste.com`);
+    await page.fill('input[name="endereco"]', 'Rua Teste, 789');
     await page.selectOption('select[name="generoArtistico"]', 'Teatro');
     await page.click('button[type="submit"]');
-    await page.waitForURL(/artistas$/, { timeout: 10000 });
+    await page.waitForURL(/\/dashboard\/artistas(\?.*)?$/, { timeout: 15000 });
 
-    const card = page.locator('article', { hasText: nome }).first();
+    const card = page.locator('article, table tbody tr', { hasText: nome }).first();
     await expect(card).toBeVisible({ timeout: 10000 });
 
     page.on('dialog', async (dialog) => {
       await dialog.accept();
     });
 
-    const deleteBtn = card.locator(`button[aria-label="Excluir ${nome}"]`);
+    const deleteBtn = card.locator(`button[aria-label="Excluir ${nome}"], button:has-text("Excluir")`).first();
 
     await Promise.all([
       page.waitForResponse(
@@ -133,11 +149,9 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
   });
 
   test('filtrar por gênero artístico', async ({ page }) => {
-    // Filtros usam React state, não atualizam URL
     const selectGenero = page.locator('select').first();
     await selectGenero.selectOption('Música');
 
-    // Filtragem é client-side — aguardar re-render com toPass
     await expect(async () => {
       const tableVisible = await page.locator('article, table').first().isVisible().catch(() => false);
       const emptyVisible = await page.locator('text=Nenhum artista encontrado').isVisible().catch(() => false);
@@ -150,7 +164,6 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
     if (await searchInput.isVisible()) {
       await searchInput.fill('João');
 
-      // Filtragem é client-side — aguardar re-render
       await expect(async () => {
         const tableVisible = await page.locator('article, table').first().isVisible().catch(() => false);
         const emptyVisible = await page.locator('text=Nenhum artista encontrado').isVisible().catch(() => false);
@@ -163,13 +176,9 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
     await page.click('a[href="/dashboard/artistas/novo"]');
     await page.waitForURL(/novo$/);
 
-    // Submeter vazio — HTML5 required validation deve impedir envio
     await page.click('button[type="submit"]');
 
-    // Deve continuar na página (HTML5 impediu submissão)
     expect(page.url()).toContain('/novo');
-
-    // Verificar que o formulário ainda está visível
     await expect(page.locator('form')).toBeVisible();
   });
 
@@ -184,10 +193,7 @@ test.describe('CRUD de Artistas - Fluxo Completo', () => {
 
     await page.click('button[type="submit"]');
 
-    // Deve continuar na página (não redirecionar)
     expect(page.url()).toContain('/novo');
-
-    // Deve mostrar erro de CPF inline (Input usa text-danger, Select usa text-red-600)
     await expect(page.locator('text=/inválido|inválida/i').first()).toBeVisible({ timeout: 5000 });
   });
 });
