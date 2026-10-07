@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { eventoSchema } from "@/lib/validations";
 import { formatResponse, handleApiError } from "@/lib/api-response";
+import { auth } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   try {
@@ -21,6 +22,9 @@ export async function GET(request: NextRequest) {
     if (proximos) {
       where.data = { gte: new Date() };
     }
+
+    // Filtrar registros soft-deletados
+    where.deletedAt = null;
 
     const [eventos, total] = await Promise.all([
       prisma.evento.findMany({
@@ -48,6 +52,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session || (session.user?.role !== "ADMIN" && session.user?.role !== "OPERATOR")) {
+      return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
+    }
+
     const body = await request.json();
     const validated = eventoSchema.parse(body);
 

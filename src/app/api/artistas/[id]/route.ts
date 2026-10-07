@@ -1,7 +1,7 @@
-import { handleApiError } from "@/lib/api-response";
+import { handleApiError, formatResponse } from "@/lib/api-response";
 import { prisma } from "@/lib/prisma";
 import { artistaSchema } from "@/lib/validations";
-import { getToken } from "next-auth/jwt";
+import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -36,6 +36,11 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+    if (!session || (session.user?.role !== "ADMIN" && session.user?.role !== "OPERATOR")) {
+      return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
+    }
+
     const { id } = await params;
     const body = await request.json();
     const validated = artistaSchema.parse(body);
@@ -61,7 +66,7 @@ export async function PUT(
       },
     });
 
-    return NextResponse.json(artista);
+    return NextResponse.json(formatResponse(artista));
   } catch (error) {
     return handleApiError(error, "atualizar artista");
   }
@@ -72,14 +77,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
-
-    const userRole = (token?.role as string)?.toLowerCase();
-
-    if (!token || userRole !== "admin") {
+    const session = await auth();
+    if (!session || session.user?.role !== "ADMIN") {
       return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
     }
 
@@ -93,10 +92,13 @@ export async function DELETE(
       );
     }
 
-    await prisma.artista.delete({ where: { id } });
-    console.log(`[AUDIT] Artista deletado: ${id} (${artista.nome})`);
+    await prisma.artista.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+    console.log(`[AUDIT] Artista deletado (soft): ${id} (${artista.nome})`);
 
-    return NextResponse.json({ message: "Artista removido" });
+    return NextResponse.json(formatResponse({ message: "Artista removido" }));
   } catch (error) {
     console.error("Erro ao deletar artista:", error);
     return NextResponse.json(

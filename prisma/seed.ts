@@ -30,7 +30,7 @@ async function main() {
     },
   });
 
-  // Criar artistas de exemplo
+  // Criar artistas de exemplo (com CPFs válidos formatados)
   const artistas: Array<{
     nome: string;
     cpf: string;
@@ -47,9 +47,9 @@ async function main() {
   }> = [
     {
       nome: "Maria Silva Santos",
-      cpf: "12345678901",
+      cpf: "111.444.777-35", // CPF válido
       rg: "1234567",
-      telefone: "11999887766",
+      telefone: "(11) 99988-7766",
       email: "maria.santos@email.com",
       endereco: "Rua das Flores, 123 - Centro",
       dataNascimento: new Date("1985-03-15"),
@@ -61,16 +61,16 @@ async function main() {
     },
     {
       nome: "João Pedro Oliveira",
-      cpf: "23456789012",
-      telefone: "11988776655",
+      cpf: "123.456.789-09", // CPF válido
+      telefone: "(11) 98877-6655",
       generoArtistico: "Dança",
       experienciaArtistica: "Dançarino de dança contemporânea. Participa do grupo Expressão Corporal.",
       status: "ATIVO",
     },
     {
       nome: "Ana Carolina Souza",
-      cpf: "34567890123",
-      telefone: "11977665544",
+      cpf: "111.222.333-96", // CPF válido
+      telefone: "(11) 97766-5544",
       email: "ana.souza@email.com",
       generoArtistico: "Teatro",
       experienciaArtistica: "Atriz e diretora teatral. Monta peças para a comunidade há 10 anos.",
@@ -78,24 +78,24 @@ async function main() {
     },
     {
       nome: "Carlos Eduardo Lima",
-      cpf: "45678901234",
-      telefone: "11966554433",
+      cpf: "222.333.444-70", // CPF válido
+      telefone: "(11) 96655-4433",
       generoArtistico: "Artes Visuais",
       experienciaArtistica: "Pintor e escultor. Expõe suas obras em galerias locais.",
       status: "ATIVO",
     },
     {
       nome: "Fernanda Costa",
-      cpf: "56789012345",
-      telefone: "11955443322",
+      cpf: "333.444.555-31", // CPF válido
+      telefone: "(11) 95544-3322",
       generoArtistico: "Literatura",
       experienciaArtistica: "Poetisa e contista. Publicou 3 livros de poesia.",
       status: "INATIVO",
     },
     {
       nome: "Roberto Almeida",
-      cpf: "67890123456",
-      telefone: "11944332211",
+      cpf: "444.555.666-92", // CPF válido
+      telefone: "(11) 94433-2211",
       generoArtistico: "Artesanato",
       experienciaArtistica: "Artesão especializado em cerâmica e barro. Ensina oficinas para a comunidade.",
       status: "ATIVO",
@@ -202,9 +202,9 @@ async function main() {
   }
 
   console.log("Seed concluído!");
-  console.log("Usuários criados:");
-  console.log("  Admin: admin@casa.gov.br / admin123");
-  console.log("  Operador: operador@casa.gov.br / operador123");
+  console.log("Usuários criados (credenciais de teste):");
+  console.log("  Admin: admin@casa.gov.br");
+  console.log("  Operador: operador@casa.gov.br");
   console.log(`${artistas.length} artistas de exemplo criados`);
   console.log(`${depoimentos.length} depoimentos de exemplo criados`);
   console.log(`${eventos.length} eventos de exemplo criados`);

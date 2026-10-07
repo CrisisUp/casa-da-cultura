@@ -36,8 +36,6 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  console.log("🔵 [PUT /api/depoimentos] Rota chamada");
-
   try {
     const session = await auth();
     if (!session || (session.user?.role !== "ADMIN" && session.user?.role !== "OPERATOR")) {
@@ -56,7 +54,7 @@ export async function PUT(
       data: validated,
     });
 
-    console.log("✅ [PUT] Atualizado:", depoimento.id);
+    console.log(`[AUDIT] Depoimento atualizado: ${id}`);
     return NextResponse.json(formatResponse(depoimento));
   } catch (error) {
     return handleApiError(error, "atualizar depoimento");
@@ -70,39 +68,31 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  console.log("🔵 [DELETE /api/depoimentos] Rota chamada");
-
   try {
     const session = await auth();
-    console.log("🔵 [DELETE] Session:", session?.user?.email, "Role:", session?.user?.role);
 
     if (!session || session.user?.role !== "ADMIN") {
-      console.log("🔴 [DELETE] Acesso negado. Role:", session?.user?.role);
       return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
     }
 
     const { id } = await params;
-    console.log("🔵 [DELETE] ID recebido:", id);
 
     const depoimento = await prisma.depoimento.findUnique({ where: { id } });
-    console.log("🔵 [DELETE] Depoimento encontrado:", depoimento ? depoimento.id : "NÃO ENCONTRADO");
 
     if (!depoimento) {
-      console.log("🔴 [DELETE] Depoimento não existe com esse ID");
       return NextResponse.json({ error: "Depoimento não encontrado" }, { status: 404 });
     }
 
-    console.log("🟡 [DELETE] Executando prisma.depoimento.delete...");
-    const removido = await prisma.depoimento.delete({ where: { id } });
-    console.log("✅ [DELETE] Removido com sucesso! ID:", removido.id, "Nome:", removido.nome);
+    // Soft delete: marcar como deletado em vez de remover do DB
+    const removido = await prisma.depoimento.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+    console.log(`[AUDIT] Depoimento deletado (soft): ${removido.id}`);
 
     return NextResponse.json(formatResponse({ message: "Depoimento removido com sucesso" }));
   } catch (error) {
-    console.error("❌ [DELETE] Erro capturado:", error);
-    if (error instanceof Error) {
-      console.error("❌ [DELETE] Mensagem:", error.message);
-      console.error("❌ [DELETE] Stack:", error.stack);
-    }
+    console.error("[ERROR] ao remover depoimento:", error);
     return NextResponse.json(
       { error: "Erro interno ao remover depoimento" },
       { status: 500 }

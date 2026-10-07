@@ -1,5 +1,38 @@
 import { z } from "zod";
 
+// Validar CPF com algoritmo dos dígitos verificadores
+function isValidCPF(cpf: string): boolean {
+  // Remove pontuação
+  const cleaned = cpf.replace(/\D/g, "");
+
+  // Deve ter exatamente 11 dígitos
+  if (cleaned.length !== 11) return false;
+
+  // Rejeita CPFs conhecidos como inválidos (todos os dígitos iguais)
+  if (/^(\d)\1{10}$/.test(cleaned)) return false;
+
+  // Calcula primeiro dígito verificador
+  let sum = 0;
+  for (let i = 0; i < 9; i++) {
+    sum += parseInt(cleaned[i]) * (10 - i);
+  }
+  let digit1 = 11 - (sum % 11);
+  digit1 = digit1 > 9 ? 0 : digit1;
+
+  // Calcula segundo dígito verificador
+  sum = 0;
+  for (let i = 0; i < 10; i++) {
+    sum += parseInt(cleaned[i]) * (11 - i);
+  }
+  let digit2 = 11 - (sum % 11);
+  digit2 = digit2 > 9 ? 0 : digit2;
+
+  // Verifica se os dígitos verificadores correspondem
+  return (
+    parseInt(cleaned[9]) === digit1 && parseInt(cleaned[10]) === digit2
+  );
+}
+
 export const artistaSchema = z.object({
   nome: z
     .string()
@@ -9,7 +42,8 @@ export const artistaSchema = z.object({
     .string()
     .min(14, "CPF inválido")
     .max(14, "CPF inválido")
-    .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "Formato de CPF inválido (000.000.000-00)"),
+    .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "Formato de CPF inválido (000.000.000-00)")
+    .refine(isValidCPF, "CPF inválido (dígitos verificadores não conferem)"),
   rg: z.string().optional().or(z.literal("")),
   telefone: z
     .string()
@@ -52,7 +86,12 @@ export const eventoSchema = z.object({
   local: z.string().min(3, "Local deve ter pelo menos 3 caracteres"),
   tipo: z.string().min(1, "Selecione um tipo"),
   cor: z.string().optional().or(z.literal("")),
-  artistaId: z.string().uuid().optional().or(z.literal("")).nullable(),
+  artistaId: z
+    .string()
+    .uuid("ID do artista inválido")
+    .optional()
+    .nullable()
+    .or(z.literal("")),
   ativo: z.boolean().default(true),
 });
 

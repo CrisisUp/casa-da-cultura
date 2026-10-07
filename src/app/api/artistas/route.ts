@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { artistaSchema } from "@/lib/validations";
 import { formatResponse, handleApiError } from "@/lib/api-response";
+import { auth } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   try {
@@ -31,6 +32,9 @@ export async function GET(request: NextRequest) {
       where.status = status;
     }
 
+    // Filtrar registros soft-deletados
+    where.deletedAt = null;
+
     const [artistas, total] = await Promise.all([
       prisma.artista.findMany({
         where,
@@ -56,6 +60,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session || (session.user?.role !== "ADMIN" && session.user?.role !== "OPERATOR")) {
+      return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
+    }
+
     const body = await request.json();
     const validated = artistaSchema.parse(body);
 

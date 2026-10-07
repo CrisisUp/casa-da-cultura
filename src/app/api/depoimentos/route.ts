@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { depoimentoSchema } from "@/lib/validations";
 import { formatResponse, handleApiError } from "@/lib/api-response";
+import { auth } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,7 +12,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "10");
     const skip = (page - 1) * limit;
 
-    const where = all ? {} : { ativo: true };
+    const where = all ? { deletedAt: null } : { ativo: true, deletedAt: null };
 
     const [depoimentos, total] = await Promise.all([
       prisma.depoimento.findMany({
@@ -38,6 +39,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session || (session.user?.role !== "ADMIN" && session.user?.role !== "OPERATOR")) {
+      return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
+    }
+
     const body = await request.json();
     const validated = depoimentoSchema.parse(body);
 

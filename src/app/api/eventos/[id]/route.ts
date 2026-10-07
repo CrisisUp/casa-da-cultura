@@ -80,8 +80,12 @@ export async function DELETE(
       );
     }
 
-    await prisma.evento.delete({ where: { id } });
-    console.log(`[AUDIT] Evento deletado: ${id} (${evento.titulo})`);
+    // Soft delete: marcar como deletado em vez de remover do DB
+    await prisma.evento.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
+    console.log(`[AUDIT] Evento deletado (soft): ${id} (${evento.titulo})`);
 
     return NextResponse.json(formatResponse({ message: "Evento removido" }));
   } catch (error) {
