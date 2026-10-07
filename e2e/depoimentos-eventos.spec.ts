@@ -21,55 +21,51 @@ test.describe('CRUD de Depoimentos e Eventos', () => {
 
     const nomeAutor = `Maria Silva ${Date.now()}`;
 
-    // Preenche autor
-    const inputAutor = page.locator('input[name="autor"], input[name="nome"]').first();
-    await inputAutor.fill(nomeAutor);
-
-    // Preenche texto / depoimento
-    const inputTexto = page.locator('textarea[name="texto"], textarea[name="conteudo"]').first();
-    await inputTexto.fill('Excelente centro cultural e apoio aos artistas!');
-
-    // Campo cargo / ocupação (opcional)
-    const inputCargo = page.locator('input[name="cargo"], input[name="ocupacao"]').first();
-    if (await inputCargo.isVisible().catch(() => false)) {
-      await inputCargo.fill('Frequentadora');
-    }
-
-    // Select de artista vinculado (caso exista e seja obrigatório)
-    const selectArtista = page.locator('select[name="artistaId"], select').first();
-    if (await selectArtista.isVisible().catch(() => false)) {
-      const options = await selectArtista.locator('option').all();
-      if (options.length > 1) {
-        await selectArtista.selectOption({ index: 1 });
+    // Listener para erros do console
+    page.on('console', (msg) => {
+      if (msg.type() === 'error' || msg.type() === 'log') {
+        console.log(`[BROWSER ${msg.type()}] ${msg.text()}`);
       }
-    }
+    });
 
-    // Nota / avaliação (caso exista)
-    const inputNota = page.locator('input[name="nota"], input[name="avaliacao"]').first();
-    if (await inputNota.isVisible().catch(() => false)) {
-      await inputNota.fill('5');
-    }
+    // Preenche nome
+    await page.fill('input[name="nome"]', nomeAutor);
 
-    // Submete e intercepta a requisição da API
+    // Seleciona primeira opção válida do select (index 1 pula "Selecione...")
+    await page.selectOption('select[name="genero"]', { index: 1 });
+
+    // Preenche texto com tamanho suficiente (schema exige mín 10 chars)
+    await page.fill('textarea[name="texto"]', 'Excelente centro cultural e apoio fundamental aos artistas locais.');
+
+    // Preenche avatar (iniciais de 2 caracteres)
+    await page.fill('input[name="avatar"]', 'MS');
+
+    // Dispara o submit e aguarda a resposta da API com timeout maior
     const responsePromise = page.waitForResponse(
       (resp) => resp.url().includes('/api/depoimentos') && resp.request().method() === 'POST',
-      { timeout: 10000 }
+      { timeout: 20000 }
     ).catch(() => null);
 
+    console.log('Clicando no botão...');
     await page.click('button[type="submit"]');
-    await responsePromise;
 
-    // Aguarda o retorno para a listagem
-    await page.waitForURL(/\/dashboard\/depoimentos|\/depoimentos/, { timeout: 15000 });
-    await page.waitForLoadState('networkidle');
+    console.log('Aguardando POST...');
+    const response = await responsePromise;
 
-    // Caso a listagem precise de refresh para refletir a nova inserção
-    if (!(await page.locator(`text=${nomeAutor}`).first().isVisible().catch(() => false))) {
-      await page.goto('/dashboard/depoimentos');
-      await page.waitForLoadState('networkidle');
+    if (!response) {
+      throw new Error('POST /api/depoimentos não foi disparado. Verifique erros de validação no console acima.');
     }
 
-    // Verifica que o depoimento recém-criado está visível
+    expect(response.status()).toBeLessThan(400);
+
+    // Aguarda navegar para a lista
+    await page.waitForURL('**/dashboard/depoimentos', { timeout: 20000 });
+    await page.waitForLoadState('networkidle');
+
+    // Aguarda um pouco para o useEffect completar
+    await page.waitForTimeout(1000);
+
+    // Valida que o nome aparece na tela
     await expect(page.locator(`text=${nomeAutor}`).first()).toBeVisible({ timeout: 10000 });
   });
 

@@ -47,11 +47,13 @@ export default function DepoimentoForm({
     try {
       const form = new FormData(e.currentTarget);
 
+      const avatarRaw = (form.get("avatar") as string)?.trim();
+
       const data = {
         nome: (form.get("nome") as string)?.trim() || "",
         genero: (form.get("genero") as string) || "",
         texto: (form.get("texto") as string)?.trim() || "",
-        avatar: (form.get("avatar") as string)?.trim() || null,
+        avatar: avatarRaw ? avatarRaw : undefined,
         ativo: form.get("ativo") === "on",
         ordem: parseInt(form.get("ordem") as string) || 0,
       };
@@ -59,6 +61,7 @@ export default function DepoimentoForm({
       const result = depoimentoSchema.safeParse(data);
 
       if (!result.success) {
+        console.log("Erros de validacao Zod:", result.error.format());
         const fieldErrors: Record<string, string> = {};
         result.error.issues.forEach((issue) => {
           const field = issue.path[0] as string;
