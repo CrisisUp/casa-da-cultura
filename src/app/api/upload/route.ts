@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { randomUUID } from "crypto";
+import { existsSync } from "fs";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_MIMES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
@@ -39,7 +40,12 @@ export async function POST(request: NextRequest) {
 
     const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
     const filename = `${randomUUID()}.${ext}`;
-    const filepath = join(process.cwd(), "public/uploads", filename);
+    const uploadDir = join(process.cwd(), "public/uploads");
+    const filepath = join(uploadDir, filename);
+
+    if (!existsSync(uploadDir)) {
+      await mkdir(uploadDir, { recursive: true });
+    }
 
     await writeFile(filepath, buffer);
     console.log(`[AUDIT] Arquivo enviado: ${filename} (${(file.size / 1024).toFixed(1)}KB)`);
