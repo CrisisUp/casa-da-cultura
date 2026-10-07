@@ -1,6 +1,13 @@
 import { GET } from "@/app/api/stats/route";
 import { prisma } from "@/lib/prisma";
 
+// Mock do NextAuth
+jest.mock("@/lib/auth", () => ({
+  auth: jest.fn().mockResolvedValue({
+    user: { id: "1", name: "Admin", email: "admin@teste.com", role: "ADMIN" },
+  }),
+}));
+
 // Mock do Prisma Client
 jest.mock("@/lib/prisma", () => ({
   prisma: {

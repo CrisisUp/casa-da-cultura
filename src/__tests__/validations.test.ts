@@ -5,12 +5,15 @@ describe("Zod Validation Schemas", () => {
     it("should validate a valid artist", () => {
       const validData = {
         nome: "Maria Silva",
-        cpf: "123.456.789-01",
+        cpf: "111.444.777-35", // CPF válido (dígitos verificadores corretos)
         telefone: "(11) 98888-7777",
         generoArtistico: "Música",
       };
 
       const result = artistaSchema.safeParse(validData);
+      if (!result.success) {
+        console.log("Erros de validação Zod:", JSON.stringify(result.error.issues, null, 2));
+      }
       expect(result.success).toBe(true);
     });
 
@@ -18,6 +21,21 @@ describe("Zod Validation Schemas", () => {
       const invalidData = {
         nome: "Maria Silva",
         cpf: "12345678901", // Missing dots and dash
+        telefone: "(11) 98888-7777",
+        generoArtistico: "Música",
+      };
+
+      const result = artistaSchema.safeParse(invalidData);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].path).toContain("cpf");
+      }
+    });
+
+    it("should fail on invalid CPF digits", () => {
+      const invalidData = {
+        nome: "Maria Silva",
+        cpf: "123.456.789-00", // Formato correto mas dígitos inválidos
         telefone: "(11) 98888-7777",
         generoArtistico: "Música",
       };

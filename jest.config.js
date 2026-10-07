@@ -25,7 +25,7 @@ module.exports = {
   },
   testPathIgnorePatterns: ["/node_modules/", "/.next/"],
   transformIgnorePatterns: [
-    "/node_modules/",
+    "/node_modules/(?!(next-auth|@auth/core|@auth/prisma-adapter)/)",
     "^.+\\.module\\.(css|sass|scss)$",
   ],
 };
