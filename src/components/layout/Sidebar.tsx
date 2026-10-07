@@ -89,7 +89,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         </div>
 
         {/* Navegação principal */}
-        <nav className="flex-1 space-y-1 px-3 py-4 bg-creme">
+        <nav className="flex-1 space-y-1 px-3 py-4 bg-creme dark:bg-[#150e09]">
           {navigation.map((item) => {
             const isActive =
               pathname === item.href || pathname.startsWith(item.href + "/");
@@ -102,7 +102,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200",
                   isActive
                     ? "bg-terracota text-white shadow-md shadow-terracota/30"
-                    : "text-madeira hover:bg-areia hover:text-terracota-dark"
+                    : "text-madeira dark:text-areia hover:bg-areia dark:hover:bg-areia/15 hover:text-terracota-dark"
                 )}
                 aria-current={isActive ? "page" : undefined}
               >
@@ -114,16 +114,16 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         </nav>
 
         {/* Separador */}
-        <div className="mx-4 border-t border-areia" />
+        <div className="mx-4 border-t border-areia dark:border-areia/20" />
 
         {/* Navegação secundária */}
-        <nav className="space-y-1 px-3 py-3 bg-creme">
+        <nav className="space-y-1 px-3 py-3 bg-creme dark:bg-[#150e09]">
           {secondaryNav.map((item) => (
             <Link
               key={item.name}
               href={item.href}
               onClick={onClose}
-              className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm text-madeira/70 hover:bg-areia hover:text-madeira transition-colors"
+              className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm text-madeira/70 dark:text-areia/70 hover:bg-areia dark:hover:bg-areia/15 hover:text-madeira transition-colors"
             >
               <item.icon className="h-4 w-4" />
               {item.name}
@@ -132,10 +132,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         </nav>
 
         {/* Footer */}
-        <div className="border-t border-areia bg-creme p-4">
+        <div className="border-t border-areia dark:border-areia/20 bg-creme dark:bg-[#150e09] p-4">
           <button
             onClick={() => signOut({ redirect: true, callbackUrl: "/login" })}
-            className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-madeira hover:bg-danger/10 hover:text-danger transition-colors"
+            className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-madeira dark:text-areia hover:bg-danger/10 hover:text-danger transition-colors"
             aria-label="Sair do sistema"
           >
             <LogOut className="h-5 w-5" />

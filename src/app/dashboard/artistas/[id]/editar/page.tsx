@@ -29,8 +29,8 @@ export default async function EditarArtistaPage({
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900">Editar Artista</h2>
-        <p className="text-gray-500">Atualize os dados de {artista.nome}</p>
+        <h2 className="text-2xl font-bold text-foreground dark:text-white font-[family-name:var(--font-playfair)]">Editar Artista</h2>
+        <p className="text-foreground/70 dark:text-gray-300 font-medium">Atualize os dados de {artista.nome}</p>
       </div>
       <ArtistaForm artista={artistaData} isEdit />
     </div>

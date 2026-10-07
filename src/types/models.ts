@@ -14,8 +14,10 @@ export interface Artista {
   generoArtistico: string;
   foto?: string | null;
   status: "ATIVO" | "INATIVO";
+  destaque: boolean;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date | null;
 }
 
 export interface Evento {
@@ -31,6 +33,7 @@ export interface Evento {
   ativo: boolean;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date | null;
 }
 
 export interface Depoimento {
@@ -43,6 +46,7 @@ export interface Depoimento {
   ordem: number;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date | null;
 }
 
 export interface User {

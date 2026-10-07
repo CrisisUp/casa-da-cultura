@@ -1,38 +1,27 @@
+import bcrypt from "bcryptjs";
+import type { DefaultSession } from "next-auth";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
 import { prisma } from "./prisma";
-import { DefaultSession } from "next-auth";
-import { DefaultJWT } from "next-auth/jwt";
-
-type DefaultUser = {
-  id: string;
-  name?: string | null;
-  email?: string | null;
-};
 
 declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      name?: string | null;
-      email?: string | null;
       role: "ADMIN" | "OPERATOR";
     } & DefaultSession["user"];
   }
 
-  interface User extends DefaultUser {
-    id: string;
-    name: string;
-    email: string;
-    role: "ADMIN" | "OPERATOR";
+  interface User {
+    id?: string;
+    role?: "ADMIN" | "OPERATOR";
   }
 }
 
 declare module "next-auth/jwt" {
-  interface JWT extends DefaultJWT {
-    id: string;
-    role: "ADMIN" | "OPERATOR";
+  interface JWT {
+    id?: string;
+    role?: "ADMIN" | "OPERATOR";
   }
 }
 

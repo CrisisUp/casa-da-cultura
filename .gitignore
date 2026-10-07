@@ -30,15 +30,23 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
-*.local
+# env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# exceto o template
+!.env.example
 
 # uploads (user-generated content)
 public/uploads/
 
-# prisma
-prisma/migrations/
+# prisma — NÃO ignorar migrations!
+/prisma/generated/
+/node_modules/.prisma/
+/node_modules/@prisma/client/
 
 # vercel
 .vercel

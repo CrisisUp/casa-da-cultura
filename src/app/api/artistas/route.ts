@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { artistaSchema } from "@/lib/validations";
-import { handleApiError } from "@/lib/api-response";
+import { formatResponse, handleApiError } from "@/lib/api-response";
 
 export async function GET(request: NextRequest) {
   try {
@@ -41,15 +41,14 @@ export async function GET(request: NextRequest) {
       prisma.artista.count({ where }),
     ]);
 
-    return NextResponse.json({
-      artistas,
-      pagination: {
+    return NextResponse.json(
+      formatResponse(artistas, {
         page,
         limit,
         total,
         totalPages: Math.ceil(total / limit),
-      },
-    });
+      })
+    );
   } catch (error) {
     return handleApiError(error, "buscar artistas");
   }
@@ -80,7 +79,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(artista, { status: 201 });
+    return NextResponse.json(formatResponse(artista), { status: 201 });
   } catch (error) {
     return handleApiError(error, "criar artista");
   }

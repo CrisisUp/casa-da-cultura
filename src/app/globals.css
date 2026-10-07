@@ -1,65 +1,166 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Casa da Cultura - Paleta Cultural */
-  --color-terracota: #c2571a;
-  --color-terracota-light: #e07b3a;
-  --color-terracota-dark: #9a4415;
-  --color-ambar: #d4a017;
-  --color-ambar-light: #f0c040;
-  --color-ambar-dark: #b8890f;
-  --color-oliva: #5c7a3a;
-  --color-oliva-light: #7a9e52;
-  --color-oliva-dark: #4a6230;
-  --color-creme: #faf6f0;
-  --color-madeira: #8b5e3c;
-  --color-barro: #a0522d;
-  --color-areia: #f5e6d3;
+  /* --- Casa da Cultura: Tokens do Modo Dia --- */
+  --bg-page: #fdfaf6;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-subtle: rgba(234, 219, 200, 0.3);
 
+  --text-primary: #21110a;
+  --text-secondary: #754728;
+  --text-muted: #754728aa;
+
+  --border-color: #eadbc8;
+  --border-subtle: rgba(234, 219, 200, 0.6);
+
+  --color-terracota: #d94e18;
+  --color-terracota-light: #f26822;
+  --color-terracota-dark: #b0380d;
+  --color-ambar: #e5af16;
+  --color-oliva: #4c7c2c;
+  --color-barro: #b54522;
+  --color-areia: #eadbc8;
+
+  --background: var(--bg-page);
+  --foreground: var(--text-primary);
+  --font-playfair: var(--font-lora);
+
+  /* --- NOVO: Sombras adaptativas --- */
+  --card-shadow: 0 4px 6px -1px rgba(117, 71, 40, 0.08);
+  --card-shadow-hover: 0 10px 15px -3px rgba(117, 71, 40, 0.15);
+
+  /* --- NOVO: Cores de estado (badges) --- */
+  --badge-active-bg: rgba(76, 124, 44, 0.15);
+  --badge-active-text: var(--color-oliva);
+  --badge-active-border: rgba(76, 124, 44, 0.3);
+
+  --badge-inactive-bg: rgba(217, 56, 41, 0.15);
+  --badge-inactive-text: #d93829;
+  --badge-inactive-border: rgba(217, 56, 41, 0.3);
+
+  /* Badges semânticos - Modo Dia */
+  --badge-success-bg: rgba(76, 124, 44, 0.1);
+  --badge-success-text: #3d6621;
+  --badge-success-border: rgba(76, 124, 44, 0.25);
+
+  --badge-warning-bg: rgba(229, 175, 22, 0.1);
+  --badge-warning-text: #a37a0a;
+  --badge-warning-border: rgba(229, 175, 22, 0.25);
+
+  --badge-danger-bg: rgba(217, 56, 41, 0.1);
+  --badge-danger-text: #b52518;
+  --badge-danger-border: rgba(217, 56, 41, 0.25);
+
+  --badge-info-bg: rgba(217, 78, 24, 0.1);
+  --badge-info-text: #b0380d;
+  --badge-info-border: rgba(217, 78, 24, 0.25);
+}
+
+.dark {
+  /* --- Casa da Cultura: Tokens do Modo Noite --- */
+  --bg-page: #090503;
+  --bg-surface: #150e09;
+  --bg-card: #150e09; /* ← cor de fundo dos cards no tema escuro */
+  --bg-subtle: #1f140e;
+
+  --text-primary: #ffffff;
+  --text-secondary: #f5d6bc;
+  --text-muted: #f4ece1cc;
+
+  --border-color: #3d2618;
+  --border-subtle: #3d2618aa;
+
+  --color-terracota: #f26822;
+  --color-terracota-light: #f78c53;
+  --color-terracota-dark: #d94e18;
+  --color-ambar: #f7c731;
+  --color-oliva: #649c3f;
+  --color-barro: #d94e18;
+  --color-areia: #3d2618;
+
+  --background: var(--bg-page);
+  --foreground: var(--text-primary);
+
+  /* --- NOVO: Sombras adaptativas para modo escuro --- */
+  --card-shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.5);
+  --card-shadow-hover: 0 10px 20px -3px rgba(0, 0, 0, 0.7);
+
+  /* --- NOVO: Cores de estado (badges) para modo escuro --- */
+  --badge-active-bg: rgba(100, 156, 63, 0.2);
+  --badge-active-text: #a3e07a;
+  --badge-active-border: rgba(100, 156, 63, 0.4);
+
+  --badge-inactive-bg: rgba(217, 56, 41, 0.2);
+  --badge-inactive-text: #ff8a7a;
+  --badge-inactive-border: rgba(217, 56, 41, 0.4);
+
+  /* Badges semânticos - Modo Noite */
+  --badge-success-bg: rgba(100, 156, 63, 0.2);
+  --badge-success-text: #a3e07a;
+  --badge-success-border: rgba(100, 156, 63, 0.4);
+
+  --badge-warning-bg: rgba(247, 199, 49, 0.2);
+  --badge-warning-text: #ffdd7a;
+  --badge-warning-border: rgba(247, 199, 49, 0.4);
+
+  --badge-danger-bg: rgba(217, 56, 41, 0.2);
+  --badge-danger-text: #ff8a7a;
+  --badge-danger-border: rgba(217, 56, 41, 0.4);
+
+  --badge-info-bg: rgba(242, 104, 34, 0.2);
+  --badge-info-text: #ffb088;
+  --badge-info-border: rgba(242, 104, 34, 0.4);
+}
+
+@theme inline {
+  /* Cores base do tema */
+  --color-background: var(--bg-page);
+  --color-foreground: var(--text-primary);
+
+  /* Superfícies */
+  --color-card: var(--bg-card);
+  --color-surface: var(--bg-surface);
+  --color-subtle: var(--bg-subtle);
+
+  /* Bordas */
+  --color-border: var(--border-color);
+  --color-border-subtle: var(--border-subtle);
+
+  /* Textos */
+  --color-muted: var(--text-muted); /* ← textos secundários */
+  --color-muted-strong: var(--text-secondary); /* ← alias mais explícito */
+
+  /* Paleta institucional */
   --color-primary: var(--color-terracota);
   --color-primary-light: var(--color-terracota-light);
   --color-primary-dark: var(--color-terracota-dark);
   --color-secondary: var(--color-oliva);
   --color-accent: var(--color-ambar);
-  --color-success: #5a8a4a;
-  --color-danger: #c0392b;
-  --color-danger-dark: #a0291b;
+  --color-success: #43852e;
+  --color-danger: #d93829;
+  --color-danger-dark: #b52518;
   --color-warning: var(--color-ambar);
 
-  --background: var(--color-creme);
-  --foreground: #2d1810;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--color-primary);
-  --color-primary-light: var(--color-primary-light);
-  --color-primary-dark: var(--color-primary-dark);
-  --color-secondary: var(--color-secondary);
-  --color-accent: var(--color-accent);
-  --color-success: var(--color-success);
-  --color-danger: var(--color-danger);
-  --color-danger-dark: var(--color-danger-dark);
-  --color-warning: var(--color-warning);
+  /* Cores nomeadas (mantidas para compatibilidade) */
   --color-terracota: var(--color-terracota);
   --color-terracota-light: var(--color-terracota-light);
   --color-terracota-dark: var(--color-terracota-dark);
   --color-ambar: var(--color-ambar);
-  --color-ambar-light: var(--color-ambar-light);
-  --color-ambar-dark: var(--color-ambar-dark);
   --color-oliva: var(--color-oliva);
-  --color-oliva-light: var(--color-oliva-light);
-  --color-oliva-dark: var(--color-oliva-dark);
-  --color-creme: var(--color-creme);
-  --color-madeira: var(--color-madeira);
   --color-barro: var(--color-barro);
   --color-areia: var(--color-areia);
+  --color-madeira: #754728;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Scrollbar personalizada */
@@ -67,7 +168,7 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-areia);
+  background: var(--border-color);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--color-terracota-light);
@@ -77,20 +178,175 @@ body {
   background: var(--color-terracota);
 }
 
-/* Animações customizadas */
+/* ============================================================
+   Estética Artística, Orgânica e Semântica
+   ============================================================ */
+
+.organic-card {
+  border-radius: 1.5rem 0.75rem 1.75rem 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.organic-card:hover {
+  border-radius: 0.75rem 1.5rem 0.5rem 1.75rem;
+  transform: translateY(-2px);
+}
+
+.organic-badge {
+  border-radius: 9999px 12px 9999px 12px;
+}
+
+/* ============================================================
+   Componentes Semânticos Centralizados (Design Tokens)
+   ============================================================ */
+
+.cultural-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow); /* ← sombra adaptativa */
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.cultural-card:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* ← NOVO: Borda sutil que só aparece no modo escuro para delimitar melhor os cards */
+.dark .cultural-card {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.cultural-section-title {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+/* ============================================================
+   NOVO: Badges de Status (ATIVO / INATIVO)
+   ============================================================ */
+
+.badge-status-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: var(--badge-active-bg);
+  color: var(--badge-active-text);
+  border: 1px solid var(--badge-active-border);
+  transition: all 0.2s ease;
+}
+
+.badge-status-active::before {
+  content: "";
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background-color: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.badge-status-inactive {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: var(--badge-inactive-bg);
+  color: var(--badge-inactive-text);
+  border: 1px solid var(--badge-inactive-border);
+  transition: all 0.2s ease;
+}
+
+.badge-status-inactive::before {
+  content: "";
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background-color: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+
+/* ============================================================
+   NOVO: Ícones de Ação em Tabelas/Listas
+   ============================================================ */
+
+.action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem;
+  border-radius: 0.5rem;
+  color: var(--text-muted);
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.action-icon:hover {
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
+}
+
+.action-icon.action-icon-danger:hover {
+  background-color: var(--badge-inactive-bg);
+  color: var(--badge-inactive-text);
+}
+
+.action-icon.action-icon-success:hover {
+  background-color: var(--badge-active-bg);
+  color: var(--badge-active-text);
+}
+
+/* ============================================================
+   Animações customizadas
+   ============================================================ */
+
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 5px rgba(194, 87, 26, 0.5); }
-  50% { box-shadow: 0 0 20px rgba(194, 87, 26, 0.8); }
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(217, 78, 24, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(217, 78, 24, 0.9);
+  }
 }
 
 @keyframes fadeInUp {
@@ -109,7 +365,12 @@ body {
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
@@ -122,8 +383,13 @@ body {
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
-/* Transições suaves */
-a, button, [role="button"] {
+/* ============================================================
+   Transições suaves
+   ============================================================ */
+
+a,
+button,
+[role="button"] {
   transition: all 0.2s ease-in-out;
 }
 
@@ -134,36 +400,51 @@ a, button, [role="button"] {
 
 .card-hover:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 25px -5px rgba(139, 94, 60, 0.15), 0 8px 10px -6px rgba(139, 94, 60, 0.1);
+  box-shadow:
+    0 20px 25px -5px rgba(117, 71, 40, 0.2),
+    0 8px 10px -6px rgba(117, 71, 40, 0.15);
 }
+
+/* ============================================================
+   Padrões visuais e texturas culturais
+   ============================================================ */
 
 /* Padrão cultural de fundo */
 .cultural-pattern {
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c2571a' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d94e18' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4H6zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* Gradiente cultural */
 .gradient-cultural {
-  background: linear-gradient(135deg, var(--color-terracota) 0%, var(--color-barro) 50%, var(--color-madeira) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-terracota) 0%,
+    var(--color-barro) 50%,
+    var(--color-madeira) 100%
+  );
 }
 
 /* Texto com sombra cultural */
 .text-cultural-shadow {
-  text-shadow: 2px 2px 4px rgba(45, 24, 16, 0.2);
+  text-shadow: 2px 2px 4px rgba(33, 17, 10, 0.3);
 }
 
 /* Textura de papel */
 .paper-texture {
-  background-color: var(--color-creme);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-color: var(--bg-page);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
 }
 
 /* Sombra cultural para cards */
 .shadow-cultural {
-  box-shadow: 0 4px 6px -1px rgba(139, 94, 60, 0.1), 0 2px 4px -1px rgba(139, 94, 60, 0.06);
+  box-shadow:
+    0 4px 6px -1px rgba(117, 71, 40, 0.15),
+    0 2px 4px -1px rgba(117, 71, 40, 0.1);
 }
 
 /* Hover cultural */
 .hover-cultural:hover {
-  box-shadow: 0 10px 15px -3px rgba(139, 94, 60, 0.15), 0 4px 6px -2px rgba(139, 94, 60, 0.1);
+  box-shadow:
+    0 10px 15px -3px rgba(117, 71, 40, 0.2),
+    0 4px 6px -2px rgba(117, 71, 40, 0.15);
 }

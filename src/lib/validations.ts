@@ -37,7 +37,7 @@ export const depoimentoSchema = z.object({
   nome: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
   genero: z.string().min(1, "Selecione um gênero"),
   texto: z.string().min(10, "Texto deve ter pelo menos 10 caracteres"),
-  avatar: z.string().optional().or(z.literal("")),
+  avatar: z.string().max(2).nullable().optional().or(z.literal("")),
   ativo: z.boolean().default(true),
   ordem: z.number().int().nonnegative().default(0),
 });

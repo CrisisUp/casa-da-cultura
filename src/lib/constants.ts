@@ -26,3 +26,33 @@ export function statusOptions() {
 export function statusBadgeVariant(status: StatusArtista) {
   return status === "ATIVO" ? "success" : "danger";
 }
+
+export const EVENTO_TIPOS = [
+  { value: "", label: "Selecione..." },
+  { value: "Música", label: "Música" },
+  { value: "Dança", label: "Dança" },
+  { value: "Teatro", label: "Teatro" },
+  { value: "Artes Visuais", label: "Artes Visuais" },
+  { value: "Literatura", label: "Literatura" },
+  { value: "Artesanato", label: "Artesanato" },
+  { value: "Outro", label: "Outro" },
+];
+
+export const EVENTO_CORES = [
+  { value: "bg-terracota", label: "Terracota" },
+  { value: "bg-oliva", label: "Oliva" },
+  { value: "bg-barro", label: "Barro" },
+  { value: "bg-ambar", label: "Âmbar" },
+  { value: "bg-madeira", label: "Madeira" },
+];
+
+export const ESCOLARIDADES = [
+  { value: "", label: "Selecione..." },
+  { value: "Fundamental Incompleto", label: "Fundamental Incompleto" },
+  { value: "Fundamental Completo", label: "Fundamental Completo" },
+  { value: "Médio Incompleto", label: "Médio Incompleto" },
+  { value: "Médio Completo", label: "Médio Completo" },
+  { value: "Superior Incompleto", label: "Superior Incompleto" },
+  { value: "Superior Completo", label: "Superior Completo" },
+  { value: "Pós-graduação", label: "Pós-graduação" },
+];

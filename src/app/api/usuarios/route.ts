@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-import { handleApiError } from "@/lib/api-response";
+import { formatResponse, handleApiError } from "@/lib/api-response";
 import bcrypt from "bcryptjs";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const session = await auth();
-    if (!session || (session.user as any)?.role !== "ADMIN") {
+    if (!session || session.user?.role !== "ADMIN") {
       return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
     }
 
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       orderBy: { createdAt: "desc" },
     });
 
-    return NextResponse.json({ usuarios });
+    return NextResponse.json(formatResponse(usuarios));
   } catch (error) {
     return handleApiError(error, "listar usuários");
   }
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
-    if (!session || (session.user as any)?.role !== "ADMIN") {
+    if (!session || session.user?.role !== "ADMIN") {
       return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
     }
 
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(newUser, { status: 201 });
+    return NextResponse.json(formatResponse(newUser), { status: 201 });
   } catch (error) {
     return handleApiError(error, "criar usuário");
   }

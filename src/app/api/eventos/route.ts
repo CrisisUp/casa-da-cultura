@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { eventoSchema } from "@/lib/validations";
-import { handleApiError } from "@/lib/api-response";
+import { formatResponse, handleApiError } from "@/lib/api-response";
 
 export async function GET(request: NextRequest) {
   try {
@@ -33,15 +33,14 @@ export async function GET(request: NextRequest) {
       prisma.evento.count({ where }),
     ]);
 
-    return NextResponse.json({
-      eventos,
-      pagination: {
+    return NextResponse.json(
+      formatResponse(eventos, {
         page,
         limit,
         total,
         totalPages: Math.ceil(total / limit),
-      },
-    });
+      })
+    );
   } catch (error) {
     return handleApiError(error, "buscar eventos");
   }
@@ -59,7 +58,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(evento, { status: 201 });
+    return NextResponse.json(formatResponse(evento), { status: 201 });
   } catch (error) {
     return handleApiError(error, "criar evento");
   }

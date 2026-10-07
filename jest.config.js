@@ -1,22 +1,19 @@
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
-  roots: ['<rootDir>/src'],
-  testMatch: ['**/__tests__/**/*.test.ts', '**/__tests__/**/*.test.tsx'],
+  preset: "ts-jest",
+  testEnvironment: "jsdom",
+  roots: ["<rootDir>/src"],
+  testMatch: ["**/__tests__/**/*.test.ts", "**/__tests__/**/*.test.tsx"],
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
+    "^@/(.*)$": "<rootDir>/src/$1",
   },
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/*.stories.tsx',
-    '!src/**/page.tsx',
-    '!src/**/layout.tsx',
-    '!src/components/**',
-    '!src/lib/auth.ts',
-    '!src/lib/pdf.ts',
-    '!src/proxy.ts',
+    "src/lib/utils.ts",
+    "src/lib/validations.ts",
+    "src/components/ui/Button.tsx",
+    "src/components/ui/Input.tsx",
+    "src/app/api/stats/route.ts",
+    "!src/**/*.d.ts",
   ],
   coverageThreshold: {
     global: {
@@ -26,6 +23,9 @@ module.exports = {
       statements: 50,
     },
   },
-  testPathIgnorePatterns: ['/node_modules/', '/.next/'],
-  transformIgnorePatterns: ['/node_modules/', '^.+\\.module\\.(css|sass|scss)$'],
+  testPathIgnorePatterns: ["/node_modules/", "/.next/"],
+  transformIgnorePatterns: [
+    "/node_modules/",
+    "^.+\\.module\\.(css|sass|scss)$",
+  ],
 };

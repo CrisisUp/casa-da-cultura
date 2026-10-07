@@ -1,24 +1,24 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Lora, Plus_Jakarta_Sans } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import SessionProvider from "@/components/SessionProvider";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const lora = Lora({
+  variable: "--font-lora",
   subsets: ["latin"],
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Casa da Cultura - Cadastro de Artistas",
-  description: "Sistema de cadastro de artistas da Casa da Cultura",
+  description: "Sistema de cadastro e gestão cultural da Casa da Cultura",
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
@@ -32,8 +32,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className={`${playfair.variable} ${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col" style={{ fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+    <html lang="pt-BR" className={`${lora.variable} ${jakarta.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col font-sans" style={{ fontFamily: "var(--font-jakarta), system-ui, sans-serif" }}>
         <SessionProvider>
           {children}
           <Toaster position="top-right" />

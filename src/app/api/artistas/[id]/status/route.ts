@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-import { handleApiError } from "@/lib/api-response";
+import { formatResponse, handleApiError } from "@/lib/api-response";
 
 export async function PATCH(
   request: NextRequest,
@@ -9,7 +9,7 @@ export async function PATCH(
 ) {
   try {
     const session = await auth();
-    if (!session || (session.user as any)?.role !== "ADMIN") {
+    if (!session || (session.user?.role !== "ADMIN" && session.user?.role !== "OPERATOR")) {
       return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
     }
 
@@ -22,7 +22,7 @@ export async function PATCH(
     }
 
     // Se o artista for inativado, removemos o status de destaque dele
-    const updateData: any = { status };
+    const updateData: { status: "ATIVO" | "INATIVO"; destaque?: boolean } = { status };
     if (status === "INATIVO") {
       updateData.destaque = false;
     }
@@ -32,7 +32,7 @@ export async function PATCH(
       data: updateData,
     });
 
-    return NextResponse.json({ success: true, artista });
+    return NextResponse.json(formatResponse(artista));
   } catch (error) {
     return handleApiError(error, "atualizar status do artista");
   }
